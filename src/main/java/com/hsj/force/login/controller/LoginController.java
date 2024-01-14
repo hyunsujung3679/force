@@ -2,14 +2,12 @@ package com.hsj.force.login.controller;
 
 import com.hsj.force.domain.vo.User;
 import com.hsj.force.login.service.LoginService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping
@@ -19,19 +17,30 @@ public class LoginController {
     public final LoginService loginService;
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(@ModelAttribute User user) {
         return "login/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute User user,
-                        BindingResult bindingResult) {
+    public String login(@ModelAttribute User user,
+                        @RequestParam(defaultValue = "/") String redirectURL,
+                        BindingResult bindingResult,
+                        HttpServletRequest request) {
         if(bindingResult.hasErrors()) {
             return "login/loginForm";
         }
 
-        int result = loginService.findByIdAndPassword(user);
+        User loginMember = loginService.findUser(user);
 
-        return null;
+        if(loginMember == null) {
+            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            return "login/loginForm";
+        }
+
+        HttpSession session = request.getSession();
+        //세선에 로그인 회원 정보 보관
+        session.setAttribute("loginMember", loginMember);
+
+        return "redirect:" + redirectURL;
     }
 }

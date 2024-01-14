@@ -119,3 +119,9 @@
     font-size: 30px;
     border-color: white;
 }
+
+.field-error {
+    margin-left: 30px;
+    font-weight: bold;
+    color: red;
+}

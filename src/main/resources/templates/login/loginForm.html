@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Force</title>
@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <form th:action method="post">
+    <form th:action th:object="${user}" method="post">
         <div class="whole-backGround">
             <div class="login-box-gap"></div>
             <div class="login-box">
@@ -17,14 +17,18 @@
                 <div class="login-insert">
                     <img class="login-image" src="/images/login/person.png" alt="person.png"/>
                     <label class="login-id-password">
-                        <input type="text" id="login-input" class="login-input">
+                        <input type="text" th:field="*{userId}" class="login-input">
                     </label>
                 </div>
                 <div class="login-insert">
                     <img class="login-image" src="/images/login/lock.png" alt="lock.png"/>
                     <label class="login-id-password">
-                        <input type="text" class="login-password-input">
+                        <input type="text" th:field="*{password}" class="login-password-input">
                     </label>
+                </div>
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                       th:text="${err}">전체 오류 메시지</p>
                 </div>
                 <div class="login-save-find">
                     <label>
@@ -35,7 +39,7 @@
                 </div>
                 <a href="" class="login-password-find">비밀번호 찾기</a>
                 <div class="login-button-wrap">
-                    <input type="button" class="login-button" value="로그인" onclick="">
+                    <button type="submit" class="login-button">로그인</button>
                 </div>
             </div>
             <div class="login-box-gap"></div>

@@ -1,4 +1,4 @@
-package com.hsj.force.domain.vo;
+package com.hsj.force.domain;
 
 import com.hsj.force.domain.CommonData;
 import lombok.Data;

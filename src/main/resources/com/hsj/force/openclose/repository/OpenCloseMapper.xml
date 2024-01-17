@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsj.force.openclose.repository.OpenCloseMapper">
+
+    <select id="selectIsOpen" resultType="int">
+        SELECT COUNT(*)
+          FROM TOPENCLOSE
+         WHERE CLOSE_MONEY IS NULL;
+    </select>
+
+   <select id="selectOpenCloseInfo" resultType="com.hsj.force.domain.out.OpenCloseOutDTO">
+       SELECT B.USER_ID AS CLOSER_ID
+            , B.USER_NAME AS CLOSER_NAME
+            , A.MODIFY_DATE
+         FROM TOPENCLOSE A
+            , TUSER B
+        WHERE A.MODIFY_ID = B.USER_ID
+        ORDER BY A.MODIFY_DATE DESC
+        LIMIT 1;
+   </select>
+
+    <select id="selectOpenCloseSeq" resultType="String">
+        SELECT OC.OPEN_CLOSE_SEQ
+          FROM TOPENCLOSE OC
+         WHERE CLOSE_MONEY IS NOT NULL
+           AND date_format(OC.INSERT_DATE, '%Y-%m-%d') = curdate();
+   </select>
+</mapper>

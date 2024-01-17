@@ -1,6 +1,6 @@
 package com.hsj.force.login.repository;
 
-import com.hsj.force.domain.vo.User;
+import com.hsj.force.domain.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

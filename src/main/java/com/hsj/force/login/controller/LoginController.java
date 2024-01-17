@@ -1,7 +1,8 @@
 package com.hsj.force.login.controller;
 
-import com.hsj.force.domain.vo.User;
+import com.hsj.force.domain.User;
 import com.hsj.force.login.service.LoginService;
+import com.hsj.force.openclose.service.OpenCloseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class LoginController {
 
     public final LoginService loginService;
 
+    public final OpenCloseService openCloseService;
     @GetMapping("/login")
     public String loginForm(@ModelAttribute User user) {
         return "login/loginForm";
@@ -23,24 +25,26 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute User user,
-                        @RequestParam(defaultValue = "/") String redirectURL,
                         BindingResult bindingResult,
                         HttpServletRequest request) {
+
         if(bindingResult.hasErrors()) {
             return "login/loginForm";
         }
 
         User loginMember = loginService.findUser(user);
-
         if(loginMember == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login/loginForm";
         }
 
         HttpSession session = request.getSession();
-        //세선에 로그인 회원 정보 보관
         session.setAttribute("loginMember", loginMember);
 
-        return "redirect:" + redirectURL;
+        if(openCloseService.selectIsOpen() > 0) {
+            return "redirect:/table";
+        } else {
+            return "redirect:/open";
+        }
     }
 }

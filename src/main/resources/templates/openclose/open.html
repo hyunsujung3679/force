@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Force</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/openclose/open.css}">
+<!--<script th:src="@{/js/openclose/open.js}"></script>-->
+</head>
+<body>
+
+    <form th:action th:object="${openClose}" method="post">
+        <div class="whole-backGround">
+            <div class="gap"></div>
+                <div class="box">
+                    <div class="title-box">
+                        <div class="title">개점 처리</div>
+                    </div>
+                    <p class="sub-title">마감 현황</p>
+                    <ul class="sub-content">
+                        <li>마감 처리 일자 :
+                            <label>
+                                <input type="text" th:field="*{closeDate}" class="input-box" disabled>
+                            </label>
+                        </li>
+                        <li>마감 처리 시간 :
+                            <label>
+                                <input type="text" th:field="*{closeTime}" class="input-box" disabled>
+                            </label>
+                        </li>
+                        <li>마감 판매원 :
+                            <label>
+                                <input type="text" th:field="*{closer}" class="input-box-2" disabled>
+                            </label>
+                        </li>
+                    </ul>
+                    <p class="sub-title">개점 처리</p>
+                    <ul class="sub-content">
+                        <li>시스템 일자 :
+                            <label>
+                                <input type="text" class="input-box-2" value="2023-12-31 (일)" disabled>
+                            </label>
+                        </li>
+                        <li>개점 영업 일자 :
+                            <label>
+                                <input type="text" class="input-box-3" value="2023-12-31 09:00" disabled>
+                            </label>
+                            <label>
+                                <input type="text" class="input-box-4" value="1차" disabled>
+                            </label>
+                        </li>
+                        <li>개점 준비금 :
+                            <label>
+                                <input type="text" th:field="*{openMoney}" class="input-box-2">
+                            </label>
+                        </li>
+                        <li>개점 판매원 :
+                            <label>
+                                <input type="text" th:field="*{opener}" class="input-box-2" disabled>
+                            </label>
+                        </li>
+                    </ul>
+                    <button type="submit" class="submit-button">개점처리</button>
+                </div>
+            <div class="gap"></div>
+        </div>
+    </form>
+
+</body>
+</html>

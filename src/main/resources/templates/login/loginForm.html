@@ -10,7 +10,7 @@
 
     <form th:action th:object="${user}" method="post">
         <div class="whole-backGround">
-            <div class="login-box-gap"></div>
+            <div class="gap"></div>
             <div class="login-box">
                 <div class="login-system-title">포스 있다</div>
                 <div class="login-system-subtitle">POS Solution</div>
@@ -27,8 +27,7 @@
                     </label>
                 </div>
                 <div th:if="${#fields.hasGlobalErrors()}">
-                    <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-                       th:text="${err}">전체 오류 메시지</p>
+                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
                 </div>
                 <div class="login-save-find">
                     <label>
@@ -42,7 +41,7 @@
                     <button type="submit" class="login-button">로그인</button>
                 </div>
             </div>
-            <div class="login-box-gap"></div>
+            <div class="gap"></div>
         </div>
     </form>
 

@@ -27,6 +27,7 @@ public class OpenCloseController {
         OpenCloseRes openClose = openCloseService.selectOpenCloseInfo();
         openClose.setOpener(loginMember.getUserId() + " - " + loginMember.getUserName());
         openClose.setCurrentDate(LocalDateTime.now());
+        openClose.setCurrentTime(LocalDateTime.now());
 
         model.addAttribute("openClose", openClose);
 

@@ -18,5 +18,6 @@ public class OpenCloseRes extends OpenClose {
     private Integer procedure;
     private String opener;
     private LocalDateTime currentDate;
+    private LocalDateTime currentTime;
 
 }

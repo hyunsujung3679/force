@@ -12,39 +12,46 @@
             <div class="gap"></div>
                 <div class="box">
                     <div class="title-box">
-                        <div class="title">개점 처리</div>
+                        <div class="title" th:text="#{title.open}"></div>
                     </div>
-                    <p class="sub-title">마감 현황</p>
+                    <p class="sub-title" th:text="#{title.close.status}"></p>
                     <ul class="sub-content">
-                        <li>마감 처리 일자 :
-                            <input type="text" th:value="${#temporals.format(openClose.closeDate, 'YYYY-MM-dd (E)')}" class="input-box" disabled>
+                        <li>
+                            <label for="closeDate" th:text="#{label.close.date}"></label>
+                            <input type="text" id="closeDate" name="closeDate" th:value="${#temporals.format(openClose.closeDate, 'YYYY-MM-dd (E)')}" class="input-box" disabled>
                         </li>
-                        <li>마감 처리 시간 :
-                            <input type="text" th:value="${#temporals.format(openClose.closeTime, 'YYYY-MM-dd HH:mm')}" class="input-box" disabled>
+                        <li>
+                            <label for="closeTime" th:text="#{label.close_time}"></label>
+                            <input type="text" id="closeTime" name="closeTime" th:value="${#temporals.format(openClose.closeTime, 'YYYY-MM-dd HH:mm')}" class="input-box" disabled>
                         </li>
-                        <li>마감 판매원 :
+                        <li>
+                            <label for="closer" th:text="#{label.closer}"></label>
                             <input type="text" th:field="*{closer}" class="input-box-2" disabled>
                         </li>
                     </ul>
-                    <p class="sub-title">개점 처리</p>
+                    <p class="sub-title" th:text="#{title.open}"></p>
                     <ul class="sub-content">
-                        <li>시스템 일자 :
-                            <input type="text" class="input-box-2" th:value="${#temporals.format(openClose.currentDate, 'YYYY-MM-dd (E)')}" disabled>
+                        <li>
+                            <label for="currentDate" th:text="#{label.system.date}"></label>
+                            <input type="text" class="input-box-2" id="currentDate" name="currentDate" th:value="${#temporals.format(openClose.currentDate, 'YYYY-MM-dd (E)')}" disabled>
                         </li>
-                        <li>개점 영업 일자 :
-                            <input type="text" class="input-box-3" th:value="${#temporals.format(openClose.currentDate, 'YYYY-MM-dd HH:mm')}" disabled>
-                            <input type="text" class="input-box-4" th:value="|${openClose.procedure}차|" disabled>
+                        <li>
+                            <label for="currentTime" th:text="#{label.open.date}"></label>
+                            <input type="text" class="input-box-3" id="currentTime" name="currentTime" th:value="${#temporals.format(openClose.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
+                            <input type="text" class="input-box-4" id="procedure" name="procedure" th:value="|${openClose.procedure}차|" disabled>
                         </li>
-                        <li>개점 준비금 :
+                        <li>
+                            <label for="openMoney" th:text="#{label.open.money}"></label>
                             <input type="text" th:field="*{openMoney}" class="input-box-2">
                         </li>
-                        <li>개점 판매원 :
+                        <li>
+                            <label for="opener" th:text="#{label.opener}"></label>
                             <input type="text" th:field="*{opener}" class="input-box-2" disabled>
                         </li>
                     </ul>
                     <div class="button-wrap">
-                        <button type="submit" class="submit-button">개점처리</button>
-                        <button type="button" class="button-button" th:href="@{/logout}">취소</button>
+                        <button type="submit" class="submit-button" th:text="#{button.open}"></button>
+                        <button type="button" class="button-button" th:text="#{button.cancel}" th:href="@{/logout}"></button>
                     </div>
                 </div>
             <div class="gap"></div>

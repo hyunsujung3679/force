@@ -89,7 +89,6 @@
 }
 
 .submit-button {
-    margin-left: 315px;
     border-radius: 10px;
     cursor:pointer;
     background-color: #5DA4EF;
@@ -98,4 +97,21 @@
     height: 40px;
     font-size: 25px;
     border-color: white;
+}
+
+.button-button {
+    margin-left: 10px;
+    border-radius: 10px;
+    cursor:pointer;
+    background-color: #5DA4EF;
+    color: white;
+    width: 100px;
+    height: 40px;
+    font-size: 25px;
+    border-color: white;
+}
+
+.button-wrap {
+    display: flex;
+    margin-left: 205px;
 }

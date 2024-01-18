@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.login.repository.LoginMapper">
 
-    <select id="findUser" resultType="User">
+    <select id="findUser" resultType="com.hsj.force.domain.User">
         SELECT *
           FROM TUSER
          WHERE USER_ID = #{userId}

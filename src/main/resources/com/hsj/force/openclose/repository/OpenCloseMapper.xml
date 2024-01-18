@@ -9,7 +9,7 @@
          WHERE CLOSE_MONEY IS NULL;
     </select>
 
-   <select id="selectOpenCloseInfo" resultType="com.hsj.force.domain.out.OpenCloseOutDTO">
+   <select id="selectOpenCloseInfo" resultType="com.hsj.force.domain.response.OpenCloseRes">
        SELECT B.USER_ID AS CLOSER_ID
             , B.USER_NAME AS CLOSER_NAME
             , A.MODIFY_DATE

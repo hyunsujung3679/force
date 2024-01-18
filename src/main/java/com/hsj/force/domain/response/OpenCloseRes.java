@@ -1,19 +1,22 @@
-package com.hsj.force.domain.out;
+package com.hsj.force.domain.response;
 
 import com.hsj.force.domain.OpenClose;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OpenCloseOutDTO extends OpenClose {
+public class OpenCloseRes extends OpenClose {
 
-    private String closeDate;
-    private String closeTime;
+    private LocalDateTime closeDate;
+    private LocalDateTime closeTime;
     private String closer;
     private String closerId;
     private String closerName;
     private Integer procedure;
     private String opener;
+    private LocalDateTime currentDate;
 
 }

@@ -105,7 +105,7 @@
     cursor:pointer;
     background-color: #5DA4EF;
     color: white;
-    width: 100px;
+    width: 130px;
     height: 40px;
     font-size: 25px;
     border-color: white;
@@ -113,5 +113,5 @@
 
 .button-wrap {
     display: flex;
-    margin-left: 205px;
+    margin-left: 175px;
 }

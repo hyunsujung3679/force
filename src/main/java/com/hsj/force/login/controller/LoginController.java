@@ -1,8 +1,9 @@
 package com.hsj.force.login.controller;
 
-import com.hsj.force.domain.User;
+import com.hsj.force.domain.LoginForm;
+import com.hsj.force.domain.Login;
 import com.hsj.force.login.service.LoginService;
-import com.hsj.force.openclose.service.OpenCloseService;
+import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -11,20 +12,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping
+@RequestMapping("/login")
 @RequiredArgsConstructor
 public class LoginController {
 
     public final LoginService loginService;
 
-    public final OpenCloseService openCloseService;
-    @GetMapping("/login")
-    public String loginForm(@ModelAttribute User user) {
+    public final OpenService openCloseService;
+    @GetMapping
+    public String loginForm(@ModelAttribute LoginForm loginForm) {
         return "login/loginForm";
     }
 
-    @PostMapping("/login")
-    public String login(@ModelAttribute User user,
+    @PostMapping
+    public String login(@ModelAttribute LoginForm loginForm,
                         BindingResult bindingResult,
                         HttpServletRequest request) {
 
@@ -32,7 +33,7 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        User loginMember = loginService.findUser(user);
+        Login loginMember = loginService.findUser(loginForm);
         if(loginMember == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
             return "login/loginForm";

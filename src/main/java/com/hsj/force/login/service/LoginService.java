@@ -1,6 +1,7 @@
 package com.hsj.force.login.service;
 
-import com.hsj.force.domain.User;
+import com.hsj.force.domain.Login;
+import com.hsj.force.domain.LoginForm;
 import com.hsj.force.login.repository.LoginMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,8 @@ public class LoginService {
 
     private final LoginMapper loginMapper;
 
-    public User findUser(User user) {
-        return loginMapper.findUser(user);
+    public Login findUser(LoginForm loginForm) {
+        return loginMapper.findUser(loginForm);
     }
 
 }

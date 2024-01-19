@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hsj.force.openclose.repository.OpenCloseMapper">
+<mapper namespace="com.hsj.force.open.repository.OpenMapper">
 
     <select id="selectIsOpen" resultType="int">
         SELECT COUNT(*)
@@ -9,7 +9,7 @@
          WHERE CLOSE_MONEY IS NULL;
     </select>
 
-   <select id="selectOpenCloseInfo" resultType="com.hsj.force.domain.response.OpenCloseRes">
+   <select id="selectOpenInfo" resultType="OpenForm">
        SELECT B.USER_ID AS CLOSER_ID
             , B.USER_NAME AS CLOSER_NAME
             , A.MODIFY_DATE
@@ -26,4 +26,35 @@
          WHERE CLOSE_MONEY IS NOT NULL
            AND date_format(OC.INSERT_DATE, '%Y-%m-%d') = curdate();
    </select>
+
+    <select id="selectOpenCloseNo" resultType="String">
+        SELECT OPEN_CLOSE_NO
+          FROM TOPENCLOSE
+         ORDER BY OPEN_CLOSE_NO DESC
+         LIMIT 1;
+    </select>
+
+    <insert id="insertOpen">
+        INSERT
+          INTO TOPENCLOSE
+        (
+          OPEN_CLOSE_NO
+        , OPEN_CLOSE_SEQ
+        , OPEN_MONEY
+        , INSERT_ID
+        , INSERT_DATE
+        , MODIFY_ID
+        , MODIFY_DATE
+        )
+        VALUES
+        (
+          #{openCloseNo}
+        , #{openCloseSeq}
+        , #{openMoney}
+        , #{insertId}
+        , NOW()
+        , #{modifyId}
+        , NOW()
+        )
+    </insert>
 </mapper>

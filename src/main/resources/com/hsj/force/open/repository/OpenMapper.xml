@@ -17,21 +17,23 @@
             , TUSER B
         WHERE A.MODIFY_ID = B.USER_ID
         ORDER BY A.MODIFY_DATE DESC
-        LIMIT 1;
+        LIMIT 1
    </select>
 
     <select id="selectOpenCloseSeq" resultType="String">
         SELECT OC.OPEN_CLOSE_SEQ
           FROM TOPENCLOSE OC
          WHERE CLOSE_MONEY IS NOT NULL
-           AND date_format(OC.INSERT_DATE, '%Y-%m-%d') = curdate();
+           AND date_format(OC.INSERT_DATE, '%Y-%m-%d') = curdate()
+         ORDER BY OC.OPEN_CLOSE_SEQ DESC
+         LIMIT 1
    </select>
 
     <select id="selectOpenCloseNo" resultType="String">
         SELECT OPEN_CLOSE_NO
           FROM TOPENCLOSE
          ORDER BY OPEN_CLOSE_NO DESC
-         LIMIT 1;
+         LIMIT 1
     </select>
 
     <insert id="insertOpen">

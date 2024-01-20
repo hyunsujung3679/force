@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <form th:action th:object="${openForm}" method="post">
+    <form th:action th:object="${open}" method="post">
         <div class="whole-backGround">
             <div class="gap"></div>
                 <div class="box">
@@ -18,11 +18,11 @@
                     <ul class="sub-content">
                         <li>
                             <label th:text="#{label.close.date}"></label>
-                            <input type="text" th:value="${#temporals.format(openForm.closeDate, 'YYYY-MM-dd (E)')}" class="input-box" disabled>
+                            <input type="text" th:value="${#temporals.format(open.closeDate, 'YYYY-MM-dd (E)')}" class="input-box" disabled>
                         </li>
                         <li>
                             <label th:text="#{label.close_time}"></label>
-                            <input type="text" th:value="${#temporals.format(openForm.closeTime, 'YYYY-MM-dd HH:mm')}" class="input-box" disabled>
+                            <input type="text" th:value="${#temporals.format(open.closeTime, 'YYYY-MM-dd HH:mm')}" class="input-box" disabled>
                         </li>
                         <li>
                             <label th:text="#{label.closer}"></label>
@@ -33,12 +33,12 @@
                     <ul class="sub-content">
                         <li>
                             <label th:text="#{label.system.date}"></label>
-                            <input type="text" class="input-box-2" th:value="${#temporals.format(openForm.currentDate, 'YYYY-MM-dd (E)')}" disabled>
+                            <input type="text" class="input-box-2" th:value="${#temporals.format(open.currentDate, 'YYYY-MM-dd (E)')}" disabled>
                         </li>
                         <li>
                             <label th:text="#{label.open.date}"></label>
-                            <input type="text" class="input-box-3" th:value="${#temporals.format(openForm.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
-                            <input type="text" class="input-box-4" th:value="|${openForm.procedure}차|" disabled>
+                            <input type="text" class="input-box-3" th:value="${#temporals.format(open.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
+                            <input type="text" class="input-box-4" th:value="|${open.procedure}차|" disabled>
                         </li>
                         <li>
                             <label th:text="#{label.open.money}"></label>

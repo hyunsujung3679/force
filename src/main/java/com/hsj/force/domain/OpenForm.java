@@ -15,7 +15,7 @@ public class OpenForm {
     private LocalDateTime currentDate;  //시스템 일자
     private LocalDateTime currentTime;  //개점 영업 일자
     private Integer procedure;          //차수
-    private String openMoney;           //개점 준비금
+    private Integer openMoney;              //개점 준비금
     private String opener;              //개점 판매원
     private String modifyDate;          //수정 일자
 

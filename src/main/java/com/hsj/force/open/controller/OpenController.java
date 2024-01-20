@@ -4,12 +4,12 @@ import com.hsj.force.domain.Login;
 import com.hsj.force.domain.OpenForm;
 import com.hsj.force.domain.OpenSave;
 import com.hsj.force.open.service.OpenService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,29 +34,25 @@ public class OpenController {
         openForm.setCurrentDate(LocalDateTime.now());
         openForm.setCurrentTime(LocalDateTime.now());
 
-        model.addAttribute("openForm", openForm);
+        model.addAttribute("open", openForm);
 
         return "open/openForm";
     }
 
     @PostMapping
-    public String insertOpen(@ModelAttribute OpenSave openSave,
-                             BindingResult bindingResult,
-                             HttpSession session) {
+    public String open(@ModelAttribute OpenSave open,
+                       BindingResult bindingResult,
+                       HttpSession session) {
 
         if(bindingResult.hasErrors()) {
             return "open/openForm";
         }
 
         Login loginMember = (Login) session.getAttribute("loginMember");
-        openSave.setInsertId(loginMember.getUserId());
-        openSave.setModifyId(loginMember.getUserId());
+        open.setInsertId(loginMember.getUserId());
+        open.setModifyId(loginMember.getUserId());
 
-        int result = openService.insertOpen(openSave);
-        if(result > 0) {
-            return "redirect:/table";
-        } else {
-            return "open/openForm";
-        }
+        openService.insertOpen(open);
+        return "redirect:/table";
     }
 }

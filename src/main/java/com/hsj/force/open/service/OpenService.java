@@ -37,7 +37,7 @@ public class OpenService {
     }
 
     public int insertOpen(OpenSave openSave) {
-        openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(), OPEN_CLOSE_NO_PRIFIX));
+        openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(), OPEN_CLOSE_NO_PREFIX));
         openSave.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq()));
         return openMapper.insertOpen(openSave);
     }

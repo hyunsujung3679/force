@@ -1,12 +1,7 @@
 package com.hsj.force.common;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-
-import static com.hsj.force.common.Constants.OPEN_CLOSE_NO_PRIFIX;
 
 public class ComUtils {
 
@@ -20,9 +15,14 @@ public class ComUtils {
         return LocalDateTime.parse(dateStr, formatter);
     }
 
+    /**
+     * 다음 기본키(NO) 조회
+     * @param previousNo
+     * @param prefix
+     * @return String
+     */
     public static String getNextNo(String previousNo, String prefix) {
         String nextNo = "";
-
         if(previousNo == null) {
             nextNo = prefix + "001";
         } else {
@@ -31,9 +31,13 @@ public class ComUtils {
         return nextNo;
     }
 
+    /**
+     * 다음 기본키(SEQ) 조회
+     * @param previousSeq
+     * @return String
+     */
     public static String getNextSeq(String previousSeq) {
         String nextSeq = "";
-
         if(previousSeq == null) {
             nextSeq = "001";
         } else {

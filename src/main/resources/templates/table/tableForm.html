@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table/table.css}">
 </head>
 <body>
-
+    <div class="header-wrap">
+        <div class="header">
+            <div class="header-title">
+                <span class="main-title">포스 있다</span>
+                <p class="sub-title">POS Solution</p>
+            </div>
+            <div class="header-content">
+                <span class="content-detail">매장명 : 꾸메회나라</span>
+                <span>영업일자 : 2023-12-31(일)</span>
+                <span>현재 판매원 : 정현수</span>
+                <span>현재 시각 : 2023-12-31(일) 09:00</span>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

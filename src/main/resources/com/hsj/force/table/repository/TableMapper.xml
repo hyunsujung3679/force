@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsj.force.table.repository.TableMapper">
+
+    <select id="selectStoreName" resultType="String">
+        SELECT S.STORE_NAME
+          FROM TSTORE S
+         WHERE S.STORE_NO = #{storeNo}
+    </select>
+
+    <select id="selectTableList" resultType="Table">
+        SELECT T.TABLE_NO
+             , T.TABLE_NAME
+          FROM TTABLE T
+         WHERE T.STORE_NO = #{storeNo}
+    </select>
+
+    <select id="selectOrderList" resultType="Order">
+        SELECT O.ORDER_NO
+             , O.ORDER_SEQ
+             , O.STORE_NO
+             , O.TABLE_NO
+             , O.MENU_NO
+             , O.SALE_PRICE
+             , O.QUANTITY
+             , O.TOTAL_SALE_PRICE
+             , O.ORDER_STATUS_NO
+             , M.MENU_NAME
+          FROM TORDER O
+             , TMENU M
+         WHERE O.MENU_NO = M.MENU_NO
+           AND O.ORDER_STATUS_NO = 'OS001'
+           AND M.SALE_STATUS_NO = 'SS001'
+           AND O.STORE_NO = #{storeNo}
+    </select>
+
+
+</mapper>

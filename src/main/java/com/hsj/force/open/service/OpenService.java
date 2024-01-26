@@ -21,9 +21,13 @@ public class OpenService {
     public OpenForm selectOpenInfo() {
 
         OpenForm openForm = openMapper.selectOpenInfo();
-        openForm.setCloser(openForm.getCloserId() + " - " + openForm.getCloserName());
-        openForm.setCloseDate(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
-        openForm.setCloseTime(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
+        if(openForm != null) {
+            openForm.setCloser(openForm.getCloserId() + " - " + openForm.getCloserName());
+            openForm.setCloseDate(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
+            openForm.setCloseTime(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
+        } else {
+            openForm = new OpenForm();
+        }
 
         int procedure = 1;
         String procedureStr = openMapper.selectOpenCloseSeq();

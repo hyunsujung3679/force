@@ -1,7 +1,7 @@
 package com.hsj.force.table.controller;
 
 import com.hsj.force.domain.Login;
-import com.hsj.force.domain.TableFirstForm;
+import com.hsj.force.domain.form.TableForm;
 import com.hsj.force.table.service.TableService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,8 @@ public class TableController {
 
         Login loginMember = (Login) session.getAttribute("loginMember");
 
-        TableFirstForm tableForm = tableService.selectTableInfo(loginMember);
+        TableForm tableForm = tableService.selectTableInfo(loginMember);
+        model.addAttribute("form", tableForm);
 
         return "table/tableForm";
     }

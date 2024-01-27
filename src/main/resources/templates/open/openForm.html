@@ -38,7 +38,7 @@
                         <li>
                             <label th:text="#{label.open.date}"></label>
                             <input type="text" class="input-box-3" th:value="${#temporals.format(open.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
-                            <input type="text" class="input-box-4" th:value="|${open.procedure}차|" disabled>
+                            <input type="text" class="input-box-4" th:value="|${open.procedure}#{label.procedure}|" disabled>
                         </li>
                         <li>
                             <label th:text="#{label.open.money}"></label>
@@ -51,7 +51,7 @@
                     </ul>
                     <div class="button-wrap">
                         <button type="submit" class="submit-button" th:text="#{button.open}"></button>
-                        <button type="button" class="button-button" th:text="#{button.logout}" th:onclick="|location.href='@{/logout}'|">></button>
+                        <button type="button" class="button-button" th:text="#{button.logout}" th:onclick="|location.href='@{/logout}'|"></button>
                     </div>
                 </div>
             <div class="gap"></div>

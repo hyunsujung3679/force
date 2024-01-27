@@ -22,7 +22,10 @@ public class TableController {
         Login loginMember = (Login) session.getAttribute("loginMember");
 
         TableForm tableForm = tableService.selectTableInfo(loginMember);
-        model.addAttribute("form", tableForm);
+        model.addAttribute("header", tableForm.getCommonLayoutForm());
+        model.addAttribute("tableList", tableForm.getTableList());
+        model.addAttribute("orderList", tableForm.getOrderList());
+        model.addAttribute("tableTotalPriceList", tableForm.getTableTotalPriceList());
 
         return "table/tableForm";
     }

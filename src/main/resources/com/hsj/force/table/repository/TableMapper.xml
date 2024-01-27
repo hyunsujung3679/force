@@ -16,7 +16,7 @@
          WHERE T.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectOrderList" resultType="Order">
+    <select id="selectOrderList" resultType="com.hsj.force.domain.form.OrderForm">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
              , O.STORE_NO

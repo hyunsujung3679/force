@@ -1,11 +1,11 @@
-package com.hsj.force.domain;
+package com.hsj.force.domain.dto;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class OpenForm {
+public class OpenDTO {
 
     private LocalDateTime closeDate;    //마감 처리 일자
     private LocalDateTime closeTime;    //마감 처리 시간

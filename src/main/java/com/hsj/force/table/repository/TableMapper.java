@@ -1,8 +1,7 @@
 package com.hsj.force.table.repository;
 
-import com.hsj.force.domain.Order;
 import com.hsj.force.domain.Table;
-import com.hsj.force.domain.form.OrderForm;
+import com.hsj.force.domain.dto.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -14,6 +13,6 @@ public interface TableMapper {
 
     List<Table> selectTableList(String storeNo);
 
-    List<OrderForm> selectOrderList(String storeNo);
+    List<OrderDTO> selectOrderList(String storeNo);
 
 }

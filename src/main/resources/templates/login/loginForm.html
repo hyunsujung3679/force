@@ -8,37 +8,43 @@
 </head>
 <body>
 
-    <form th:action th:object="${loginForm}" method="post">
+    <form th:action th:object="${userDTO}" method="post">
         <div class="whole-backGround">
             <div class="gap"></div>
             <div class="login-box">
-                <div class="login-system-title">포스 있다</div>
+                <div class="login-system-title" th:text="#{title.force}"></div>
                 <div class="login-system-subtitle">POS Solution</div>
                 <div class="login-insert">
                     <img class="login-image" src="/images/login/person.png" alt="person.png"/>
                     <label class="login-id-password">
-                        <input type="text" th:field="*{userId}" class="login-input">
+                        <input type="text"
+                               th:field="*{userId}"
+                               class="login-input">
                     </label>
                 </div>
+                <div class="field-error" th:errors="*{userId}" />
                 <div class="login-insert">
                     <img class="login-image" src="/images/login/lock.png" alt="lock.png"/>
                     <label class="login-id-password">
-                        <input type="text" th:field="*{password}" class="login-password-input">
+                        <input type="password"
+                               th:field="*{password}"
+                               class="login-password-input">
                     </label>
                 </div>
+                <div class="field-error" th:errors="*{password}" />
                 <div th:if="${#fields.hasGlobalErrors()}">
-                    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+                    <p class="field-error-global" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
                 </div>
                 <div class="login-save-find">
                     <label>
                         <input type="checkbox" class="login-checkbox">
                     </label>
-                    <p class="login-save">아이디 저장</p>
-                    <a href="" class="login-id-find">아이디 찾기</a>
+                    <p class="login-save" th:text="#{label.id.save}"></p>
+                    <a href="" class="login-id-find" th:text="#{label.id.find}"></a>
                 </div>
-                <a href="" class="login-password-find">비밀번호 찾기</a>
+                <a href="" class="login-password-find" th:text="#{label.password.find}"></a>
                 <div class="login-button-wrap">
-                    <button type="submit" class="login-button">로그인</button>
+                    <button type="submit" class="login-button" th:text="#{button.login}"></button>
                 </div>
             </div>
             <div class="gap"></div>

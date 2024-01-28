@@ -1,8 +1,9 @@
 package com.hsj.force.open.controller;
 
-import com.hsj.force.domain.Login;
-import com.hsj.force.domain.OpenForm;
-import com.hsj.force.domain.OpenSave;
+import com.hsj.force.common.Constants;
+import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.OpenDTO;
+import com.hsj.force.domain.dto.OpenSaveDTO;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -27,20 +28,24 @@ public class OpenController {
     @GetMapping
     public String openForm(HttpSession session, Model model) {
 
-        Login loginMember = (Login) session.getAttribute("loginMember");
+        if(openService.selectIsOpen() > 0) {
+            return "redirect:/table";
+        }
 
-        OpenForm openForm = openService.selectOpenInfo();
-        openForm.setOpener(loginMember.getUserId() + " - " + loginMember.getUserName());
-        openForm.setCurrentDate(LocalDateTime.now());
-        openForm.setCurrentTime(LocalDateTime.now());
+        User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
 
-        model.addAttribute("open", openForm);
+        OpenDTO open = openService.selectOpenInfo();
+        open.setOpener(user.getUserId() + " - " + user.getUserName());
+        open.setCurrentDate(LocalDateTime.now());
+        open.setCurrentTime(LocalDateTime.now());
+
+        model.addAttribute("openSaveDTO", open);
 
         return "open/openForm";
     }
 
     @PostMapping
-    public String open(@ModelAttribute OpenSave open,
+    public String open(@ModelAttribute OpenSaveDTO open,
                        BindingResult bindingResult,
                        HttpSession session) {
 
@@ -48,9 +53,9 @@ public class OpenController {
             return "open/openForm";
         }
 
-        Login loginMember = (Login) session.getAttribute("loginMember");
-        open.setInsertId(loginMember.getUserId());
-        open.setModifyId(loginMember.getUserId());
+        User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
+        open.setInsertId(user.getUserId());
+        open.setModifyId(user.getUserId());
 
         openService.insertOpen(open);
         return "redirect:/table";

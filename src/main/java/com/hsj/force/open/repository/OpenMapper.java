@@ -1,7 +1,7 @@
 package com.hsj.force.open.repository;
 
-import com.hsj.force.domain.OpenForm;
-import com.hsj.force.domain.OpenSave;
+import com.hsj.force.domain.dto.OpenDTO;
+import com.hsj.force.domain.dto.OpenSaveDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -9,12 +9,12 @@ public interface OpenMapper {
 
     int selectIsOpen();
 
-    OpenForm selectOpenInfo();
+    OpenDTO selectOpenInfo();
 
     String selectOpenCloseSeq();
 
 
     String selectOpenCloseNo();
 
-    int insertOpen(OpenSave openSave);
+    int insertOpen(OpenSaveDTO openSave);
 }

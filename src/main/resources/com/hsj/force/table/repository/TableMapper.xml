@@ -14,9 +14,10 @@
              , T.TABLE_NAME
           FROM TTABLE T
          WHERE T.STORE_NO = #{storeNo}
+         ORDER BY T.TABLE_NO ASC
     </select>
 
-    <select id="selectOrderList" resultType="com.hsj.force.domain.form.OrderForm">
+    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
              , O.STORE_NO

@@ -8,23 +8,25 @@
     <th:block th:replace="${scripts}"/>
 </head>
 <body>
-    <form th:action method="post">
-        <div class="header-wrap">
-            <div class="header">
-                <div class="header-title">
-                    <p class="main-title" th:text="#{title.force}"></p>
-                </div>
-                <div class="header-content">
-                    <p class="content" th:text="|#{header.storeName}${header.storeName}|"></p>
-                    <p class="content" th:text="|#{header.businessDate}${#temporals.format(header.businessDate, 'YYYY-MM-dd (E)')}|"></p>
-                    <p class="content" th:text="|#{header.salesMan}${header.salesMan}|"></p>
-                    <p class="content" th:text="|#{header.currentDate}${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
-                </div>
-                <button type="submit" class="button" th:text="#{button.close}"></button>
-                <button type="button" class="button" th:text="#{button.logout}" th:onclick="|location.href='@{/logout}'|"></button>
+    <div class="header-wrap">
+        <div class="header">
+            <div class="header-title">
+                <p class="main-title" th:text="#{title.force}"></p>
             </div>
+            <div class="header-content">
+                <p class="content" th:text="|#{header.storeName}${header.storeName}|"></p>
+                <p class="content" th:text="|#{header.businessDate}${#temporals.format(header.businessDate, 'YYYY-MM-dd (E)')}|"></p>
+                <p class="content" th:text="|#{header.salesMan}${header.salesMan}|"></p>
+                <p class="content" th:text="|#{header.currentDate}${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
+            </div>
+            <form th:action method="post">
+                <button type="submit" class="button-1" th:text="#{button.close}"></button>
+            </form>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="button-2" th:text="#{button.logout}"></button>
+            </form>
         </div>
-    </form>
+    </div>
 
     <div class="main">
         <div class="side-bar">

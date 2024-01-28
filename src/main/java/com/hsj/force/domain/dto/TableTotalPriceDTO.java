@@ -1,9 +1,9 @@
-package com.hsj.force.domain.form;
+package com.hsj.force.domain.dto;
 
 import lombok.Data;
 
 @Data
-public class TableTotalPriceForm {
+public class TableTotalPriceDTO {
 
     private String tableNo;
     private int tableTotalPrice;

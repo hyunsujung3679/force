@@ -1,11 +1,11 @@
 package com.hsj.force.table.service;
 
-import com.hsj.force.domain.Login;
+import com.hsj.force.domain.User;
 import com.hsj.force.domain.Table;
-import com.hsj.force.domain.form.CommonLayoutForm;
-import com.hsj.force.domain.form.OrderForm;
-import com.hsj.force.domain.form.TableForm;
-import com.hsj.force.domain.form.TableTotalPriceForm;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.OrderDTO;
+import com.hsj.force.domain.dto.TableDTO;
+import com.hsj.force.domain.dto.TableTotalPriceDTO;
 import com.hsj.force.table.repository.TableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,18 +18,19 @@ public class TableService {
 
     private final TableMapper tableMapper;
 
-    public TableForm selectTableInfo(Login loginMember) {
+    public TableDTO selectTableInfo(User loginMember) {
 
         String storeName = tableMapper.selectStoreName(loginMember.getStoreNo());
         List<Table> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
-        List<OrderForm> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
+        List<OrderDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
 
-        List<TableTotalPriceForm> tableTotalPriceList = new ArrayList<>();
-        TableTotalPriceForm tableTotalPriceForm = new TableTotalPriceForm();
+        List<TableTotalPriceDTO> tableTotalPriceList = new ArrayList<>();
+        TableTotalPriceDTO tableTotalPriceForm = null;
         for(Table table : tableList) {
-            int totalPrice = 0;
+            tableTotalPriceForm = new TableTotalPriceDTO();
             tableTotalPriceForm.setTableNo(table.getTableNo());
-            for(OrderForm order : orderList) {
+            int totalPrice = 0;
+            for(OrderDTO order : orderList) {
                 if(table.getTableNo().equals(order.getTableNo())) {
                     totalPrice += Integer.parseInt(order.getTotalSalePrice());
                 }
@@ -38,14 +39,13 @@ public class TableService {
             tableTotalPriceList.add(tableTotalPriceForm);
         }
 
-
-        CommonLayoutForm commonLayoutForm = new CommonLayoutForm();
+        CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
         commonLayoutForm.setStoreName(storeName);
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        TableForm tableForm = new TableForm();
+        TableDTO tableForm = new TableDTO();
         tableForm.setTableList(tableList);
         tableForm.setOrderList(orderList);
         tableForm.setCommonLayoutForm(commonLayoutForm);

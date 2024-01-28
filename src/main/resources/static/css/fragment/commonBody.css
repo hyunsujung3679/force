@@ -32,7 +32,7 @@
 
 .header-content {
     display: flex;
-    width: 70%;
+    width: 71%;
     background-color: #757575;
     margin-top: 10px;
     height: 60px;
@@ -46,10 +46,9 @@
     color: white;
 }
 
-.button {
-    margin-left: 40px;
+.button-1 {
+    margin-left: 20px;
     margin-top: 9px;
-    width: 7%;
     background-color: #757575;
     font-weight: bold;
     font-size: 20px;
@@ -58,6 +57,21 @@
     cursor:pointer;
     border-color: #ABA8A8;
     height: 60px;
+    width: 180%;
+}
+
+.button-2 {
+    margin-left: 100px;
+    margin-top: 9px;
+    background-color: #757575;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: fantasy;
+    color: white;
+    cursor:pointer;
+    border-color: #ABA8A8;
+    height: 60px;
+    width: 75%;
 }
 
 

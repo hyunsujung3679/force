@@ -1,8 +1,8 @@
 package com.hsj.force.open.service;
 
 import com.hsj.force.common.ComUtils;
-import com.hsj.force.domain.OpenForm;
-import com.hsj.force.domain.OpenSave;
+import com.hsj.force.domain.dto.OpenDTO;
+import com.hsj.force.domain.dto.OpenSaveDTO;
 import com.hsj.force.open.repository.OpenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,29 +18,29 @@ public class OpenService {
         return openMapper.selectIsOpen();
     }
 
-    public OpenForm selectOpenInfo() {
+    public OpenDTO selectOpenInfo() {
 
-        OpenForm openForm = openMapper.selectOpenInfo();
-        if(openForm != null) {
-            openForm.setCloser(openForm.getCloserId() + " - " + openForm.getCloserName());
-            openForm.setCloseDate(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
-            openForm.setCloseTime(ComUtils.stringTolocalDateTime(openForm.getModifyDate()));
+        OpenDTO open = openMapper.selectOpenInfo();
+        if(open != null) {
+            open.setCloser(open.getCloserId() + " - " + open.getCloserName());
+            open.setCloseDate(ComUtils.stringTolocalDateTime(open.getModifyDate()));
+            open.setCloseTime(ComUtils.stringTolocalDateTime(open.getModifyDate()));
         } else {
-            openForm = new OpenForm();
+            open = new OpenDTO();
         }
 
         int procedure = 1;
         String procedureStr = openMapper.selectOpenCloseSeq();
         if(procedureStr == null) {
-            openForm.setProcedure(procedure);
+            open.setProcedure(procedure);
         } else {
-            openForm.setProcedure(Integer.parseInt(procedureStr) + 1);
+            open.setProcedure(Integer.parseInt(procedureStr) + 1);
         }
 
-        return openForm;
+        return open;
     }
 
-    public int insertOpen(OpenSave openSave) {
+    public int insertOpen(OpenSaveDTO openSave) {
         openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(), OPEN_CLOSE_NO_PREFIX));
         openSave.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq()));
         return openMapper.insertOpen(openSave);

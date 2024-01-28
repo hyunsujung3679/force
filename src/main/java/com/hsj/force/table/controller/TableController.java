@@ -1,7 +1,8 @@
 package com.hsj.force.table.controller;
 
-import com.hsj.force.domain.Login;
-import com.hsj.force.domain.form.TableForm;
+import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.TableDTO;
+import com.hsj.force.open.service.OpenService;
 import com.hsj.force.table.service.TableService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +15,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class TableController {
 
+    private final OpenService openService;
+
     private final TableService tableService;
 
     @GetMapping
     public String tableForm(HttpSession session, Model model) {
 
-        Login loginMember = (Login) session.getAttribute("loginMember");
+        if(openService.selectIsOpen() == 0) {
+            return "redirect:/open";
+        }
 
-        TableForm tableForm = tableService.selectTableInfo(loginMember);
+        User loginMember = (User) session.getAttribute("loginMember");
+
+        TableDTO tableForm = tableService.selectTableInfo(loginMember);
         model.addAttribute("header", tableForm.getCommonLayoutForm());
         model.addAttribute("tableList", tableForm.getTableList());
         model.addAttribute("orderList", tableForm.getOrderList());
         model.addAttribute("tableTotalPriceList", tableForm.getTableTotalPriceList());
 
-        return "table/tableForm";
+        return "table/" + loginMember.getStoreNo() + "/tableForm";
     }
 
 }

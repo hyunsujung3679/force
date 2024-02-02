@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:fragment="common_header(title,links,scripts)">
+<head th:fragment="common_header(links)">
     <meta charset="UTF-8">
-    <title th:replace="${title}">Title</title>
+    <title>Force</title>
     <th:block th:replace="${links}"/>
-    <th:block th:replace="${scripts}"/>
 </head>
 <body>
 

@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html th:replace="fragment/commonBody :: commonLayout(~{::title}, ~{::link}, ~{::script}, ~{::section})">
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})">
 xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>Force</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/table/tableS001.css}">
-    <script th:src="@{/js/table/tableS001.js}"></script>
 </head>
+<script>
+    function selectTableOrder(tableNo) {
+
+        $.ajax({
+            url: "/order/" + tableNo,
+            type: "get",
+            error: function(xhr) {
+                console.log(xhr);
+            }
+        })
+    }
+</script>
 <body>
 
     <section class="main-content">
         <div class="line">
-            <div class="first-line">
+            <div class="first-line" th:onclick="|location.href='@{deleteOrder(id=${item.id})}'|">
                 <div class="table-number" th:text="${tableList[0].tableName}"></div>
                     <div class="table-content" th:each="order : ${orderList}">
                         <div class="table-menu" th:if="${tableList[0].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -18,7 +28,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     </div>
                 <div class="table-price" th:if="${tableTotalPriceList[0].tableTotalPrice != 0}" th:text="${tableTotalPriceList[0].tableTotalPrice}"></div>
             </div>
-            <div class="first-line">
+            <div class="first-line" th:onclick="selectTableOrder([[${tableList[1].tableNo}]])">
                 <div class="table-number" th:text="${tableList[1].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[1].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -26,7 +36,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="table-price" th:if="${tableTotalPriceList[1].tableTotalPrice != 0}" th:text="${tableTotalPriceList[1].tableTotalPrice}"></div>
             </div>
-            <div class="first-line">
+            <div class="first-line" th:onclick="selectTableOrder([[${tableList[2].tableNo}]])">
                 <div class="table-number" th:text="${tableList[2].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[2].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -39,7 +49,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             <button class="line-button" th:text="#{button.division}"></button>
         </div>
         <div class="line">
-            <div class="second-line">
+            <div class="second-line" th:onclick="selectTableOrder([[${tableList[3].tableNo}]])">
                 <div class="table-number" th:text="${tableList[3].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[3].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -47,7 +57,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="table-price" th:if="${tableTotalPriceList[3].tableTotalPrice != 0}" th:text="${tableTotalPriceList[3].tableTotalPrice}"></div>
             </div>
-            <div class="second-line">
+            <div class="second-line" th:onclick="selectTableOrder([[${tableList[4].tableNo}]])">
                 <div class="table-number" th:text="${tableList[4].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[4].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -55,7 +65,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="table-price" th:if="${tableTotalPriceList[4].tableTotalPrice != 0}" th:text="${tableTotalPriceList[4].tableTotalPrice}"></div>
             </div>
-            <div class="second-line">
+            <div class="second-line" th:onclick="selectTableOrder([[${tableList[5].tableNo}]])">
                 <div class="table-number" th:text="${tableList[5].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[5].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -65,7 +75,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             </div>
         </div>
         <div class="line">
-            <div class="third-line">
+            <div class="third-line" th:onclick="selectTableOrder([[${tableList[6].tableNo}]])">
                 <div class="table-number" th:text="${tableList[6].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[6].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -73,7 +83,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="table-price" th:if="${tableTotalPriceList[6].tableTotalPrice != 0}" th:text="${tableTotalPriceList[6].tableTotalPrice}"></div>
             </div>
-            <div class="third-line">
+            <div class="third-line" th:onclick="selectTableOrder([[${tableList[7].tableNo}]])">
                 <div class="table-number" th:text="${tableList[7].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[7].tableNo == order.tableNo}" th:text="${order.menuName}"></div>
@@ -81,7 +91,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="table-price" th:if="${tableTotalPriceList[7].tableTotalPrice != 0}" th:text="${tableTotalPriceList[7].tableTotalPrice}"></div>
             </div>
-            <div class="third-line">
+            <div class="third-line" th:onclick="selectTableOrder([[${tableList[8].tableNo}]])">
                 <div class="table-number" th:text="${tableList[8].tableName}"></div>
                 <div class="table-content" th:each="order : ${orderList}">
                     <div class="table-menu" th:if="${tableList[8].tableNo == order.tableNo}" th:text="${order.menuName}"></div>

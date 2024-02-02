@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Force</title>
-<link rel="stylesheet" type="text/css" th:href="@{/css/login/login.css}">
-<script th:src="@{/js/login/login.js}"></script>
+<head th:replace="fragment/header :: common_header(~{::link})">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login/login.css}">
 </head>
 <body>
 

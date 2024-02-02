@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragment/header :: common_header(~{::title}, ~{::link}, ~{::script})">
-    <title>Force</title>
+<head th:replace="fragment/header :: common_header(~{::link})">
     <link rel="stylesheet" type="text/css" th:href="@{/css/open/open.css}">
-    <script th:src="@{/js/open/open.js}"></script>
 </head>
 <body>
     <form id="logout" th:action="@{/logout}" method="post"></form>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html th:fragment="commonLayout(title,links,scripts,content)" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html th:fragment="commonLayout(links,script,content)" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title th:replace="${title}">Title</title>
+    <title>Force</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/fragment/commonBody.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <th:block th:replace="${links}"/>
-    <th:block th:replace="${scripts}"/>
+    <th:block th:replace="${script}"/>
 </head>
 <body>
     <div class="header-wrap">

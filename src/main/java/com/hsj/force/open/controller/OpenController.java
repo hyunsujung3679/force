@@ -28,7 +28,7 @@ public class OpenController {
     @GetMapping
     public String openForm(HttpSession session, Model model) {
 
-        if(openService.selectIsOpen() > 0) {
+          if(openService.selectIsOpen() > 0) {
             return "redirect:/table";
         }
 

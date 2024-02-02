@@ -1,3 +1,48 @@
+.line {
+    display: flex;
+}
+
+.first-line {
+    margin-left: 150px;
+    margin-top: 25px;
+    width: 300px;
+    height: 150px;
+    background-color: white;
+    cursor:pointer;
+}
+
+.second-line {
+    margin-left: 150px;
+    margin-top: 50px;
+    width: 300px;
+    height: 150px;
+    background-color: white;
+    cursor:pointer;
+}
+
+.third-line {
+    margin-left: 150px;
+    margin-top: 50px;
+    width: 300px;
+    height: 150px;
+    background-color: white;
+    cursor:pointer;
+}
+
+.line-button {
+    margin-left: 25px;
+    margin-top: 25px;
+    width: 85px;
+    background-color: #5DA4EF;
+    font-weight: bold;
+    font-size: 20px;
+    font-family: fantasy;
+    color: white;
+    cursor:pointer;
+    border-color: grey;
+    height: 60px;
+}
+
 .table-number {
     margin-left: 10px;
     margin-top: 10px;

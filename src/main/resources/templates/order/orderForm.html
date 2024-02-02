@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html th:replace="fragment/orderBody :: orderLayout(~{::link}, ~{::script}, ~{::section})"
+xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/order/order.css}">
 </head>
+<script></script>
 <body>
+    <section>
+        <div class="main">
+            <div class="left-main">
+                <div class="top-left-main">
 
+                </div>
+                <div class="bottom-left-main">
+
+                </div>
+            </div>
+            <div class="right-main">
+
+            </div>
+        </div>
+
+    </section>
 </body>
 </html>

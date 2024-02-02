@@ -1,0 +1,24 @@
+.main {
+    display: flex;
+    height: 600px;
+}
+
+.left-main {
+    width: 50%;
+    background-color: yellow;
+}
+
+.right-main {
+    width: 50%;
+    background-color: blue;
+}
+
+.top-left-main {
+    height: 50%;
+    background-color: green;
+}
+
+.bottom-left-main {
+    height: 50%;
+    background-color: red;
+}

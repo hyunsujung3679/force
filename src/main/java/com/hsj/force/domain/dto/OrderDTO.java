@@ -10,4 +10,6 @@ public class OrderDTO extends Order {
 
     private String menuName;
 
+    private CommonLayoutDTO commonLayoutForm;
+
 }

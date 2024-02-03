@@ -20,7 +20,7 @@
 
 .bottom-left-main {
     height: 50%;
-    background-color: red;
+    background-color: #A3B1E7;
 }
 
 .table-top {
@@ -69,12 +69,9 @@
 }
 
 .table-bottom {
-    height: 15%;
-    background-color: orangered;
-}
-
-.table-bottom-wrap {
     display: flex;
+    height: 15%;
+    background-color: #757575;
 }
 
 .table-content-4 {
@@ -85,6 +82,184 @@
 
 .table-content-5 {
     text-align: center;
-    width: 20%;
+    width: 23.3%;
     border: 1px solid black;
+}
+
+.top-line {
+    display: flex;
+    width: 100%;
+    height: 20%;
+}
+
+.button-wrap {
+    margin-left: 11px;
+    margin-top: 10px;
+}
+
+.top-line-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: white;
+    border:none;
+    font-weight: bold;
+}
+
+.top-line-button-2 {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: white;
+    border:none;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.input-wrap {
+    margin-left: 132px;
+    margin-top: 10px;
+}
+
+.top-line-input {
+    width: 220px;
+    height: 45px;
+    border-radius: 5px;
+}
+
+.bottom-line {
+    display: flex;
+    height: 80%;
+}
+
+.price {
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: #464A6B;
+    width: 37%;
+    height: 90%;
+    border-radius: 5px;
+}
+
+.price-title {
+    margin-left: 10px;
+    margin-top: 10px;
+    font-size: 30px;
+    color: white;
+}
+
+.price-value {
+    float: right;
+    margin-right: 20px;
+    font-size: 30px;
+    color: white;
+}
+
+.span-wrap {
+    width: 100%;
+    margin-top: 15px;
+    margin-left: 5px;
+}
+
+.line {
+    margin-top: 15px;
+    margin-left: 25px;
+    width: 85%;
+    height: 1px;
+    background-color: #A7A7A7;
+}
+
+.line-2 {
+    margin-top: 7px;
+    margin-left: 25px;
+    width: 85%;
+    height: 1px;
+    background-color: #A7A7A7;
+}
+
+.discount {
+    margin-left: 10px;
+    margin-top: 10px;
+    background-color: #464A6B;
+    width: 37%;
+    height: 90%;
+    border-radius: 5px;
+}
+
+.discount-title {
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    color: white;
+}
+
+.discount-button {
+    display: flex;
+    margin-left: 25px;
+    margin-top: 7px;
+}
+
+.discount-top-left-title {
+    display: flex;
+    width: 45%;
+    height: 7%;
+    background-color: #5C5E8A;
+    border: 1px solid black;
+    cursor:pointer;
+}
+
+.discount-top-left-title-1 {
+    margin-left: 13px;
+    font-size: 35px;
+    color: #D4AA6C;
+}
+
+.discount-top-left-title-2 {
+    margin-left: 10px;
+    margin-top: 13px;
+    color: #D4AA6C;
+    font-size: 17px;
+}
+
+.discount-top-left-title-3 {
+    margin-left: 13px;
+    font-size: 35px;
+    color: white;
+}
+
+.discount-top-left-title-4 {
+    margin-left: 10px;
+    margin-top: 13px;
+    color: white;
+    font-size: 17px;
+}
+
+.discount-top-left-title-5 {
+    margin-left: 20px;
+    margin-top: 13px;
+    color: #D4AA6C;
+    font-size: 17px;
+}
+
+.discount-top-left-title-6 {
+    margin-left: 20px;
+    margin-top: 13px;
+    color: white;
+    font-size: 17px;
+}
+
+.discount-top-left-title-7 {
+    margin-left: 25px;
+    margin-top: 13px;
+    color: #D4AA6C;
+    font-size: 17px;
+    padding-bottom: 10px;
+}
+
+.discount-top-left-title-8 {
+    margin-left: 25px;
+    margin-top: 13px;
+    color: white;
+    font-size: 17px;
+    padding-bottom: 10px;
 }

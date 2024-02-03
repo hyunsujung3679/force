@@ -1,5 +1,6 @@
 package com.hsj.force.table.service;
 
+import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.Table;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
@@ -18,9 +19,11 @@ public class TableService {
 
     private final TableMapper tableMapper;
 
+    private final CommonMapper commonMapper;
+
     public TableDTO selectTableInfo(User loginMember) {
 
-        String storeName = tableMapper.selectStoreName(loginMember.getStoreNo());
+        String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         List<Table> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
         List<OrderDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
 

@@ -9,8 +9,6 @@ import java.util.List;
 @Mapper
 public interface TableMapper {
 
-    String selectStoreName(String storeNo);
-
     List<Table> selectTableList(String storeNo);
 
     List<OrderDTO> selectOrderList(String storeNo);

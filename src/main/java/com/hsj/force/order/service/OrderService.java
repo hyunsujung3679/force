@@ -1,11 +1,14 @@
 package com.hsj.force.order.service;
 
+import com.hsj.force.common.repository.CommonMapper;
+import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.OrderDTO;
-import com.hsj.force.table.repository.TableMapper;
+import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.*;
 
 import java.time.LocalDateTime;
 
@@ -13,12 +16,15 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final TableMapper tableMapper;
+    private final CommonMapper commonMapper;
+
+    private final OrderMapper orderMapper;
 
     public OrderDTO selectOrderInfo(User loginMember) {
 
-        String storeName = tableMapper.selectStoreName(loginMember.getStoreNo());
+        List<Category> categoryList = orderMapper.selectCategoryList(loginMember.getStoreNo());
 
+        String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
         commonLayoutForm.setStoreName(storeName);
@@ -26,6 +32,7 @@ public class OrderService {
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
         OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setCategoryList(categoryList);
         orderDTO.setCommonLayoutForm(commonLayoutForm);
 
         return orderDTO;

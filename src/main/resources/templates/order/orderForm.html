@@ -150,43 +150,13 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
             <div class="right-main">
                 <div class="category">
-                    <div class="category-content">
-                        <div class="category-content-write">SET</div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write">회</div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write">해산물</div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write">탕</div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write">튀김</div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write">주류</div>
+                    <div class="category-content" th:each="category, categoryStat : ${categoryList}">
+                        <div class="category-content-write" th:if="${categoryStat.index} < 6" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="category">
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
-                    </div>
-                    <div class="category-content">
-                        <div class="category-content-write"></div>
+                    <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}">
+                        <div class="category-content-write" th:if="${categoryStat.index} >= 6" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="line-3"></div>
@@ -263,6 +233,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     </div>
                     <div class="right-button-detail">
                         <button type="submit" class="button-content-write-1">결제</button>
+                    </div>
+                    <div class="right-button-detail">
+                        <div class="button-content-write">뒤로</div>
                     </div>
                 </div>
             </div>

@@ -34,6 +34,7 @@ public class OrderController {
 
         OrderDTO orderForm = orderService.selectOrderInfo(loginMember);
         model.addAttribute("header", orderForm.getCommonLayoutForm());
+        model.addAttribute("categoryList", orderForm.getCategoryList());
 
         return "order/orderForm";
     }

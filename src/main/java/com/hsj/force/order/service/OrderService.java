@@ -4,6 +4,7 @@ import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.OrderDTO;
 import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class OrderService {
     public OrderDTO selectOrderInfo(User loginMember) {
 
         List<Category> categoryList = orderMapper.selectCategoryList(loginMember.getStoreNo());
+        List<MenuDTO> menuList = orderMapper.selectMenuList(loginMember.getStoreNo());
 
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
@@ -33,6 +35,7 @@ public class OrderService {
 
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setCategoryList(categoryList);
+        orderDTO.setMenuList(menuList);
         orderDTO.setCommonLayoutForm(commonLayoutForm);
 
         return orderDTO;

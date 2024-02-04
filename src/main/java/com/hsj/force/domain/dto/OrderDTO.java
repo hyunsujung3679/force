@@ -13,5 +13,6 @@ public class OrderDTO extends Order {
     private String menuName;
     private CommonLayoutDTO commonLayoutForm;
     private List<Category> categoryList;
+    private List<MenuDTO> menuList;
 
 }

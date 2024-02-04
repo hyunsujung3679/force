@@ -13,4 +13,25 @@
          ORDER BY PRIORITY ASC;
     </select>
 
+    <select id="selectCategoryList" resultType="com.hsj.force.domain.dto.MenuDTO">
+        SELECT X.MENU_NO
+             , X.MENU_NAME
+             , X.CATEGORY_NO
+             , X.SALE_PRICE
+          FROM (SELECT RANK() OVER(PARTITION BY MP.MENU_NO ORDER BY MP.MENU_SEQ DESC, M.MENU_NO ASC) AS RN
+                     , M.MENU_NO
+                     , M.MENU_NAME
+                     , M.CATEGORY_NO
+                     , MP.SALE_PRICE
+                FROM TMENU M
+                   , TCATEGORY C
+                   , TMENUPRICE MP
+               WHERE M.CATEGORY_NO = C.CATEGORY_NO
+                 AND M.MENU_NO = MP.MENU_NO
+                 AND M.SALE_STATUS_NO = 'SS001'
+                 AND C.STORE_NO = #{storeNo}
+                 AND C.USE_YN = '1') X
+         WHERE RN = 1
+    </select>
+
 </mapper>

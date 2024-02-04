@@ -150,18 +150,18 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
             <div class="right-main">
                 <div class="category">
-                    <div class="category-content" th:each="category, categoryStat : ${categoryList}">
-                        <div class="category-content-write" th:if="${categoryStat.index} < 6" th:text="${category.categoryName}"></div>
+                    <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}">
+                        <div class="category-content-write" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="category">
                     <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}">
-                        <div class="category-content-write" th:if="${categoryStat.index} >= 6" th:text="${category.categoryName}"></div>
+                        <div class="category-content-write" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="line-3"></div>
                 <div class="menu">
-                    <div class="menu-content">
+                    <div class="menu-content" th:each="">
                         <div class="menu-content-write">
                             <div class="menu-name">광어 + 소라</div>
                             <div class="menu-price">48,000</div>

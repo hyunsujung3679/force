@@ -7,7 +7,5 @@ import java.util.*;
 
 @Mapper
 public interface OrderMapper {
-    List<Category> selectCategoryList(String storeNo);
 
-    List<MenuDTO> selectMenuList(String storeNo);
 }

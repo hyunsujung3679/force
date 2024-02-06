@@ -1,6 +1,6 @@
-function selectMenuListByCategory(div) {
+function selectMenuListByCategoryNo() {
 
-    const categoryNo = div.children[0].value;
+    const categoryNo = $(this).children[0].value;
 
     $.ajax({
         url: "/menu/" + categoryNo,
@@ -12,13 +12,12 @@ function selectMenuListByCategory(div) {
             $("#menu-3").html("");
 
             for(let index in data) {
-
                 let html = "";
 
                 html += '<div class="menu-content">';
                 html +=     '<div class="menu-content-write">';
-                html +=         '<div class="menu-name"></div>';
-                html +=         '<div class="menu-price"></div>';
+                html +=         '<div class="menu-name">' + data[index].menuName + '</div>';
+                html +=         '<div class="menu-price">' + data[index].salePrice.toLocaleString() + '</div>';
                 html +=     '</div>'
                 html += '</div>'
 
@@ -36,4 +35,20 @@ function selectMenuListByCategory(div) {
         }
     });
 
+}
+
+function insertOrder(div) {
+
+    const nonClick = document.querySelectorAll(".menu-content");
+
+    function handleClick(event) {
+        nonClick.forEach((e) => {
+            e.classList.remove("menu-color");
+        });
+        event.target.classList.add("menu-color");
+    }
+
+    nonClick.forEach((e) => {
+        e.addEventListener("click", handleClick);
+    });
 }

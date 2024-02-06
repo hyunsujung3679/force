@@ -316,13 +316,19 @@
 
 .menu-content-write {
     text-align: center;
-    padding-top: 14px;
+    padding-top: 5%;
     font-size: 12px;
+    pointer-events : none;
 }
 
+.menu-name {
+    margin-top:10px;
+    pointer-events : none;
+}
 
 .menu-price {
     margin-top:10px;
+    pointer-events : none;
 }
 
 .right-button {
@@ -359,4 +365,8 @@
     color: white;
     font-weight: bold;
     cursor:pointer;
+}
+
+.menu-color {
+    background-color: #8AD2F9;
 }

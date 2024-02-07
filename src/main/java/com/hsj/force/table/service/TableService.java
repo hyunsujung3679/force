@@ -35,7 +35,7 @@ public class TableService {
             int totalPrice = 0;
             for(OrderDTO order : orderList) {
                 if(table.getTableNo().equals(order.getTableNo())) {
-                    totalPrice += Integer.parseInt(order.getTotalSalePrice());
+                    totalPrice += order.getTotalSalePrice();
                 }
             }
             tableTotalPriceForm.setTableTotalPrice(totalPrice);

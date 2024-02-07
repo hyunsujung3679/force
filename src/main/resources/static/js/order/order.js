@@ -16,10 +16,13 @@ function selectMenuListByCategoryNo() {
 
                 html += '<div class="menu-content">';
                 html +=     '<div class="menu-content-write">';
+                html +=         '<input type="hidden" class="menu-no">'
                 html +=         '<div class="menu-name">' + data[index].menuName + '</div>';
                 html +=         '<div class="menu-price">' + data[index].salePrice.toLocaleString() + '</div>';
                 html +=     '</div>'
                 html += '</div>'
+
+                $("input[name=menu-no]").attr("value", data[index].menuNo);
 
                 if(index < 6) {
                     $("#menu-1").append(html);
@@ -37,7 +40,7 @@ function selectMenuListByCategoryNo() {
 
 }
 
-function insertOrder(div) {
+function addClassMenuColor() {
 
     const nonClick = document.querySelectorAll(".menu-content");
 
@@ -50,5 +53,53 @@ function insertOrder(div) {
 
     nonClick.forEach((e) => {
         e.addEventListener("click", handleClick);
+    });
+
+}
+
+function insertOrder() {
+
+    let menuNo = $(".menu-color").children().children().eq(0).val();
+    let tableNo = $(".table-no").val();
+
+    $.ajax({
+        url: "/order",
+        type: "post",
+        data:{menuNo : menuNo,
+              tableNo : tableNo},
+        success: function(data) {
+
+            if(data > 0) {
+                let html = "";
+
+                html += '<div class="table-content-1">'
+                html +=     '<div class="table-content-name-1">' + data.orderSeq + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-2">'
+                html +=     '<div class="table-content-name-1">' + data.menuName + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-3">'
+                html +=     '<div class="table-content-name-1">' + data.salePrice.toLocaleString() + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-3">'
+                html +=     '<div class="table-content-name-1">' + data.quantity + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-3">'
+                html +=     '<div class="table-content-name-1">' + data.discountPrice + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-3">'
+                html +=     '<div class="table-content-name-1">' + data.totalSalePrice + '</div>'
+                html += '</div>'
+                html += '<div class="table-content-3">'
+                html +=     '<div class="table-content-name-1">' + data.etc + '</div>'
+                html += '</div>'
+            }
+
+            $(".table-middle-wrap").append(html);
+
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
     });
 }

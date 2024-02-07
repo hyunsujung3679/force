@@ -30,4 +30,17 @@
          WHERE RN = 1
     </select>
 
+    <select id="selectMenu" resultType="com.hsj.force.domain.dto.MenuDTO">
+        SELECT M.MENU_NO
+             , M.MENU_NAME
+             , M.CATEGORY_NO
+             , MP.SALE_PRICE
+          FROM TMENU M
+           , TMENUPRICE MP
+         WHERE M.MENU_NO = MP.MENU_NO
+           AND M.MENU_NO = 'M001'
+         ORDER BY MP.MENU_SEQ DESC
+         LIMIT 1
+    </select>
+
 </mapper>

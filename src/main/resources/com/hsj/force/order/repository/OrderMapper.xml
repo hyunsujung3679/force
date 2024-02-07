@@ -3,4 +3,76 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.order.repository.OrderMapper">
 
+    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
+        SELECT O.ORDER_NO
+             , O.ORDER_SEQ
+             , M.MENU_NAME
+             , O.QUANTITY
+             , O.DISCOUNT_PRICE
+             , O.TOTAL_SALE_PRICE
+          FROM TORDER O
+             , TMENU M
+         WHERE O.MENU_NO = M.MENU_NO
+           AND O.STORE_NO = ${storeNo}
+           AND O.TABLE_NO = ${tableNo}
+    </select>
+
+    <select id="selectOrderNoSeq" resultType="Order">
+        SELECT O.ORDER_NO
+             , O.ORDER_SEQ
+          FROM TORDER O
+         ORDER BY O.ORDER_NO DESC, O.ORDER_SEQ DESC
+         LIMIT 1;
+    </select>
+
+    <insert id="insertOrder">
+        INSERT
+          INTO TORDER
+        (`MENU_NO`,
+         `SALE_PRICE`,
+         `QUANTITY`,
+         `DISCOUNT_PRICE`,
+         `ORDER_DATE`,
+         `CANCLE_DATE`,
+         `INSERT_ID`,
+         `INSERT_DATE`,
+         `MODIFY_ID`,
+         `MODIFY_DATE`,
+         `FULL_PRICE_YN`,
+         `FULL_PER_YN`,
+         `SEL_PRICE_YN`,
+         `SEL_PER_YN`,
+         `SERVICE_YN`,
+         `ORDER_SEQ`,
+         `ORDER_STATUS_NO`,
+         `TOTAL_SALE_PRICE`,
+         `ORDER_NO`,
+         `STORE_NO`,
+         `TABLE_NO`
+        )
+        VALUES
+        (#{menuNo},
+         #{salePrice},
+         #{quantity},
+         #{discountPrice},
+         NOW(),
+         NULL,
+         #{insertId},
+         NOW(),
+         #{modifyId},
+         NOW(),
+         #{fullPriceYn},
+         #{fullPerYn},
+         #{selPriceYn},
+         #{selPerYn},
+         #{serviceYn},
+         #{orderSeq},
+         #{orderStatusNo},
+         #{totalSalePrice},
+         #{orderNo},
+         #{storeNo},
+         #{tableNo}
+        )
+    </insert>
+
 </mapper>

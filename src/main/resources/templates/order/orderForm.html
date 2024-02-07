@@ -8,6 +8,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <body>
 
     <section>
+
+        <input type="hidden" class="table-no" th:value="${tableNo}">
+
         <div class="main">
             <div class="left-main">
                 <div class="top-left-main">
@@ -162,25 +165,28 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     </div>
                 </div>
                 <div class="line-3"></div>
-                <div id="menu-1" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}" onclick="insertOrder(this)">
+                <div th:id="menu-1" class="menu">
+                    <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}" th:onclick="addClassMenuColor()">
                         <div class="menu-content-write">
+                            <input type="hidden" th:value="${menu.menuNo}">
                             <div class="menu-name" th:text="${menu.menuName}"></div>
                             <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                         </div>
                     </div>
                 </div>
-                <div id="menu-2" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}" onclick="insertOrder(this)">
+                <div th:id="menu-2" class="menu">
+                    <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}" th:onclick="addClassMenuColor()">
                         <div class="menu-content-write">
+                            <input type="hidden" th:value="${menu.menuNo}">
                             <div class="menu-name" th:text="${menu.menuName}"></div>
                             <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                         </div>
                     </div>
                 </div>
-                <div id="menu-3" class="menu">
+                <div th:id="menu-3" class="menu">
                     <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
                         <div class="menu-content-write">
+                            <input type="hidden" th:value="${menu.menuNo}">
                             <div class="menu-name" th:text="${menu.menuName}"></div>
                             <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                         </div>
@@ -188,7 +194,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="line-3"></div>
                 <div class="right-button">
-                    <div class="right-button-detail">
+                    <div class="right-button-detail" th:onclick="insertOrder()">
                         <div class="button-content-write">주문</div>
                     </div>
                     <div class="right-button-detail">

@@ -1,5 +1,6 @@
 package com.hsj.force.order.controller;
 
+import com.hsj.force.domain.Order;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OrderDTO;
 import com.hsj.force.open.service.OpenService;
@@ -8,9 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/order")
@@ -32,12 +31,23 @@ public class OrderController {
 
         User loginMember = (User) session.getAttribute("loginMember");
 
-        OrderDTO orderForm = orderService.selectOrderInfo(loginMember);
+        OrderDTO orderForm = orderService.selectOrderInfo(loginMember, tableNo);
         model.addAttribute("header", orderForm.getCommonLayoutForm());
         model.addAttribute("categoryList", orderForm.getCategoryList());
         model.addAttribute("menuList", orderForm.getMenuList());
+        model.addAttribute("orderList", orderForm.getOrderList());
+        model.addAttribute("tableNo", tableNo);
 
         return "order/orderForm";
+    }
+
+    @PostMapping
+    public OrderDTO insertOrder(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setInsertId(loginMember.getUserId());
+        order.setModifyId(loginMember.getUserId());
+        return orderService.insertOrder(order);
     }
 
 }

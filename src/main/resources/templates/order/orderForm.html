@@ -38,27 +38,27 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         </div>
                     </div>
                     <div class="table-middle">
-                        <div class="table-middle-wrap">
+                        <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}" onclick="">
                             <div class="table-content-1">
-                                <div class="table-content-name-1">1</div>
+                                <div class="table-content-name-1" th:text="${order.orderSeqInt}"></div>
                             </div>
                             <div class="table-content-2">
-                                <div class="table-content-name-1">광어 + 소라</div>
+                                <div class="table-content-name-1" th:text="${order.menuName}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1">48,000</div>
+                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.salePrice, 0, 'COMMA')}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1">1</div>
+                                <div class="table-content-name-1" th:text="${order.quantity}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1">0</div>
+                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA')}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1">48,000</div>
+                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1">비고</div>
+                                <div class="table-content-name-1" th:text="${order.etc}"></div>
                             </div>
                         </div>
                     </div>
@@ -153,20 +153,20 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
             <div class="right-main">
                 <div class="category">
-                    <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}" th:onclick="selectMenuListByCategoryNo()">
+                    <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
                         <input type="hidden" th:value="${category.categoryNo}">
                         <div class="category-content-write" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="category">
-                    <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}" th:onclick="selectMenuListByCategoryNo()">
+                    <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
                         <input type="hidden" th:value="${category.categoryNo}">
                         <div class="category-content-write" th:text="${category.categoryName}"></div>
                     </div>
                 </div>
                 <div class="line-3"></div>
-                <div th:id="menu-1" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}" th:onclick="addClassMenuColor()">
+                <div id="menu-1" class="menu">
+                    <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}">
                         <div class="menu-content-write">
                             <input type="hidden" th:value="${menu.menuNo}">
                             <div class="menu-name" th:text="${menu.menuName}"></div>
@@ -174,8 +174,8 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         </div>
                     </div>
                 </div>
-                <div th:id="menu-2" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}" th:onclick="addClassMenuColor()">
+                <div id="menu-2" class="menu">
+                    <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}">
                         <div class="menu-content-write">
                             <input type="hidden" th:value="${menu.menuNo}">
                             <div class="menu-name" th:text="${menu.menuName}"></div>
@@ -183,7 +183,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         </div>
                     </div>
                 </div>
-                <div th:id="menu-3" class="menu">
+                <div id="menu-3" class="menu">
                     <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
                         <div class="menu-content-write">
                             <input type="hidden" th:value="${menu.menuNo}">
@@ -194,7 +194,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </div>
                 <div class="line-3"></div>
                 <div class="right-button">
-                    <div class="right-button-detail" th:onclick="insertOrder()">
+                    <div class="right-button-detail" onclick="insertOrder();">
                         <div class="button-content-write">주문</div>
                     </div>
                     <div class="right-button-detail">

@@ -26,7 +26,13 @@ public class ComUtils {
         if(previousNo == null) {
             nextNo = prefix + "001";
         } else {
-            nextNo = prefix + (String.format("%03d", Integer.parseInt(previousNo.substring(2,5)) + 1));
+            int previousNoInt = 0;
+            if(previousNo.length() == 4) {
+                previousNoInt = Integer.parseInt(previousNo.substring(1,4));
+            } else {
+                previousNoInt = Integer.parseInt(previousNo.substring(2,5));
+            }
+            nextNo = prefix + (String.format("%03d", previousNoInt + 1));
         }
         return nextNo;
     }

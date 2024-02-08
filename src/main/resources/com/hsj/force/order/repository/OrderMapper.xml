@@ -3,25 +3,42 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.order.repository.OrderMapper">
 
+    <select id="selectDuplicateMenuCheck" resultType="int">
+        SELECT COUNT(*)
+          FROM TORDER O
+         WHERE O.MENU_NO = #{menuNo}
+           AND O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
+    </select>
+
     <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
              , M.MENU_NAME
+             , O.SALE_PRICE
              , O.QUANTITY
              , O.DISCOUNT_PRICE
              , O.TOTAL_SALE_PRICE
           FROM TORDER O
              , TMENU M
          WHERE O.MENU_NO = M.MENU_NO
-           AND O.STORE_NO = ${storeNo}
-           AND O.TABLE_NO = ${tableNo}
+           AND O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
     </select>
 
-    <select id="selectOrderNoSeq" resultType="Order">
+    <select id="selectOrderNo" resultType="String">
         SELECT O.ORDER_NO
-             , O.ORDER_SEQ
           FROM TORDER O
-         ORDER BY O.ORDER_NO DESC, O.ORDER_SEQ DESC
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO =  #{tableNo}
+         LIMIT 1
+    </select>
+
+    <select id="selectOrderSeq" resultType="String">
+        SELECT O.ORDER_SEQ
+          FROM TORDER O
+         WHERE O.ORDER_NO = #{orderNo}
+         ORDER BY O.ORDER_SEQ DESC
          LIMIT 1;
     </select>
 
@@ -74,5 +91,21 @@
          #{tableNo}
         )
     </insert>
+
+    <select id="selectQuantity" resultType="int">
+        SELECT O.QUANTITY
+          FROM TORDER O
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+    </select>
+
+    <update id="updateOrder">
+        UPDATE TORDER O
+           SET O.QUANTITY = #{quantity}
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+    </update>
 
 </mapper>

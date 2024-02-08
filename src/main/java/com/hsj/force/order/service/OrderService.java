@@ -33,6 +33,10 @@ public class OrderService {
         List<MenuDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
         List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
 
+        for(OrderDTO order : orderList) {
+            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+        }
+
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
@@ -49,29 +53,37 @@ public class OrderService {
         return orderDTO;
     }
 
-    public OrderDTO insertOrder(OrderDTO order) {
+    public OrderDTO saveOrder(OrderDTO order) {
 
-        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
-        Order orderNoSeq = orderMapper.selectOrderNoSeq();
+        int duplicateMenuCheck = orderMapper.selectDuplicateMenuCheck(order);
+        if(duplicateMenuCheck == 0) {
+            MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
+            String orderNo = orderMapper.selectOrderNo(order);
+            String orderSeq = orderMapper.selectOrderSeq(orderNo);
 
-        order.setOrderNo(ComUtils.getNextNo(orderNoSeq.getOrderNo(), Constants.ORDER_NO_PREFIX));
-        order.setOrderSeq(ComUtils.getNextSeq(orderNoSeq.getOrderSeq()));
-        order.setSalePrice(menu.getSalePrice());
-        order.setQuantity(1);
-        order.setTotalSalePrice(order.getSalePrice() * order.getQuantity());
-        order.setFullPriceYn("0");
-        order.setFullPerYn("0");
-        order.setSelPriceYn("0");
-        order.setSelPerYn("0");
-        order.setServiceYn("0");
-        order.setDiscountPrice(0);
-        order.setOrderStatusNo("OS001");
+            order.setOrderNo(orderNo);
+            order.setOrderSeq(ComUtils.getNextSeq(orderSeq));
+            order.setSalePrice(menu.getSalePrice());
+            order.setQuantity(1);
+            order.setTotalSalePrice(order.getSalePrice() * order.getQuantity());
+            order.setFullPriceYn("0");
+            order.setFullPerYn("0");
+            order.setSelPriceYn("0");
+            order.setSelPerYn("0");
+            order.setServiceYn("0");
+            order.setDiscountPrice(0);
+            order.setOrderStatusNo("OS001");
 
-        order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
-        order.setMenuName(menu.getMenuName());
-        order.setEtc(null);
+            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+            order.setMenuName(menu.getMenuName());
+            order.setEtc("");
 
-        orderMapper.insertOrder(order);
+            orderMapper.insertOrder(order);
+        } else {
+            int quantity = orderMapper.selectQuantity(order);
+            order.setQuantity(quantity + 1);
+            orderMapper.updateOrder(order);
+        }
 
         return order;
     }

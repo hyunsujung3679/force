@@ -10,10 +10,17 @@ import java.util.*;
 @Mapper
 public interface OrderMapper {
 
+    int selectDuplicateMenuCheck(OrderDTO order);
+
     List<OrderDTO> selectOrderList(String storeNo, String tableNo);
 
-    Order selectOrderNoSeq();
+    String selectOrderNo(OrderDTO order);
+
+    String selectOrderSeq(String orderNo);
 
     void insertOrder(OrderDTO order);
 
+    int selectQuantity(OrderDTO order);
+
+    void updateOrder(OrderDTO order);
 }

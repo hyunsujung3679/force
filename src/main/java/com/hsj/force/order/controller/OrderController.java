@@ -42,12 +42,13 @@ public class OrderController {
     }
 
     @PostMapping
+    @ResponseBody
     public OrderDTO insertOrder(HttpSession session, @RequestBody OrderDTO order) {
         User loginMember = (User) session.getAttribute("loginMember");
         order.setStoreNo(loginMember.getStoreNo());
         order.setInsertId(loginMember.getUserId());
         order.setModifyId(loginMember.getUserId());
-        return orderService.insertOrder(order);
+        return orderService.saveOrder(order);
     }
 
 }

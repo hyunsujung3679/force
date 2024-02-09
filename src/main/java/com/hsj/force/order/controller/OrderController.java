@@ -1,6 +1,5 @@
 package com.hsj.force.order.controller;
 
-import com.hsj.force.domain.Order;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OrderDTO;
 import com.hsj.force.open.service.OpenService;
@@ -10,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
 @Controller
 @RequestMapping("/order")
@@ -30,25 +30,38 @@ public class OrderController {
         }
 
         User loginMember = (User) session.getAttribute("loginMember");
-
-        OrderDTO orderForm = orderService.selectOrderInfo(loginMember, tableNo);
-        model.addAttribute("header", orderForm.getCommonLayoutForm());
-        model.addAttribute("categoryList", orderForm.getCategoryList());
-        model.addAttribute("menuList", orderForm.getMenuList());
-        model.addAttribute("orderList", orderForm.getOrderList());
+        OrderDTO order = orderService.selectOrderInfo(loginMember, tableNo);
+        model.addAttribute("header", order.getCommonLayoutForm());
+        model.addAttribute("categoryList", order.getCategoryList());
+        model.addAttribute("menuList", order.getMenuList());
+        model.addAttribute("orderList", order.getOrderList());
+        model.addAttribute("orderTotal", order.getOrderTotal());
         model.addAttribute("tableNo", tableNo);
 
         return "order/orderForm";
     }
 
+    @PostMapping("/{tableNo}")
+    public String completeOrder(@PathVariable String tableNo,
+                                HttpSession session) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        orderService.updateOrderStatus(loginMember, tableNo);
+        return "redirect:/table";
+    }
+
     @PostMapping
     @ResponseBody
-    public OrderDTO insertOrder(HttpSession session, @RequestBody OrderDTO order) {
+    public int saveOrder(HttpSession session, @RequestBody OrderDTO order) {
         User loginMember = (User) session.getAttribute("loginMember");
-        order.setStoreNo(loginMember.getStoreNo());
-        order.setInsertId(loginMember.getUserId());
-        order.setModifyId(loginMember.getUserId());
-        return orderService.saveOrder(order);
+        return orderService.saveOrder(loginMember, order);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public List<OrderDTO> selectOrderList(String tableNo,
+                                          HttpSession session) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.selectOrderList(loginMember.getStoreNo(), tableNo);
     }
 
 }

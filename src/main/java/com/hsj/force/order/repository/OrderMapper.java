@@ -18,9 +18,11 @@ public interface OrderMapper {
 
     String selectOrderSeq(String orderNo);
 
-    void insertOrder(OrderDTO order);
+    int insertOrder(OrderDTO order);
 
     int selectQuantity(OrderDTO order);
 
-    void updateOrder(OrderDTO order);
+    int updateOrder(OrderDTO order);
+
+    int updateOrderStatus(OrderDTO order);
 }

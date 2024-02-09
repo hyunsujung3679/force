@@ -10,6 +10,7 @@ import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.OrderDTO;
+import com.hsj.force.domain.dto.OrderTotalDTO;
 import com.hsj.force.menu.repository.MenuMapper;
 import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,20 @@ public class OrderService {
         List<MenuDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
         List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
 
+        int totalQuantity = 0;
+        int totalDiscountPrice = 0;
+        int totalSalePrice = 0;
         for(OrderDTO order : orderList) {
             order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+            totalQuantity += order.getQuantity();
+            totalDiscountPrice += order.getDiscountPrice();
+            totalSalePrice += order.getTotalSalePrice();
         }
+
+        OrderTotalDTO orderTotal = new OrderTotalDTO();
+        orderTotal.setTotalQuantity(totalQuantity);
+        orderTotal.setTotalDiscountPrice(totalDiscountPrice);
+        orderTotal.setTotalSalePrice(totalSalePrice);
 
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
@@ -49,15 +61,23 @@ public class OrderService {
         orderDTO.setMenuList(menuList);
         orderDTO.setOrderList(orderList);
         orderDTO.setCommonLayoutForm(commonLayoutForm);
+        orderDTO.setOrderTotal(orderTotal);
 
         return orderDTO;
     }
 
-    public OrderDTO saveOrder(OrderDTO order) {
+    public int saveOrder(User loginMember, OrderDTO order) {
+
+        int result = 0;
 
         int duplicateMenuCheck = orderMapper.selectDuplicateMenuCheck(order);
+        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
+
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setInsertId(loginMember.getUserId());
+        order.setModifyId(loginMember.getUserId());
+
         if(duplicateMenuCheck == 0) {
-            MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
             String orderNo = orderMapper.selectOrderNo(order);
             String orderSeq = orderMapper.selectOrderSeq(orderNo);
 
@@ -78,13 +98,32 @@ public class OrderService {
             order.setMenuName(menu.getMenuName());
             order.setEtc("");
 
-            orderMapper.insertOrder(order);
+            result = orderMapper.insertOrder(order);
         } else {
             int quantity = orderMapper.selectQuantity(order);
             order.setQuantity(quantity + 1);
-            orderMapper.updateOrder(order);
+            order.setTotalSalePrice(menu.getSalePrice() * order.getQuantity());
+            result = orderMapper.updateOrder(order);
         }
 
-        return order;
+        return result;
+    }
+
+    public List<OrderDTO> selectOrderList(String storeNo, String tableNo) {
+        List<OrderDTO> orderList = orderMapper.selectOrderList(storeNo, tableNo);
+        for(OrderDTO order : orderList) {
+            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+            order.setEtc("");
+        }
+        return orderList;
+    }
+
+    public int updateOrderStatus(User loginMember, String tableNo) {
+        OrderDTO order = new OrderDTO();
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setTableNo(tableNo);
+        order.setOrderStatusNo("OS003");
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateOrderStatus(order);
     }
 }

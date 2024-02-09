@@ -67,41 +67,50 @@ function insertOrder() {
         dataType : "json",
         contentType: "application/json",
         success: function(data) {
+            if(data > 0) {
+                $.ajax({
+                    url: "/order",
+                    type: "get",
+                    data: {tableNo : tableNo},
+                    success: function(data) {
+                        $(".table-middle").html("");
 
-            $(".table-middle").html("");
-
-            if(data.quantity == 1) {
-                let html = "";
-                html += '<div class="table-middle-wrap" onclick="">'
-                html +=     '<div class="table-content-1">'
-                html +=         '<div class="table-content-name-1">' + data.orderSeqInt + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-2">'
-                html +=         '<div class="table-content-name-1">' + data.menuName + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data.salePrice.toLocaleString() + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data.quantity + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data.discountPrice.toLocaleString() + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data.totalSalePrice.toLocaleString() + '</div>'
-                html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data.etc + '</div>'
-                html +=     '</div>'
-                html += '</div>'
-
-                $(".table-middle").append(html);
-                $(".menu-color").removeClass("menu-color");
+                        for(let index in data) {
+                            let html = "";
+                            html += '<div class="table-middle-wrap" onclick="">'
+                            html +=     '<div class="table-content-1">'
+                            html +=         '<div class="table-content-name-1">' + data[index].orderSeqInt + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-2">'
+                            html +=         '<div class="table-content-name-1">' + data[index].menuName + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-3">'
+                            html +=         '<div class="table-content-name-1">' + data[index].salePrice.toLocaleString() + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-3">'
+                            html +=         '<div class="table-content-name-1">' + data[index].quantity + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-3">'
+                            html +=         '<div class="table-content-name-1">' + data[index].discountPrice.toLocaleString() + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-3">'
+                            html +=         '<div class="table-content-name-1">' + data[index].totalSalePrice.toLocaleString() + '</div>'
+                            html +=     '</div>'
+                            html +=     '<div class="table-content-3">'
+                            html +=         '<div class="table-content-name-1">' + data[index].etc + '</div>'
+                            html +=     '</div>'
+                            html += '</div>'
+                            $(".table-middle").append(html);
+                        }
+                        $(".menu-color").removeClass("menu-color");
+                    },
+                    error: function(xhr) {
+                        console.log(xhr);
+                    }
+                });
             } else {
-
+                alert("메뉴 추가 실패");
             }
-
         },
         error: function(xhr) {
             console.log(xhr);

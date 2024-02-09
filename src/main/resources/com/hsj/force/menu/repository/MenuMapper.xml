@@ -36,7 +36,7 @@
              , M.CATEGORY_NO
              , MP.SALE_PRICE
           FROM TMENU M
-           , TMENUPRICE MP
+             , TMENUPRICE MP
          WHERE M.MENU_NO = MP.MENU_NO
            AND M.MENU_NO = #{menuNo}
          ORDER BY MP.MENU_SEQ DESC

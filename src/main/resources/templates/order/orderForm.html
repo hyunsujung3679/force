@@ -8,205 +8,205 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <body>
 
     <section>
+        <form th:action method="post">
+            <input type="hidden" class="table-no" name="tableNo" th:value="${tableNo}">
 
-        <input type="hidden" class="table-no" th:value="${tableNo}">
-
-        <div class="main">
-            <div class="left-main">
-                <div class="top-left-main">
-                    <div class="table-top">
-                        <div class="table-content-1">
-                            <div class="table-content-name">No</div>
-                        </div>
-                        <div class="table-content-2">
-                            <div class="table-content-name">메뉴명</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">단가</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">수량</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">할인</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">금액</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">비고</div>
-                        </div>
-                    </div>
-                    <div class="table-middle">
-                        <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}" onclick="">
+            <div class="main">
+                <div class="left-main">
+                    <div class="top-left-main">
+                        <div class="table-top">
                             <div class="table-content-1">
-                                <div class="table-content-name-1" th:text="${order.orderSeqInt}"></div>
+                                <div class="table-content-name">No</div>
                             </div>
                             <div class="table-content-2">
-                                <div class="table-content-name-1" th:text="${order.menuName}"></div>
+                                <div class="table-content-name">메뉴명</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.salePrice, 0, 'COMMA')}"></div>
+                                <div class="table-content-name">단가</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1" th:text="${order.quantity}"></div>
+                                <div class="table-content-name">수량</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA')}"></div>
+                                <div class="table-content-name">할인</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
+                                <div class="table-content-name">금액</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name-1" th:text="${order.etc}"></div>
+                                <div class="table-content-name">비고</div>
+                            </div>
+                        </div>
+                        <div class="table-middle">
+                            <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}" onclick="">
+                                <div class="table-content-1">
+                                    <div class="table-content-name-1" th:text="${order.orderSeqInt}"></div>
+                                </div>
+                                <div class="table-content-2">
+                                    <div class="table-content-name-1" th:text="${order.menuName}"></div>
+                                </div>
+                                <div class="table-content-3">
+                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.salePrice, 0, 'COMMA')}"></div>
+                                </div>
+                                <div class="table-content-3">
+                                    <div class="table-content-name-1" th:text="${order.quantity}"></div>
+                                </div>
+                                <div class="table-content-3">
+                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA')}"></div>
+                                </div>
+                                <div class="table-content-3">
+                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
+                                </div>
+                                <div class="table-content-3">
+                                    <div class="table-content-name-1" th:text="${order.etc}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-bottom">
+                            <div class="table-content-4">
+                                <div class="table-content-name">합계</div>
+                            </div>
+                            <div class="table-content-3">
+                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalQuantity, 0, 'COMMA')}"></div>
+                            </div>
+                            <div class="table-content-3">
+                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalDiscountPrice, 0, 'COMMA')}"></div>
+                            </div>
+                            <div class="table-content-5">
+                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalSalePrice, 0, 'COMMA')}"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="table-bottom">
-                        <div class="table-content-4">
-                            <div class="table-content-name">합계</div>
+                    <div class="bottom-left-main">
+                        <div class="top-line">
+                            <div class="button-wrap">
+                                <button type="submit" class="top-line-button">전체취소</button>
+                            </div>
+                            <div class="button-wrap">
+                                <button type="submit" class="top-line-button">선택취소</button>
+                            </div>
+                            <div class="button-wrap">
+                                <button type="submit" class="top-line-button">수량변경</button>
+                            </div>
+                            <div class="button-wrap">
+                                <button type="submit" class="top-line-button">단가변경</button>
+                            </div>
+                            <div class="button-wrap">
+                                <button type="submit" class="top-line-button-2">서비스</button>
+                            </div>
+                            <div class="input-wrap">
+                                <input type="text" class="top-line-input">
+                            </div>
                         </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">0</div>
-                        </div>
-                        <div class="table-content-3">
-                            <div class="table-content-name">0</div>
-                        </div>
-                        <div class="table-content-5">
-                            <div class="table-content-name">0</div>
+                        <div class="bottom-line">
+                            <div class="price">
+                                <div class="span-wrap">
+                                    <span class="price-title">총금액</span>
+                                    <span class="price-value">0</span>
+                                </div>
+                                <div class="line"></div>
+                                <div class="span-wrap">
+                                    <span class="price-title">할인금액</span>
+                                    <span class="price-value">0</span>
+                                </div>
+                                <div class="line"></div>
+                                <div class="span-wrap">
+                                    <span class="price-title">받을금액</span>
+                                    <span class="price-value">0</span>
+                                </div>
+                            </div>
+                            <div class="discount">
+                                <div class="discount-title">할인처리</div>
+                                <div class="line-2"></div>
+                                <div class="discount-button">
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-1">%</div>
+                                        <div class="discount-top-left-title-2">전체할인</div>
+                                    </div>
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-3">%</div>
+                                        <div class="discount-top-left-title-4">선택할인</div>
+                                    </div>
+                                </div>
+                                <div class="discount-button">
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-1">$</div>
+                                        <div class="discount-top-left-title-5">전체할인</div>
+                                    </div>
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-3">$</div>
+                                        <div class="discount-top-left-title-6">선택할인</div>
+                                    </div>
+                                </div>
+                                <div class="discount-button">
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-7">전체할인취소</div>
+                                    </div>
+                                    <div class="discount-top-left-title">
+                                        <div class="discount-top-left-title-8">선택할인취소</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="bottom-left-main">
-                    <div class="top-line">
-                        <div class="button-wrap">
-                            <button type="submit" class="top-line-button">전체취소</button>
-                        </div>
-                        <div class="button-wrap">
-                            <button type="submit" class="top-line-button">선택취소</button>
-                        </div>
-                        <div class="button-wrap">
-                            <button type="submit" class="top-line-button">수량변경</button>
-                        </div>
-                        <div class="button-wrap">
-                            <button type="submit" class="top-line-button">단가변경</button>
-                        </div>
-                        <div class="button-wrap">
-                            <button type="submit" class="top-line-button-2">서비스</button>
-                        </div>
-                        <div class="input-wrap">
-                            <input type="text" class="top-line-input">
+
+                <div class="right-main">
+                    <div class="category">
+                        <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
+                            <input type="hidden" th:value="${category.categoryNo}">
+                            <div class="category-content-write" th:text="${category.categoryName}"></div>
                         </div>
                     </div>
-                    <div class="bottom-line">
-                        <div class="price">
-                            <div class="span-wrap">
-                                <span class="price-title">총금액</span>
-                                <span class="price-value">0</span>
-                            </div>
-                            <div class="line"></div>
-                            <div class="span-wrap">
-                                <span class="price-title">할인금액</span>
-                                <span class="price-value">0</span>
-                            </div>
-                            <div class="line"></div>
-                            <div class="span-wrap">
-                                <span class="price-title">받을금액</span>
-                                <span class="price-value">0</span>
+                    <div class="category">
+                        <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
+                            <input type="hidden" th:value="${category.categoryNo}">
+                            <div class="category-content-write" th:text="${category.categoryName}"></div>
+                        </div>
+                    </div>
+                    <div class="line-3"></div>
+                    <div id="menu-1" class="menu">
+                        <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}">
+                            <div class="menu-content-write">
+                                <input type="hidden" th:value="${menu.menuNo}">
+                                <div class="menu-name" th:text="${menu.menuName}"></div>
+                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                             </div>
                         </div>
-                        <div class="discount">
-                            <div class="discount-title">할인처리</div>
-                            <div class="line-2"></div>
-                            <div class="discount-button">
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-1">%</div>
-                                    <div class="discount-top-left-title-2">전체할인</div>
-                                </div>
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-3">%</div>
-                                    <div class="discount-top-left-title-4">선택할인</div>
-                                </div>
+                    </div>
+                    <div id="menu-2" class="menu">
+                        <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}">
+                            <div class="menu-content-write">
+                                <input type="hidden" th:value="${menu.menuNo}">
+                                <div class="menu-name" th:text="${menu.menuName}"></div>
+                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                             </div>
-                            <div class="discount-button">
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-1">$</div>
-                                    <div class="discount-top-left-title-5">전체할인</div>
-                                </div>
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-3">$</div>
-                                    <div class="discount-top-left-title-6">선택할인</div>
-                                </div>
+                        </div>
+                    </div>
+                    <div id="menu-3" class="menu">
+                        <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
+                            <div class="menu-content-write">
+                                <input type="hidden" th:value="${menu.menuNo}">
+                                <div class="menu-name" th:text="${menu.menuName}"></div>
+                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
                             </div>
-                            <div class="discount-button">
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-7">전체할인취소</div>
-                                </div>
-                                <div class="discount-top-left-title">
-                                    <div class="discount-top-left-title-8">선택할인취소</div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="line-3"></div>
+                    <div class="right-button">
+                        <div class="right-button-detail" onclick="insertOrder();">
+                            <div class="button-content-write">주문</div>
+                        </div>
+                        <div class="right-button-detail">
+                            <button type="submit" class="button-content-write-1">결제</button>
+                        </div>
+                        <div class="right-button-detail">
+                            <div class="button-content-write">뒤로</div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="right-main">
-                <div class="category">
-                    <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
-                        <input type="hidden" th:value="${category.categoryNo}">
-                        <div class="category-content-write" th:text="${category.categoryName}"></div>
-                    </div>
-                </div>
-                <div class="category">
-                    <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
-                        <input type="hidden" th:value="${category.categoryNo}">
-                        <div class="category-content-write" th:text="${category.categoryName}"></div>
-                    </div>
-                </div>
-                <div class="line-3"></div>
-                <div id="menu-1" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}">
-                        <div class="menu-content-write">
-                            <input type="hidden" th:value="${menu.menuNo}">
-                            <div class="menu-name" th:text="${menu.menuName}"></div>
-                            <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="menu-2" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}">
-                        <div class="menu-content-write">
-                            <input type="hidden" th:value="${menu.menuNo}">
-                            <div class="menu-name" th:text="${menu.menuName}"></div>
-                            <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div id="menu-3" class="menu">
-                    <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
-                        <div class="menu-content-write">
-                            <input type="hidden" th:value="${menu.menuNo}">
-                            <div class="menu-name" th:text="${menu.menuName}"></div>
-                            <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="line-3"></div>
-                <div class="right-button">
-                    <div class="right-button-detail" onclick="insertOrder();">
-                        <div class="button-content-write">주문</div>
-                    </div>
-                    <div class="right-button-detail">
-                        <button type="submit" class="button-content-write-1">결제</button>
-                    </div>
-                    <div class="right-button-detail">
-                        <div class="button-content-write">뒤로</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        </form>
     </section>
 </body>
 </html>

@@ -103,9 +103,21 @@
     <update id="updateOrder">
         UPDATE TORDER O
            SET O.QUANTITY = #{quantity}
+             , O.TOTAL_SALE_PRICE = #{totalSalePrice}
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{tableNo}
            AND O.MENU_NO = #{menuNo}
+    </update>
+
+    <update id="updateOrderStatus">
+        UPDATE TORDER O
+           SET O.ORDER_STATUS_NO = #{orderStatusNo}
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
     </update>
 
 </mapper>

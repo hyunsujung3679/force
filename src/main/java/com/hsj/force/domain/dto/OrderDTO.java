@@ -15,8 +15,8 @@ public class OrderDTO extends Order {
     private List<Category> categoryList;
     private List<MenuDTO> menuList;
     private List<OrderDTO> orderList;
-
     private int orderSeqInt;
     private String etc;
+    private OrderTotalDTO orderTotal;
 
 }

@@ -1,50 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragment/header :: common_header(~{::link})">
+<head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login/login.css}">
+    <script></script>
 </head>
 <body>
 
     <form th:action th:object="${userDTO}" method="post">
-        <div class="whole-backGround">
-            <div class="gap"></div>
-            <div class="login-box">
-                <div class="login-system-title" th:text="#{title.force}"></div>
-                <div class="login-system-subtitle">POS Solution</div>
-                <div class="login-insert">
-                    <img class="login-image" src="/images/login/person.png" alt="person.png"/>
-                    <label class="login-id-password">
-                        <input type="text"
-                               th:field="*{userId}"
-                               class="login-input">
-                    </label>
-                </div>
-                <div class="field-error" th:errors="*{userId}" />
-                <div class="login-insert">
-                    <img class="login-image" src="/images/login/lock.png" alt="lock.png"/>
-                    <label class="login-id-password">
-                        <input type="password"
-                               th:field="*{password}"
-                               class="login-password-input">
-                    </label>
-                </div>
-                <div class="field-error" th:errors="*{password}" />
-                <div th:if="${#fields.hasGlobalErrors()}">
-                    <p class="field-error-global" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
-                </div>
-                <div class="login-save-find">
-                    <label>
-                        <input type="checkbox" class="login-checkbox">
-                    </label>
-                    <p class="login-save" th:text="#{label.id.save}"></p>
-                    <a href="" class="login-id-find" th:text="#{label.id.find}"></a>
-                </div>
-                <a href="" class="login-password-find" th:text="#{label.password.find}"></a>
-                <div class="login-button-wrap">
-                    <button type="submit" class="login-button" th:text="#{button.login}"></button>
-                </div>
+        <div class="login-box">
+            <div class="login-system-title" th:text="#{title.force}"></div>
+            <div class="login-system-subtitle">POS Solution</div>
+            <div class="login-insert">
+                <img class="login-image" src="/images/login/person.png" alt="person.png"/>
+                <label class="login-id-password">
+                    <input type="text"
+                           th:field="*{userId}"
+                           class="login-input">
+                </label>
             </div>
-            <div class="gap"></div>
+            <div class="field-error" th:errors="*{userId}" />
+            <div class="login-insert">
+                <img class="login-image" src="/images/login/lock.png" alt="lock.png"/>
+                <label class="login-id-password">
+                    <input type="password"
+                           th:field="*{password}"
+                           class="login-password-input">
+                </label>
+            </div>
+            <div class="field-error" th:errors="*{password}" />
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="field-error-global" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+            </div>
+            <div class="login-save-find">
+                <label>
+                    <input type="checkbox" class="login-checkbox">
+                </label>
+                <p class="login-save" th:text="#{label.id.save}"></p>
+                <a href="" class="login-id-find" th:text="#{label.id.find}"></a>
+            </div>
+            <a href="" class="login-password-find" th:text="#{label.password.find}"></a>
+            <div class="login-button-wrap">
+                <button type="submit" class="login-button" th:text="#{button.login}"></button>
+            </div>
         </div>
     </form>
 

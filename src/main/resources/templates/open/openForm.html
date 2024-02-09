@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head th:replace="fragment/header :: common_header(~{::link})">
+<head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
     <link rel="stylesheet" type="text/css" th:href="@{/css/open/open.css}">
+    <script th:inline="javascript" th:src="@{/js/open/open.js}"></script>
 </head>
 <body>
     <form id="logout" th:action="@{/logout}" method="post"></form>
@@ -49,7 +50,7 @@
                     </ul>
                     <div class="button-wrap">
                         <button type="submit" class="submit-button" th:text="#{button.open}" form="open"></button>
-                        <button type="submit" class="button-2" th:text="#{button.logout}" form="logout"></button>
+                        <button type="submit" class="submit-button" th:text="#{button.logout}" form="logout"></button>
                     </div>
                 </div>
             <div class="gap"></div>

@@ -67,13 +67,13 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                 <div class="table-content-name">합계</div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalQuantity, 0, 'COMMA')}"></div>
+                                <div id="total-quantity" class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalQuantity, 0, 'COMMA')}"></div>
                             </div>
                             <div class="table-content-3">
-                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalDiscountPrice, 0, 'COMMA')}"></div>
+                                <div id="total-discount-price" class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalDiscountPrice, 0, 'COMMA')}"></div>
                             </div>
                             <div class="table-content-5">
-                                <div class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalSalePrice, 0, 'COMMA')}"></div>
+                                <div id="total-sale-price" class="table-content-name" th:text="${#numbers.formatInteger(orderTotal.totalSalePrice, 0, 'COMMA')}"></div>
                             </div>
                         </div>
                     </div>

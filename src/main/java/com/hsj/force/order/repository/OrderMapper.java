@@ -10,7 +10,7 @@ import java.util.*;
 @Mapper
 public interface OrderMapper {
 
-    int selectDuplicateMenuCheck(OrderDTO order);
+    Integer selectQuantity(OrderDTO order);
 
     List<OrderDTO> selectOrderList(String storeNo, String tableNo);
 
@@ -19,8 +19,6 @@ public interface OrderMapper {
     String selectOrderSeq(String orderNo);
 
     int insertOrder(OrderDTO order);
-
-    int selectQuantity(OrderDTO order);
 
     int updateOrder(OrderDTO order);
 

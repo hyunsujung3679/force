@@ -16,7 +16,7 @@ function selectMenuListByCategoryNo(div) {
 
                 html += '<div class="menu-content">';
                 html +=     '<div class="menu-content-write">';
-                html +=         '<input type="hidden" class="menu-no">'
+                html +=         '<input type="hidden" name="menu-no">'
                 html +=         '<div class="menu-name">' + data[index].menuName + '</div>';
                 html +=         '<div class="menu-price">' + data[index].salePrice.toLocaleString() + '</div>';
                 html +=     '</div>'
@@ -75,6 +75,10 @@ function insertOrder() {
                     success: function(data) {
                         $(".table-middle").html("");
 
+                        let totalQuantity = 0;
+                        let totalDiscountPrice = 0;
+                        let totalSalePrice = 0;
+
                         for(let index in data) {
                             let html = "";
                             html += '<div class="table-middle-wrap" onclick="">'
@@ -100,16 +104,22 @@ function insertOrder() {
                             html +=         '<div class="table-content-name-1">' + data[index].etc + '</div>'
                             html +=     '</div>'
                             html += '</div>'
+
+                            totalQuantity += data[index].quantity;
+                            totalDiscountPrice += data[index].discountPrice;
+                            totalSalePrice += data[index].totalSalePrice;
+
                             $(".table-middle").append(html);
                         }
                         $(".menu-color").removeClass("menu-color");
+                        $("#total-quantity").text(totalQuantity);
+                        $("#total-discount-price").text(totalDiscountPrice.toLocaleString());
+                        $("#total-sale-price").text(totalSalePrice.toLocaleString());
                     },
                     error: function(xhr) {
                         console.log(xhr);
                     }
                 });
-            } else {
-                alert("메뉴 추가 실패");
             }
         },
         error: function(xhr) {

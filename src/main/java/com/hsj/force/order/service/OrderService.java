@@ -70,14 +70,14 @@ public class OrderService {
 
         int result = 0;
 
-        int duplicateMenuCheck = orderMapper.selectDuplicateMenuCheck(order);
-        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
-
         order.setStoreNo(loginMember.getStoreNo());
         order.setInsertId(loginMember.getUserId());
         order.setModifyId(loginMember.getUserId());
 
-        if(duplicateMenuCheck == 0) {
+        Integer quantity = orderMapper.selectQuantity(order);
+        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
+
+        if(quantity == null) {
             String orderNo = orderMapper.selectOrderNo(order);
             String orderSeq = orderMapper.selectOrderSeq(orderNo);
 
@@ -100,7 +100,6 @@ public class OrderService {
 
             result = orderMapper.insertOrder(order);
         } else {
-            int quantity = orderMapper.selectQuantity(order);
             order.setQuantity(quantity + 1);
             order.setTotalSalePrice(menu.getSalePrice() * order.getQuantity());
             result = orderMapper.updateOrder(order);

@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
-<head th:fragment="common_header(links)">
+<head th:fragment="common_header(links,script)">
     <meta charset="UTF-8">
     <title>Force</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <th:block th:replace="${links}"/>
+    <th:block th:replace="${script}"/>
 </head>
 <body>
 

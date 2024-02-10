@@ -7,7 +7,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <script></script>
 <body>
 
-    <section>
+    <section class="section">
         <div class="line">
             <div class="first-line" th:if="${tableStat.index} < 3" th:each="table, tableStat : ${tableList}" th:onclick="|location.href='@{order/{param}(param=${table.tableNo})}'|">
                 <div class="table-number" th:text="${table.tableName}"></div>

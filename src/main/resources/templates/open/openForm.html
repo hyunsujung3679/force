@@ -7,53 +7,49 @@
 <body>
     <form id="logout" th:action="@{/logout}" method="post"></form>
     <form id="open" th:action th:object="${openSaveDTO}" method="post">
-        <div class="whole-backGround">
-            <div class="gap"></div>
-                <div class="box">
-                    <div class="title-box">
-                        <div class="title" th:text="#{title.open}"></div>
-                    </div>
-                    <p class="sub-title" th:text="#{title.close.status}"></p>
-                    <ul class="sub-content">
-                        <li>
-                            <label th:text="#{label.close.date}"></label>
-                            <input type="text" th:value="${#temporals.format(openSaveDTO.closeDate, 'YYYY-MM-dd (E)')}" class="input-box" disabled>
-                        </li>
-                        <li>
-                            <label th:text="#{label.close_time}"></label>
-                            <input type="text" th:value="${#temporals.format(openSaveDTO.closeTime, 'YYYY-MM-dd HH:mm')}" class="input-box" disabled>
-                        </li>
-                        <li>
-                            <label th:text="#{label.closer}"></label>
-                            <input type="text" th:field="*{closer}" class="input-box-2" disabled>
-                        </li>
-                    </ul>
-                    <p class="sub-title" th:text="#{title.open}"></p>
-                    <ul class="sub-content">
-                        <li>
-                            <label th:text="#{label.system.date}"></label>
-                            <input type="text" class="input-box-2" th:value="${#temporals.format(openSaveDTO.currentDate, 'YYYY-MM-dd (E)')}" disabled>
-                        </li>
-                        <li>
-                            <label th:text="#{label.open.date}"></label>
-                            <input type="text" class="input-box-3" th:value="${#temporals.format(openSaveDTO.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
-                            <input type="text" class="input-box-4" th:value="|${openSaveDTO.procedure}#{label.procedure}|" disabled>
-                        </li>
-                        <li>
-                            <label th:text="#{label.open.money}"></label>
-                            <input type="text" th:field="*{openMoney}" class="input-box-2">
-                        </li>
-                        <li>
-                            <label th:text="#{label.opener}"></label>
-                            <input type="text" th:field="*{opener}" class="input-box-2" disabled>
-                        </li>
-                    </ul>
-                    <div class="button-wrap">
-                        <button type="submit" class="submit-button" th:text="#{button.open}" form="open"></button>
-                        <button type="submit" class="submit-button" th:text="#{button.logout}" form="logout"></button>
-                    </div>
-                </div>
-            <div class="gap"></div>
+        <div class="box">
+            <div class="title-box">
+                <div class="title" th:text="#{title.open}"></div>
+            </div>
+            <p class="sub-title" th:text="#{title.close.status}"></p>
+            <ul class="sub-content">
+                <li>
+                    <label th:text="#{label.close.date}"></label>
+                    <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeDate, 'YYYY-MM-dd (E)')}" disabled>
+                </li>
+                <li>
+                    <label th:text="#{label.close_time}"></label>
+                    <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeTime, 'YYYY-MM-dd HH:mm')}" disabled>
+                </li>
+                <li>
+                    <label th:text="#{label.closer}"></label>
+                    <input type="text" th:field="*{closer}" class="input-box-2" disabled>
+                </li>
+            </ul>
+            <p class="sub-title" th:text="#{title.open}"></p>
+            <ul class="sub-content">
+                <li>
+                    <label th:text="#{label.system.date}"></label>
+                    <input type="text" class="input-box-2" th:value="${#temporals.format(openSaveDTO.currentDate, 'YYYY-MM-dd (E)')}" disabled>
+                </li>
+                <li>
+                    <label th:text="#{label.open.date}"></label>
+                    <input type="text" class="input-box-3" th:value="${#temporals.format(openSaveDTO.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
+                    <input type="text" class="input-box-4" th:value="|${openSaveDTO.procedure}#{label.procedure}|" disabled>
+                </li>
+                <li>
+                    <label th:text="#{label.open.money}"></label>
+                    <input type="text" th:field="*{openMoney}" class="input-box-2">
+                </li>
+                <li>
+                    <label th:text="#{label.opener}"></label>
+                    <input type="text" th:field="*{opener}" class="input-box-2" disabled>
+                </li>
+            </ul>
+            <div class="button-wrap">
+                <button type="submit" class="submit-button" th:text="#{button.open}" form="open"></button>
+                <button type="submit" class="submit-button" th:text="#{button.logout}" form="logout"></button>
+            </div>
         </div>
     </form>
 

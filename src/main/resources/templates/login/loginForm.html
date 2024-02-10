@@ -12,7 +12,7 @@
             <div class="login-system-subtitle">POS Solution</div>
             <div class="login-insert">
                 <img class="login-image-1" src="/images/login/person.png" alt="person.png"/>
-                <label class="login-id-password">
+                <label>
                     <input type="text"
                            th:field="*{userId}"
                            class="login-input">
@@ -21,7 +21,7 @@
             <div class="field-error" th:errors="*{userId}" />
             <div class="login-insert">
                 <img class="login-image-2" src="/images/login/lock.png" alt="lock.png"/>
-                <label class="login-id-password">
+                <label>
                     <input type="password"
                            th:field="*{password}"
                            class="login-password-input">
@@ -32,12 +32,12 @@
                 <p class="field-error-global" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
             </div>
             <div class="login-save-find">
-                <label>
-                    <input type="checkbox" class="login-checkbox">
+                <label class="login-save-wrap">
+                    <input type="checkbox">
+                    <p th:text="#{label.id.save}"></p>
                 </label>
-                <p class="login-save" th:text="#{label.id.save}"></p>
-                <a href="" class="login-id-find" th:text="#{label.id.find}"></a>
             </div>
+            <a href="" class="login-id-find" th:text="#{label.id.find}"></a>
             <a href="" class="login-password-find" th:text="#{label.password.find}"></a>
             <div class="login-button-wrap">
                 <button type="submit" class="login-button" th:text="#{button.login}"></button>

@@ -1,91 +1,80 @@
-.whole-backGround {
-    width: 100%;
-    height: 100%;
-    background-color: #A3B1E7;
-}
-
-.gap {
-    width: 100%;
-    height: 97px;
+body {
+    height:100%;
+    overflow:hidden;
     background-color: #A3B1E7;
 }
 
 .box {
-    margin-left: 700px;
-    width: 500px;
-    height: 700px;
+    margin: 0 auto;
+    width: 33%;
     background-color: white;
     border-radius: 10px;
 }
 
 .title-box {
-    width: 100%;
-    height: 70px;
+    margin-top:10%;
     background-color:#5F6FB8;
     border-radius: 5px;
 }
 
 .title {
-    margin-left: 35px;
-    padding-top: 13px;
-    font-size: 30px;
+    margin-left: 7%;
+    padding-top: 2.5%;
+    padding-bottom: 2.5%;
+    font-size: 190%;
     font-weight: bold;
     color: white;
 }
 
 .sub-title {
-    margin-left: 35px;
-    margin-top: 30px;
-    font-size: 25px;
+    margin-left: 5%;
+    margin-top: 5%;
+    font-size: 150%;
     font-weight: bold;
 }
 
 .sub-content {
-    margin-left: 23px;
-    font-size: 20px;
+    margin-left: 3%;
+    font-size: 125%;
 }
 
 .input-box {
-    margin-left: 15px;
-    width: 206px;
-    height: 30px;
+    margin-left: 2.5%;
+    width: 36%;
     border-radius: 5px;
     background-color:#F2EDFF;
-    font-size: 20px;
+    font-size: 100%;
     border-color: #C2C2C2;
-    margin-top: 15px;
+    margin-top: 2.5%;
 }
 
 .input-box-2 {
-    margin-left: 43px;
-    width: 206px;
-    height: 30px;
+    margin-left: 2.5%;
+    width: 36%;
     border-radius: 5px;
     background-color:#F2EDFF;
-    font-size: 20px;
+    font-size: 100%;
     border-color: #C2C2C2;
-    margin-top: 15px;
+    margin-top: 2.5%;
 }
 
 .input-box-3 {
-    margin-left: 15px;
-    width: 160px;
-    height: 30px;
+    margin-left: 2.5%;
+    width: 36%;
     border-radius: 5px;
     background-color:#F2EDFF;
-    font-size: 20px;
+    font-size: 100%;
     border-color: #C2C2C2;
-    margin-top: 15px;
+    margin-top: 2.5%;
 }
 
 .input-box-4 {
-    width: 30px;
-    height: 30px;
+    width: 7%;
     border-radius: 5px;
     background-color:#F2EDFF;
-    font-size: 20px;
+    font-size: 100%;
     border-color: #C2C2C2;
-    margin-top: 15px;
+    margin-top: 3.5%;
 }
 
 .submit-button {
@@ -93,25 +82,13 @@
     cursor:pointer;
     background-color: #5DA4EF;
     color: white;
-    width: 130px;
-    height: 40px;
-    font-size: 25px;
-    border-color: white;
-}
-
-.button-button {
-    margin-left: 10px;
-    border-radius: 10px;
-    cursor:pointer;
-    background-color: #5DA4EF;
-    color: white;
-    width: 130px;
-    height: 40px;
-    font-size: 25px;
+    width: 25%;
+    font-size: 150%;
     border-color: white;
 }
 
 .button-wrap {
     display: flex;
-    margin-left: 175px;
+    justify-content: center;
+    padding-bottom: 5%;
 }

@@ -54,6 +54,7 @@ public class OpenController {
         }
 
         User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
+        open.setOpenMoney(open.getOpenMoney().replaceAll(",", ""));
         open.setInsertId(user.getUserId());
         open.setModifyId(user.getUserId());
 

@@ -9,7 +9,7 @@ public class OpenSaveDTO {
 
     private String openCloseNo;
     private String openCloseSeq;
-    private Integer openMoney;
+    private String openMoney;
     private String insertId;
     private String modifyId;
 

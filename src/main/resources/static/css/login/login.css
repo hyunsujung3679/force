@@ -14,6 +14,8 @@ body {
 }
 
 .login-system-title {
+    padding-top:10%;
+    margin-top:40%;
     text-align: center;
     font-weight: bold;
     font-size: 250%;
@@ -21,17 +23,15 @@ body {
 }
 
 .login-system-subtitle {
-    display: inline-block;
-    /*margin-left: 93px;*/
+    text-align: center;
     font-weight: bold;
-    /*font-size: 20px;*/
     font-family: fantasy;
-    /*width: 350px;*/
 }
 
 .login-insert {
+    justify-content: center;
     display: flex;
-    /*margin-top: 20px;*/
+    margin-top: 5%;
 }
 
 .login-id-password {
@@ -41,24 +41,27 @@ body {
 }
 
 .login-input {
-    /*width: 220px;*/
-    /*height: 50px;*/
-    /*font-size: 30px;*/
-    /*margin-left: 10px;*/
+    width: 75%;
+    height: 90%;
+    font-size: 100%;
+    margin-left: 5%;
 }
 
 .login-password-input {
-    /*width: 220px;*/
-    /*height: 50px;*/
-    /*font-size: 30px;*/
-    /*margin-left: 15px;*/
+    width: 75%;
+    height: 80%;
+    font-size: 100%;
+    margin-left: 5.5%;
 }
 
-.login-image {
-    /*width: 40px;*/
-    /*height: 40px;*/
-    /*margin-top: 8px;*/
-    /*margin-left: 20px;*/
+.login-image-1 {
+    margin-left: 5%;
+    height: 13%;
+}
+
+.login-image-2 {
+    margin-left: 6.5%;
+    height: 13%;
 }
 
 .login-save-find {

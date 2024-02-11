@@ -15,7 +15,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
                         <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
                     </div>
-                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${tableTotalPrice.tableTotalPrice}"></div>
+                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
             <button class="line-button" th:text="#{button.move}"></button>
             <button class="line-button" th:text="#{button.join}"></button>
@@ -28,7 +28,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
                     <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
                 </div>
-                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${tableTotalPrice.tableTotalPrice}"></div>
+                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
         </div>
         <div class="line">
@@ -38,7 +38,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
                     <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
                 </div>
-                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${tableTotalPrice.tableTotalPrice}"></div>
+                <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
         </div>
     </section>

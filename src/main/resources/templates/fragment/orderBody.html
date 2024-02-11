@@ -9,51 +9,25 @@
     <th:block th:replace="${script}"/>
 </head>
 <body>
-    <div class="header-wrap">
-        <div class="header">
-            <div class="header-title">
-                <p class="main-title" th:text="#{title.force}"></p>
-            </div>
-            <div class="header-content">
-                <p class="content" th:text="|#{header.storeName}${header.storeName}|"></p>
-                <p class="content" th:text="|#{header.businessDate}${#temporals.format(header.businessDate, 'YYYY-MM-dd (E)')}|"></p>
-                <p class="content" th:text="|#{header.salesMan}${header.salesMan}|"></p>
-                <p class="content" th:text="|#{header.currentDate}${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
-            </div>
-            <form th:action method="post">
-                <button type="submit" class="button-1" th:text="#{button.close}"></button>
-            </form>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="button-2" th:text="#{button.logout}"></button>
-            </form>
+    <div class="header">
+        <div class="header-title">
+            <p class="main-title" th:text="#{title.force}"></p>
         </div>
+        <div class="header-content">
+            <p class="content" th:text="|#{header.storeName}${header.storeName}|"></p>
+            <p class="content" th:text="|#{header.businessDate}${#temporals.format(header.businessDate, 'YYYY-MM-dd (E)')}|"></p>
+            <p class="content" th:text="|#{header.salesMan}${header.salesMan}|"></p>
+            <p class="content" th:text="|#{header.currentDate}${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
+        </div>
+        <form th:action method="post">
+            <button type="submit" class="button-1" th:text="#{button.close}"></button>
+        </form>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="button-2" th:text="#{button.logout}"></button>
+        </form>
     </div>
 
     <div th:replace="${content}"></div>
-
-    <div class="footer">
-        <div class="policy">
-            <div class="info" th:text="#{footer.privacy.statement}"></div>
-            <div class="info" th:text="#{footer.terms.of.use}"></div>
-        </div>
-        <hr class="hr">
-        <div class="company-info">
-            <div class="company-name">
-                <div class="company-name-content">
-                    <p class="company-name-content-1" th:text="#{footer.force}"></p>
-                    <p class="company-name-content-2" th:text="#{footer.ceo}"></p>
-                    <p class="company-name-content-2" th:text="#{footer.interval}"></p>
-                    <p class="company-name-content-2" th:text="#{footer.company.registration.number}"></p>
-                </div>
-                <div class="company-name-content-3" th:text="#{footer.address}"></div>
-            </div>
-            <div class="contact">
-                <p class="contact-1" th:text="#{footer.AS}"></p>
-                <p class="contact-1"><span th:text="#{footer.AS.time}"></span><span th:text="#{footer.AS.break.time}"></span></p>
-                <p class="contact-2" th:text="#{footer.contact}"></p>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>

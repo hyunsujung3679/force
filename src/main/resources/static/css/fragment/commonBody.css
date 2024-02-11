@@ -24,26 +24,14 @@ body {
     font-family: fantasy;
 }
 
-.sub-title {
-    /*margin-left: 30px;*/
-    font-weight: bold;
-    /*font-size: 15px;*/
-    font-family: fantasy;
-}
-
 .header-content {
     display: flex;
     justify-content: space-around;
     width: 75%;
     background-color: #757575;
-    /*margin-top: 10px;*/
-    /*height: 60px;*/
 }
 
 .content {
-    /*margin-left: 140px;*/
-    /*margin-top: 20px;*/
-    /*font-size: 15px;*/
     font-family: fantasy;
     color: white;
 }
@@ -72,14 +60,6 @@ body {
     width: 100%;
 }
 
-
-
-
-
-
-
-
-
 .main {
     display: flex;
     margin-top:0.5%;
@@ -90,6 +70,7 @@ body {
 
 .side-bar {
     width: 12%;
+    height: 100%;
     background-color: white;
 }
 
@@ -106,102 +87,4 @@ body {
     cursor:pointer;
     border-color: white;
     margin-top:15%;
-}
-
-.footer {
-    width: 99.2%;
-    position: absolute;
-    bottom: 0;
-    background-color: #F2EDFF;
-}
-
-.policy {
-    display: flex;
-    font-size: 100%;
-    font-family: fantasy;
-    cursor:pointer;
-}
-
-.info {
-    margin-left: 10%;
-    margin-top: 1.5%;
-}
-
-.hr {
-    margin-left: 10%;
-    width: 80%;
-}
-
-.company-info {
-    display: flex;
-}
-
-.company-name {
-    width: 50%;
-}
-
-.company-name-content {
-    display: flex;
-    margin-left: 20%;
-}
-
-.company-name-content-1 {
-    font-weight: bold;
-    font-size: 125%;
-
-}
-
-.company-name-content-2 {
-    font-size: 95%;
-    padding-top: 1%;
-    margin-left: 1%;
-}
-
-.company-name-content-3 {
-    margin-left: 20%;
-    font-size: 95%;
-
-}
-
-.contact {
-    width: 50%;
-}
-
-.contact-1 {
-    padding-top: 1%;
-    font-size: 95%;
-}
-
-.contact-2 {
-    padding-top: 1%;
-    font-size: 95%;
-    font-weight: bold;
-}
-
-
-.table-number {
-    /*margin-left: 10px;*/
-    /*margin-top: 10px;*/
-    font-weight: bold;
-    font-family: fantasy;
-}
-
-.table-content {
-    display: flex;
-    justify-content: space-between;
-}
-
-.table-menu {
-    /*margin-left: 10px;*/
-    /*margin-top: 5px;*/
-}
-
-.table-quantity {
-    /*margin-right: 10px;*/
-    /*margin-top: 5px;*/
-}
-
-.table-price {
-    /*margin-right: 10px;*/
-    float: right;
 }

@@ -27,6 +27,22 @@ public class TableService {
         List<Table> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
         List<OrderDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
 
+        CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
+        commonLayoutForm.setSalesMan(loginMember.getUserName());
+        commonLayoutForm.setStoreName(storeName);
+        commonLayoutForm.setCurrentDate(LocalDateTime.now());
+        commonLayoutForm.setBusinessDate(LocalDateTime.now());
+
+        TableDTO tableForm = new TableDTO();
+        tableForm.setTableList(tableList);
+        tableForm.setOrderList(orderList);
+        tableForm.setCommonLayoutForm(commonLayoutForm);
+        tableForm.setTableTotalPriceList(getTableTotalPriceList(tableList, orderList));
+
+        return tableForm;
+    }
+
+    private List<TableTotalPriceDTO> getTableTotalPriceList(List<Table> tableList, List<OrderDTO> orderList) {
         List<TableTotalPriceDTO> tableTotalPriceList = new ArrayList<>();
         TableTotalPriceDTO tableTotalPriceForm = null;
         for(Table table : tableList) {
@@ -41,19 +57,6 @@ public class TableService {
             tableTotalPriceForm.setTableTotalPrice(totalPrice);
             tableTotalPriceList.add(tableTotalPriceForm);
         }
-
-        CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
-        commonLayoutForm.setSalesMan(loginMember.getUserName());
-        commonLayoutForm.setStoreName(storeName);
-        commonLayoutForm.setCurrentDate(LocalDateTime.now());
-        commonLayoutForm.setBusinessDate(LocalDateTime.now());
-
-        TableDTO tableForm = new TableDTO();
-        tableForm.setTableList(tableList);
-        tableForm.setOrderList(orderList);
-        tableForm.setCommonLayoutForm(commonLayoutForm);
-        tableForm.setTableTotalPriceList(tableTotalPriceList);
-
-        return tableForm;
+        return tableTotalPriceList;
     }
 }

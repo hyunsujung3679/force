@@ -1,11 +1,30 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    overflow:hidden;
+    background-color: #ABA8A8;
+}
+
+section {
+    height: 100%;
+}
+
+.form {
+    height: 100%;
+}
+
 .main {
     display: flex;
-    height: 600px;
+    width: 100%;
+    height: 100%;
+    margin-top:0.5%;
 }
 
 .left-main {
     width: 50%;
-    background-color: yellow;
 }
 
 .right-main {
@@ -16,7 +35,6 @@
 
 .top-left-main {
     height: 50%;
-    background-color: green;
 }
 
 .bottom-left-main {
@@ -27,7 +45,6 @@
 .table-top {
     display: flex;
     width: 100%;
-    height: 15%;
     background-color: #757575;
 }
 
@@ -39,71 +56,70 @@
 
 .table-content-2 {
     text-align: center;
-    width: 30%;
+    /*width: 30%;*/
     border: 1px solid black;
 }
 
 .table-content-3 {
     text-align: center;
-    width: 12%;
+    /*width: 12%;*/
     border: 1px solid black;
 }
 
 .table-content-name {
-    margin-top:8px;
     color: #F0EB66;
 }
 
 .table-middle {
-    width: 100%;
-    height: 70%;
+    /*width: 100%;*/
+    /*height: 70%;*/
     background-color: white;
     overflow-x:hidden;
     overflow-y:scroll;
 }
 
 .table-middle-wrap {
-    height: 15%;
+    /*height: 15%;*/
     display: flex;
 }
 
 .table-content-name-1 {
-    margin-top:5px;
+    /*margin-top:5px;*/
 }
 
 .table-bottom {
     display: flex;
-    height: 15%;
+    /*height: 15%;*/
     background-color: #757575;
 }
 
 .table-content-4 {
     text-align: center;
-    width: 52%;
+    /*width: 52%;*/
     border: 1px solid black;
 }
 
 .table-content-5 {
     text-align: center;
-    width: 23.3%;
+    /*width: 23.3%;*/
     border: 1px solid black;
 }
 
 .top-line {
     display: flex;
-    width: 100%;
-    height: 20%;
-    margin-left:110px;
+    /*width: 100%;*/
+    /*height: 20%;*/
+    /*margin-left:110px;*/
 }
 
 .button-wrap {
-    margin-left: 11px;
-    margin-top: 10px;
+    /*margin-left: 11px;*/
+    /*margin-top: 10px;*/
 }
 
 .top-line-button {
-    width: 50px;
-    height: 50px;
+    /*width: 50px;*/
+    /*height: 50px;*/
     border-radius: 5px;
     background-color: white;
     border:none;
@@ -111,183 +127,183 @@
 }
 
 .top-line-button-2 {
-    width: 50px;
-    height: 50px;
+    /*width: 50px;*/
+    /*height: 50px;*/
     border-radius: 5px;
     background-color: white;
     border:none;
     font-weight: bold;
-    font-size: 12px;
+    /*font-size: 12px;*/
 }
 
 .input-wrap {
-    margin-left: 90px;
-    margin-top: 10px;
+    /*margin-left: 90px;*/
+    /*margin-top: 10px;*/
 }
 
 .top-line-input {
-    width: 310px;
-    height: 45px;
+    /*width: 310px;*/
+    /*height: 45px;*/
     border-radius: 5px;
 }
 
 .bottom-line {
     display: flex;
-    height: 80%;
-    margin-left: 100px;
+    /*height: 80%;*/
+    /*margin-left: 100px;*/
 }
 
 .price {
-    margin-left: 10px;
-    margin-top: 10px;
+    /*margin-left: 10px;*/
+    /*margin-top: 10px;*/
     background-color: #464A6B;
-    width: 37%;
-    height: 90%;
+    /*width: 37%;*/
+    /*height: 90%;*/
     border-radius: 5px;
 }
 
 .price-title {
-    margin-left: 10px;
-    margin-top: 10px;
-    font-size: 30px;
+    /*margin-left: 10px;*/
+    /*margin-top: 10px;*/
+    /*font-size: 30px;*/
     color: white;
 }
 
 .price-value {
     float: right;
-    margin-right: 20px;
-    font-size: 30px;
+    /*margin-right: 20px;*/
+    /*font-size: 30px;*/
     color: white;
 }
 
 .span-wrap {
-    width: 100%;
-    margin-top: 15px;
-    margin-left: 5px;
+    /*width: 100%;*/
+    /*margin-top: 15px;*/
+    /*margin-left: 5px;*/
 }
 
 .line {
-    margin-top: 15px;
-    margin-left: 25px;
-    width: 85%;
-    height: 1px;
+    /*margin-top: 15px;*/
+    /*margin-left: 25px;*/
+    /*width: 85%;*/
+    /*height: 1px;*/
     background-color: #A7A7A7;
 }
 
 .line-2 {
-    margin-top: 7px;
-    margin-left: 25px;
-    width: 85%;
-    height: 1px;
+    /*margin-top: 7px;*/
+    /*margin-left: 25px;*/
+    /*width: 85%;*/
+    /*height: 1px;*/
     background-color: #A7A7A7;
 }
 
 .line-3 {
-    margin-top: 15px;
-    width: 100%;
-    height: 1px;
+    /*margin-top: 15px;*/
+    /*width: 100%;*/
+    /*height: 1px;*/
     background-color: grey;
 }
 
 .discount {
-    margin-left: 80px;
-    margin-top: 10px;
+    /*margin-left: 80px;*/
+    /*margin-top: 10px;*/
     background-color: #464A6B;
-    width: 37%;
-    height: 90%;
+    /*width: 37%;*/
+    /*height: 90%;*/
     border-radius: 5px;
     display: block;
 }
 
 .discount-title {
-    margin-left: 20px;
-    margin-top: 10px;
-    font-size: 20px;
+    /*margin-left: 20px;*/
+    /*margin-top: 10px;*/
+    /*font-size: 20px;*/
     color: white;
 }
 
 .discount-button {
     display: flex;
-    margin-left: 25px;
-    margin-top: 7px;
+    /*margin-left: 25px;*/
+    /*margin-top: 7px;*/
 }
 
 .discount-top-left-title {
     display: flex;
-    width: 45%;
-    height: 7%;
+    /*width: 45%;*/
+    /*height: 7%;*/
     background-color: #5C5E8A;
     border: 1px solid black;
     cursor:pointer;
 }
 
 .discount-top-left-title-1 {
-    margin-left: 13px;
-    font-size: 35px;
+    /*margin-left: 13px;*/
+    /*font-size: 35px;*/
     color: #D4AA6C;
 }
 
 .discount-top-left-title-2 {
-    margin-left: 10px;
-    margin-top: 13px;
+    /*margin-left: 10px;*/
+    /*margin-top: 13px;*/
     color: #D4AA6C;
-    font-size: 17px;
+    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-3 {
-    margin-left: 13px;
-    font-size: 35px;
+    /*margin-left: 13px;*/
+    /*font-size: 35px;*/
     color: white;
 }
 
 .discount-top-left-title-4 {
-    margin-left: 10px;
-    margin-top: 13px;
+    /*margin-left: 10px;*/
+    /*margin-top: 13px;*/
     color: white;
-    font-size: 17px;
+    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-5 {
-    margin-left: 20px;
-    margin-top: 13px;
+    /*margin-left: 20px;*/
+    /*margin-top: 13px;*/
     color: #D4AA6C;
-    font-size: 17px;
+    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-6 {
-    margin-left: 20px;
-    margin-top: 13px;
+    /*margin-left: 20px;*/
+    /*margin-top: 13px;*/
     color: white;
-    font-size: 17px;
+    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-7 {
-    margin-left: 16px;
-    margin-top: 13px;
+    /*margin-left: 16px;*/
+    /*margin-top: 13px;*/
     color: #D4AA6C;
-    font-size: 17px;
-    padding-bottom: 10px;
+    /*font-size: 17px;*/
+    /*padding-bottom: 10px;*/
 }
 
 .discount-top-left-title-8 {
-    margin-left: 16px;
-    margin-top: 13px;
+    /*margin-left: 16px;*/
+    /*margin-top: 13px;*/
     color: white;
-    font-size: 17px;
+    /*font-size: 17px;*/
     padding-bottom: 10px;
 }
 
 .category {
     display: flex;
-    width: 100%;
-    height: 15%;
+    /*width: 100%;*/
+    /*height: 15%;*/
 }
 
 .category-content {
-    margin-left: 40px;
-    margin-top: 20px;
-    width: 12%;
-    height: 75%;
+    /*margin-left: 40px;*/
+    /*margin-top: 20px;*/
+    /*width: 12%;*/
+    /*height: 75%;*/
     background-color: #464A6B;
     border-radius: 5px;
     cursor:pointer;
@@ -295,22 +311,22 @@
 
 .category-content-write {
     text-align: center;
-    padding-top: 14px;
-    font-size: 30px;
+    /*padding-top: 14px;*/
+    /*font-size: 30px;*/
     color:white;
 }
 
 .menu {
     display: flex;
-    width: 100%;
-    height: 15%;
+    /*width: 100%;*/
+    /*height: 15%;*/
 }
 
 .menu-content {
-    margin-left: 40px;
-    margin-top: 20px;
-    width: 12%;
-    height: 75%;
+    /*margin-left: 40px;*/
+    /*margin-top: 20px;*/
+    /*width: 12%;*/
+    /*height: 75%;*/
     border-radius: 5px;
     cursor:pointer;
     background-color: white;
@@ -318,32 +334,32 @@
 
 .menu-content-write {
     text-align: center;
-    padding-top: 5%;
-    font-size: 12px;
+    /*padding-top: 5%;*/
+    /*font-size: 12px;*/
     pointer-events : none;
 }
 
 .menu-name {
-    margin-top:10px;
+    /*margin-top:10px;*/
     pointer-events : none;
 }
 
 .menu-price {
-    margin-top:10px;
+    /*margin-top:10px;*/
     pointer-events : none;
 }
 
 .right-button {
     display: flex;
-    width: 100%;
-    height: 15%;
+    /*width: 100%;*/
+    /*height: 15%;*/
 }
 
 .right-button-detail {
-    margin-left: 40px;
-    margin-top: 20px;
-    width: 12%;
-    height: 75%;
+    /*margin-left: 40px;*/
+    /*margin-top: 20px;*/
+    /*width: 12%;*/
+    /*height: 75%;*/
     border-radius: 5px;
     cursor:pointer;
     background-color: #757575;
@@ -351,19 +367,19 @@
 
 .button-content-write {
     text-align: center;
-    padding-top: 20px;
-    font-size: 20px;
+    /*padding-top: 20px;*/
+    /*font-size: 20px;*/
     color: white;
     font-weight: bold;
 }
 
 .button-content-write-1 {
-    width: 100%;
-    height: 100%;
+    /*width: 100%;*/
+    /*height: 100%;*/
     border-radius: 5px;
     border: none;
     background-color: #757575;
-    font-size: 20px;
+    /*font-size: 20px;*/
     color: white;
     font-weight: bold;
     cursor:pointer;

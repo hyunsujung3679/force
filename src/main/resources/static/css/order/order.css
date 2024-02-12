@@ -34,7 +34,9 @@ section {
 }
 
 .top-left-main {
+    position:relative;
     height: 50%;
+    background-color: white;
 }
 
 .bottom-left-main {
@@ -56,13 +58,13 @@ section {
 
 .table-content-2 {
     text-align: center;
-    /*width: 30%;*/
+    width: 30%;
     border: 1px solid black;
 }
 
 .table-content-3 {
     text-align: center;
-    /*width: 12%;*/
+    width: 11.8%;
     border: 1px solid black;
 }
 
@@ -71,239 +73,222 @@ section {
 }
 
 .table-middle {
-    /*width: 100%;*/
-    /*height: 70%;*/
     background-color: white;
-    overflow-x:hidden;
-    overflow-y:scroll;
 }
 
 .table-middle-wrap {
-    /*height: 15%;*/
     display: flex;
-}
-
-.table-content-name-1 {
-    /*margin-top:5px;*/
 }
 
 .table-bottom {
     display: flex;
-    /*height: 15%;*/
+    width: 100%;
+    position: absolute;
+    bottom: 0;
     background-color: #757575;
 }
 
 .table-content-4 {
     text-align: center;
-    /*width: 52%;*/
+    width: 51.9%;
     border: 1px solid black;
 }
 
 .table-content-5 {
     text-align: center;
-    /*width: 23.3%;*/
+    width: 23.7%;
     border: 1px solid black;
 }
 
 .top-line {
     display: flex;
-    /*width: 100%;*/
-    /*height: 20%;*/
-    /*margin-left:110px;*/
+    width: 100%;
+    height: 20%;
 }
 
 .button-wrap {
-    /*margin-left: 11px;*/
-    /*margin-top: 10px;*/
+    width: 11%;
+    margin-left: 1.5%;
+    margin-top: 1.5%;
 }
 
 .top-line-button {
-    /*width: 50px;*/
-    /*height: 50px;*/
+    width: 100%;
+    height: 100%;
     border-radius: 5px;
     background-color: white;
     border:none;
     font-weight: bold;
+    font-size: 100%;
+    cursor:pointer;
 }
 
 .top-line-button-2 {
-    /*width: 50px;*/
-    /*height: 50px;*/
+    width: 120%;
+    height: 100%;
     border-radius: 5px;
     background-color: white;
     border:none;
     font-weight: bold;
-    /*font-size: 12px;*/
+    font-size: 100%;
+    cursor:pointer;
 }
 
 .input-wrap {
-    /*margin-left: 90px;*/
-    /*margin-top: 10px;*/
+    margin-left: 4%;
+    margin-top: 1.5%;
+    width:30%;
 }
 
 .top-line-input {
-    /*width: 310px;*/
-    /*height: 45px;*/
+    width: 50%;
+    height: 90%;
     border-radius: 5px;
+    font-size:150%;
 }
 
 .bottom-line {
     display: flex;
-    /*height: 80%;*/
-    /*margin-left: 100px;*/
+    height: 50%;
+    margin-top: 1.5%;
+    margin-left:  1.5%;
 }
 
 .price {
-    /*margin-left: 10px;*/
-    /*margin-top: 10px;*/
+    padding-top: 1%;
+    padding-left: 1%;
     background-color: #464A6B;
-    /*width: 37%;*/
-    /*height: 90%;*/
+    width: 47.5%;
     border-radius: 5px;
 }
 
 .price-title {
-    /*margin-left: 10px;*/
-    /*margin-top: 10px;*/
-    /*font-size: 30px;*/
+    margin-left: 3%;
+    font-size: 120%;
     color: white;
 }
 
 .price-value {
     float: right;
-    /*margin-right: 20px;*/
-    /*font-size: 30px;*/
+    margin-right: 3%;
+    font-size: 120%;
     color: white;
 }
 
 .span-wrap {
-    /*width: 100%;*/
-    /*margin-top: 15px;*/
-    /*margin-left: 5px;*/
+    margin-top: 5%;
 }
 
 .line {
-    /*margin-top: 15px;*/
-    /*margin-left: 25px;*/
-    /*width: 85%;*/
-    /*height: 1px;*/
+    margin-top: 2%;
+    margin-left: 3%;
+    width: 95%;
+    height: 1px;
     background-color: #A7A7A7;
 }
 
 .line-2 {
-    /*margin-top: 7px;*/
-    /*margin-left: 25px;*/
-    /*width: 85%;*/
-    /*height: 1px;*/
+    margin-top: 2%;
+    margin-left: 6%;
+    width: 85%;
+    height: 1px;
     background-color: #A7A7A7;
 }
 
 .line-3 {
-    /*margin-top: 15px;*/
-    /*width: 100%;*/
-    /*height: 1px;*/
+    margin-top: 3%;
+    width: 100%;
+    height: 1px;
     background-color: grey;
 }
 
 .discount {
-    /*margin-left: 80px;*/
-    /*margin-top: 10px;*/
+    margin-left: 2%;
     background-color: #464A6B;
-    /*width: 37%;*/
-    /*height: 90%;*/
+    width: 47.5%;
     border-radius: 5px;
     display: block;
 }
 
 .discount-title {
-    /*margin-left: 20px;*/
-    /*margin-top: 10px;*/
-    /*font-size: 20px;*/
+    margin-left: 5%;
+    margin-top: 3%;
+    font-size: 100%;
     color: white;
 }
 
 .discount-button {
     display: flex;
-    /*margin-left: 25px;*/
-    /*margin-top: 7px;*/
+    margin-left: 5%;
+    margin-top: 2%;
 }
 
 .discount-top-left-title {
     display: flex;
-    /*width: 45%;*/
-    /*height: 7%;*/
+    justify-content: center;
+    width: 45%;
     background-color: #5C5E8A;
     border: 1px solid black;
     cursor:pointer;
 }
 
 .discount-top-left-title-1 {
-    /*margin-left: 13px;*/
-    /*font-size: 35px;*/
+    font-size: 150%;
     color: #D4AA6C;
 }
 
 .discount-top-left-title-2 {
-    /*margin-left: 10px;*/
-    /*margin-top: 13px;*/
+    margin-left: 5%;
+    margin-top: 3%;
     color: #D4AA6C;
-    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-3 {
-    /*margin-left: 13px;*/
-    /*font-size: 35px;*/
+    font-size: 150%;
     color: white;
 }
 
 .discount-top-left-title-4 {
-    /*margin-left: 10px;*/
-    /*margin-top: 13px;*/
+    margin-left: 5%;
+    margin-top: 3%;
     color: white;
-    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-5 {
-    /*margin-left: 20px;*/
-    /*margin-top: 13px;*/
+    margin-left: 7%;
+    margin-top: 3%;
     color: #D4AA6C;
-    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-6 {
-    /*margin-left: 20px;*/
-    /*margin-top: 13px;*/
+    margin-left: 7%;
+    margin-top: 3%;
     color: white;
-    /*font-size: 17px;*/
 }
 
 .discount-top-left-title-7 {
-    /*margin-left: 16px;*/
-    /*margin-top: 13px;*/
+    margin-top: 3%;
     color: #D4AA6C;
-    /*font-size: 17px;*/
-    /*padding-bottom: 10px;*/
+    padding-bottom: 3%;
 }
 
 .discount-top-left-title-8 {
-    /*margin-left: 16px;*/
-    /*margin-top: 13px;*/
+    margin-top: 3%;
     color: white;
-    /*font-size: 17px;*/
-    padding-bottom: 10px;
+    padding-bottom: 3%;
 }
 
 .category {
     display: flex;
-    /*width: 100%;*/
-    /*height: 15%;*/
+    width: 100%;
+    height: 10%;
 }
 
 .category-content {
-    /*margin-left: 40px;*/
-    /*margin-top: 20px;*/
-    /*width: 12%;*/
-    /*height: 75%;*/
+    margin-left: 4%;
+    margin-top: 2%;
+    width: 12%;
+    height: 75%;
     background-color: #464A6B;
     border-radius: 5px;
     cursor:pointer;
@@ -311,22 +296,20 @@ section {
 
 .category-content-write {
     text-align: center;
-    /*padding-top: 14px;*/
-    /*font-size: 30px;*/
+    padding-top: 15%;
     color:white;
 }
 
 .menu {
     display: flex;
-    /*width: 100%;*/
-    /*height: 15%;*/
+    width: 100%;
+    height: 10%;
 }
 
 .menu-content {
-    /*margin-left: 40px;*/
-    /*margin-top: 20px;*/
-    /*width: 12%;*/
-    /*height: 75%;*/
+    margin-left: 4%;
+    margin-top: 2%;
+    width: 12%;
     border-radius: 5px;
     cursor:pointer;
     background-color: white;
@@ -334,32 +317,30 @@ section {
 
 .menu-content-write {
     text-align: center;
-    /*padding-top: 5%;*/
-    /*font-size: 12px;*/
+    padding-top: 5%;
+    font-size: 70%;
     pointer-events : none;
 }
 
 .menu-name {
-    /*margin-top:10px;*/
     pointer-events : none;
 }
 
 .menu-price {
-    /*margin-top:10px;*/
     pointer-events : none;
 }
 
 .right-button {
     display: flex;
-    /*width: 100%;*/
-    /*height: 15%;*/
+    width: 100%;
+    height: 10%;
 }
 
 .right-button-detail {
-    /*margin-left: 40px;*/
-    /*margin-top: 20px;*/
-    /*width: 12%;*/
-    /*height: 75%;*/
+    margin-left: 4%;
+    margin-top: 2%;
+    width: 12%;
+    height: 75%;
     border-radius: 5px;
     cursor:pointer;
     background-color: #757575;
@@ -367,20 +348,19 @@ section {
 
 .button-content-write {
     text-align: center;
-    /*padding-top: 20px;*/
-    /*font-size: 20px;*/
+    padding-top: 20%;
     color: white;
     font-weight: bold;
 }
 
 .button-content-write-1 {
-    /*width: 100%;*/
-    /*height: 100%;*/
+    width: 100%;
+    height: 100%;
     border-radius: 5px;
     border: none;
     background-color: #757575;
-    /*font-size: 20px;*/
     color: white;
+    font-size:100%;
     font-weight: bold;
     cursor:pointer;
 }

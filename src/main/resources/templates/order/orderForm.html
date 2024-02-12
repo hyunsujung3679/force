@@ -40,25 +40,25 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         <div class="table-middle">
                             <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}" onclick="">
                                 <div class="table-content-1">
-                                    <div class="table-content-name-1" th:text="${order.orderSeqInt}"></div>
+                                    <div th:text="${order.orderSeqInt}"></div>
                                 </div>
                                 <div class="table-content-2">
-                                    <div class="table-content-name-1" th:text="${order.menuName}"></div>
+                                    <div th:text="${order.menuName}"></div>
                                 </div>
                                 <div class="table-content-3">
-                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.salePrice, 0, 'COMMA')}"></div>
+                                    <div th:text="${#numbers.formatInteger(order.salePrice, 0, 'COMMA')}"></div>
                                 </div>
                                 <div class="table-content-3">
-                                    <div class="table-content-name-1" th:text="${order.quantity}"></div>
+                                    <div th:text="${order.quantity}"></div>
                                 </div>
                                 <div class="table-content-3">
-                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA')}"></div>
+                                    <div th:text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA')}"></div>
                                 </div>
                                 <div class="table-content-3">
-                                    <div class="table-content-name-1" th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
+                                    <div th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
                                 </div>
                                 <div class="table-content-3">
-                                    <div class="table-content-name-1" th:text="${order.etc}"></div>
+                                    <div th:text="${order.etc}"></div>
                                 </div>
                             </div>
                         </div>

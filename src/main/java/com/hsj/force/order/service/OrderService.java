@@ -37,8 +37,9 @@ public class OrderService {
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
         int totalSalePrice = 0;
-        for(OrderDTO order : orderList) {
-            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+        for(int i = 0; i < orderList.size(); i++) {
+            OrderDTO order = orderList.get(i);
+            order.setNo(String.valueOf(i + 1));
             totalQuantity += order.getQuantity();
             totalDiscountPrice += order.getDiscountPrice();
             totalSalePrice += order.getTotalSalePrice();
@@ -94,9 +95,9 @@ public class OrderService {
             order.setDiscountPrice(0);
             order.setOrderStatusNo("OS001");
 
-            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
-            order.setMenuName(menu.getMenuName());
-            order.setEtc("");
+//            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+//            order.setMenuName(menu.getMenuName());
+//            order.setEtc("");
 
             result = orderMapper.insertOrder(order);
         } else {
@@ -110,19 +111,28 @@ public class OrderService {
 
     public List<OrderDTO> selectOrderList(String storeNo, String tableNo) {
         List<OrderDTO> orderList = orderMapper.selectOrderList(storeNo, tableNo);
-        for(OrderDTO order : orderList) {
-            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
+
+        for(int i = 0; i < orderList.size(); i++) {
+            OrderDTO order = orderList.get(i);
+            order.setNo(String.valueOf(i + 1));
             order.setEtc("");
         }
         return orderList;
     }
 
-    public int updateOrderStatus(User loginMember, String tableNo) {
+    public int completeOrder(User loginMember, String tableNo) {
         OrderDTO order = new OrderDTO();
         order.setStoreNo(loginMember.getStoreNo());
         order.setTableNo(tableNo);
         order.setOrderStatusNo("OS003");
         order.setModifyId(loginMember.getUserId());
-        return orderMapper.updateOrderStatus(order);
+        return orderMapper.updateOrderStatusV1(order);
+    }
+
+    public int cancelSelection(User loginMember, OrderDTO order) {
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setOrderStatusNo("OS002");
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateOrderStatusV2(order);
     }
 }

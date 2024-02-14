@@ -41,15 +41,15 @@ public class OrderController {
         return "order/orderForm";
     }
 
-    @PostMapping("/{tableNo}")
-    public String completeOrder(@PathVariable String tableNo,
+    @PostMapping("/complete")
+    public String completeOrder(String tableNo,
                                 HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
-        orderService.updateOrderStatus(loginMember, tableNo);
+        orderService.completeOrder(loginMember, tableNo);
         return "redirect:/table";
     }
 
-    @PostMapping
+    @PostMapping("/save")
     @ResponseBody
     public int saveOrder(HttpSession session, @RequestBody OrderDTO order) {
         User loginMember = (User) session.getAttribute("loginMember");
@@ -62,6 +62,13 @@ public class OrderController {
                                           HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return orderService.selectOrderList(loginMember.getStoreNo(), tableNo);
+    }
+
+    @PostMapping("/cancel/selection")
+    @ResponseBody
+    public int cancelSelection(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.cancelSelection(loginMember, order);
     }
 
 }

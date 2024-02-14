@@ -54,18 +54,21 @@ section {
     text-align: center;
     width: 10%;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .table-content-2 {
     text-align: center;
     width: 30%;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .table-content-3 {
     text-align: center;
     width: 11.8%;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .table-content-name {
@@ -366,5 +369,9 @@ section {
 }
 
 .menu-color {
+    background-color: #8AD2F9;
+}
+
+.order-color {
     background-color: #8AD2F9;
 }

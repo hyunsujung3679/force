@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login/login.css}">
-    <script></script>
+    <script th:inline="javascript" th:src="@{/js/login/login.js}"></script>
 </head>
 <body>
 
@@ -33,7 +33,7 @@
             </div>
             <div class="login-save-find">
                 <label class="login-save-wrap">
-                    <input type="checkbox">
+                    <input type="checkbox" id="idSaveCheck">
                     <p th:text="#{label.id.save}"></p>
                 </label>
             </div>

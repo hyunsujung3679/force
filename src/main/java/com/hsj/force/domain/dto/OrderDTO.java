@@ -10,12 +10,13 @@ import java.util.*;
 @Data
 public class OrderDTO extends Order {
 
+    private String menuNo;
     private String menuName;
     private CommonLayoutDTO commonLayoutForm;
     private List<Category> categoryList;
     private List<MenuDTO> menuList;
     private List<OrderDTO> orderList;
-    private int orderSeqInt;
+    private String no;
     private String etc;
     private OrderTotalDTO orderTotal;
 

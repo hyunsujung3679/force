@@ -8,7 +8,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <body>
 
     <section>
-        <form class="form" th:action method="post">
+        <form class="form" action="/order/complete" method="post">
             <input type="hidden" class="table-no" name="tableNo" th:value="${tableNo}">
 
             <div class="main">
@@ -38,9 +38,11 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                             </div>
                         </div>
                         <div class="table-middle">
-                            <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}" onclick="">
+                            <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}">
+                                <input type="hidden" id="order-no" th:value="${order.orderNo}">
+                                <input type="hidden" id="menu-no" th:value="${order.menuNo}">
                                 <div class="table-content-1">
-                                    <div th:text="${order.orderSeqInt}"></div>
+                                    <div th:text="${order.no}"></div>
                                 </div>
                                 <div class="table-content-2">
                                     <div th:text="${order.menuName}"></div>
@@ -83,7 +85,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                 <button type="submit" class="top-line-button">전체취소</button>
                             </div>
                             <div class="button-wrap">
-                                <button type="submit" class="top-line-button">선택취소</button>
+                                <button type="button" class="top-line-button" onclick="cancelSelection();">선택취소</button>
                             </div>
                             <div class="button-wrap">
                                 <button type="submit" class="top-line-button">수량변경</button>
@@ -194,7 +196,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     </div>
                     <div class="line-3"></div>
                     <div class="right-button">
-                        <div class="right-button-detail" onclick="insertOrder();">
+                        <div class="right-button-detail" onclick="saveOrder();">
                             <div class="button-content-write">주문</div>
                         </div>
                         <div class="right-button-detail">

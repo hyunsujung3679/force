@@ -9,11 +9,13 @@
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{tableNo}
            AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
     <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
+             , M.MENU_NO
              , M.MENU_NAME
              , O.SALE_PRICE
              , O.QUANTITY
@@ -24,6 +26,7 @@
          WHERE O.MENU_NO = M.MENU_NO
            AND O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{tableNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
     <select id="selectOrderNo" resultType="String">
@@ -103,13 +106,23 @@
            AND O.MENU_NO = #{menuNo}
     </update>
 
-    <update id="updateOrderStatus">
+    <update id="updateOrderStatusV1">
         UPDATE TORDER O
            SET O.ORDER_STATUS_NO = #{orderStatusNo}
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{tableNo}
+    </update>
+
+    <update id="updateOrderStatusV2">
+        UPDATE TORDER O
+        SET O.ORDER_STATUS_NO = #{orderStatusNo}
+          , O.MODIFY_ID = #{modifyId}
+          , O.MODIFY_DATE = NOW()
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.TABLE_NO = #{tableNo}
+          AND O.MENU_NO = #{menuNo}
     </update>
 
 </mapper>

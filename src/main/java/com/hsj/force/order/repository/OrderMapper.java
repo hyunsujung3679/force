@@ -22,5 +22,7 @@ public interface OrderMapper {
 
     int updateOrder(OrderDTO order);
 
-    int updateOrderStatus(OrderDTO order);
+    int updateOrderStatusV1(OrderDTO order);
+
+    int updateOrderStatusV2(OrderDTO order);
 }

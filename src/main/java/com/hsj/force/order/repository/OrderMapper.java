@@ -25,4 +25,18 @@ public interface OrderMapper {
     int updateOrderStatusV1(OrderDTO order);
 
     int updateOrderStatusV2(OrderDTO order);
+
+    int updateOrderStatusV3(OrderDTO order);
+
+    int updateQuantity(OrderDTO order);
+
+    int updateSalePrice(OrderDTO order);
+
+    String selectServiceYn(OrderDTO order);
+
+    int selectTotalSalePrice(OrderDTO order);
+
+    int updateService(OrderDTO order);
+
+
 }

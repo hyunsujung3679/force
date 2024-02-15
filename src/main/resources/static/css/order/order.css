@@ -148,6 +148,7 @@ section {
     height: 90%;
     border-radius: 5px;
     font-size:150%;
+    text-align: right;
 }
 
 .bottom-line {

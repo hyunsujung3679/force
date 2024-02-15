@@ -16,13 +16,11 @@ function selectMenuListByCategoryNo(div) {
 
                 html += '<div class="menu-content">';
                 html +=     '<div class="menu-content-write">';
-                html +=         '<input type="hidden" id="menu-no-1">'
+                html +=         '<input type="hidden" name="menu-no-1">'
                 html +=         '<div class="menu-name">' + data[index].menuName + '</div>';
                 html +=         '<div class="menu-price">' + data[index].salePrice.toLocaleString() + '</div>';
                 html +=     '</div>'
                 html += '</div>'
-
-                $("#menu-no-1").val(data[index].menuNo);
 
                 if(index < 6) {
                     $("#menu-1").append(html);
@@ -31,6 +29,10 @@ function selectMenuListByCategoryNo(div) {
                 } else if(index >= 12 && index < 18) {
                     $("#menu-3").append(html);
                 }
+            }
+
+            for(let index in data) {
+                $("input[name=menu-no-1]").eq(index).val(data[index].menuNo);
             }
 
             const nonClickMenu = document.querySelectorAll(".menu-content");
@@ -56,6 +58,7 @@ function selectMenuListByCategoryNo(div) {
 $(function() {
     const nonClickMenu = document.querySelectorAll(".menu-content");
     const nonClickOrder = document.querySelectorAll(".table-middle-wrap");
+    const inputValue = document.querySelector('.top-line-input');
 
     function handleMenuClick(event) {
         nonClickMenu.forEach((e) => {
@@ -78,13 +81,25 @@ $(function() {
     nonClickOrder.forEach((e) => {
         e.addEventListener("click", handleMenuOrder);
     });
+
+    inputValue.addEventListener('keyup', function(e) {
+        let value = e.target.value;
+        value = Number(value.replaceAll(',', ''));
+        if(isNaN(value)) {         //NaN인지 판별
+            inputValue.value = 0;
+        }else {                   //NaN이 아닌 경우
+            const formatValue = value.toLocaleString('ko-KR');
+            inputValue.value = formatValue;
+        }
+    })
 })
 
 function saveOrder() {
 
+    const orderNo = $("input[name=order-no]").eq(0).val();
     const menuNo = $(".menu-color").children().children().eq(0).val();
     const tableNo = $(".table-no").val();
-    const parameter = {menuNo : menuNo ,tableNo : tableNo};
+    const parameter = {orderNo : orderNo, menuNo : menuNo ,tableNo : tableNo};
 
     $.ajax({
         url: "/order/save",
@@ -128,6 +143,102 @@ function cancelSelection() {
     });
 }
 
+function cancelWhole() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/cancel/whole",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                $(".table-middle").html("");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function quantityChange() {
+    const orderNo = $(".order-color").children().eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const quantity = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, quantityStr : quantity, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/change/quantity",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function quantitySalePrice() {
+    const orderNo = $(".order-color").children().eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const salePrice = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, salePriceStr : salePrice, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/change/salePrice",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function service() {
+    const orderNo = $(".order-color").children().eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/service",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
 function selectOrderList() {
 
     const tableNo = $(".table-no").val();
@@ -146,8 +257,8 @@ function selectOrderList() {
             for(let index in data) {
                 let html = "";
                 html += '<div class="table-middle-wrap">'
-                html +=     '<input type="hidden" id="order-no">'
-                html +=     '<input type="hidden" id="menu-no">'
+                html +=     '<input type="hidden" name="order-no">'
+                html +=     '<input type="hidden" name="menu-no">'
                 html +=     '<div class="table-content-1">'
                 html +=         '<div class="table-content-name-1">' + data[index].no + '</div>'
                 html +=     '</div>'
@@ -176,8 +287,10 @@ function selectOrderList() {
                 totalSalePrice += data[index].totalSalePrice;
 
                 $(".table-middle").append(html);
-                $("#order-no").val(data[index].orderNo);
-                $("#menu-no").val(data[index].menoNo);
+            }
+            for(let index in data) {
+                $("input[name=order-no]").eq(index).val(data[index].orderNo);
+                $("input[name=menu-no]").eq(index).val(data[index].menuNo);
             }
             $("#total-quantity").text(totalQuantity);
             $("#total-discount-price").text(totalDiscountPrice.toLocaleString());

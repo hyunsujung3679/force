@@ -102,6 +102,7 @@
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
            AND O.TABLE_NO = #{tableNo}
            AND O.MENU_NO = #{menuNo}
     </update>
@@ -112,6 +113,7 @@
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
            AND O.TABLE_NO = #{tableNo}
     </update>
 
@@ -121,8 +123,76 @@
           , O.MODIFY_ID = #{modifyId}
           , O.MODIFY_DATE = NOW()
         WHERE O.STORE_NO = #{storeNo}
+          AND O.ORDER_NO = #{orderNo}
           AND O.TABLE_NO = #{tableNo}
           AND O.MENU_NO = #{menuNo}
     </update>
 
+    <update id="updateOrderStatusV3">
+        UPDATE TORDER O
+        SET O.ORDER_STATUS_NO = #{orderStatusNo}
+          , O.MODIFY_ID = #{modifyId}
+          , O.MODIFY_DATE = NOW()
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.ORDER_NO = #{orderNo}
+          AND O.TABLE_NO = #{tableNo}
+          AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
+
+    <update id="updateQuantity">
+        UPDATE TORDER O
+        SET O.QUANTITY = #{quantity}
+          , O.MODIFY_ID = #{modifyId}
+          , O.MODIFY_DATE = NOW()
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.ORDER_NO = #{orderNo}
+          AND O.TABLE_NO = #{tableNo}
+          AND O.MENU_NO = #{menuNo}
+          AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
+
+    <update id="updateSalePrice">
+        UPDATE TORDER O
+        SET O.SALE_PRICE = #{salePrice}
+          , O.MODIFY_ID = #{modifyId}
+          , O.MODIFY_DATE = NOW()
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.ORDER_NO = #{orderNo}
+          AND O.TABLE_NO = #{tableNo}
+          AND O.MENU_NO = #{menuNo}
+          AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
+
+    <select id="selectServiceYn" resultType="String">
+        SELECT O.SERVICE_YN
+          FROM TORDER O
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
+
+    <select id="selectTotalSalePrice" resultType="int">
+        SELECT O.TOTAL_SALE_PRICE
+          FROM TORDER O
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
+
+    <update id="updateService">
+        UPDATE TORDER O
+           SET O.DISCOUNT_PRICE = #{discountPrice}
+             , O.SERVICE_YN = '1'
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
 </mapper>

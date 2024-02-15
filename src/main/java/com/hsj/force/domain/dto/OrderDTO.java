@@ -19,5 +19,7 @@ public class OrderDTO extends Order {
     private String no;
     private String etc;
     private OrderTotalDTO orderTotal;
+    private String salePriceStr;
+    private String quantityStr;
 
 }

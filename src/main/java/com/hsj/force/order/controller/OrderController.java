@@ -71,4 +71,32 @@ public class OrderController {
         return orderService.cancelSelection(loginMember, order);
     }
 
+    @PostMapping("/cancel/whole")
+    @ResponseBody
+    public int cancelWhole(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.cancelWhole(loginMember, order);
+    }
+
+    @PostMapping("/change/quantity")
+    @ResponseBody
+    public int changeQuantity(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.changeQuantity(loginMember, order);
+    }
+
+    @PostMapping("/change/salePrice")
+    @ResponseBody
+    public int changeSalePrice(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.changeSalePrice(loginMember, order);
+    }
+
+    @PostMapping("/service")
+    @ResponseBody
+    public int service(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.service(loginMember, order);
+    }
+
 }

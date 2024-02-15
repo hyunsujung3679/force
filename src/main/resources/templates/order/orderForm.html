@@ -39,8 +39,8 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         </div>
                         <div class="table-middle">
                             <div class="table-middle-wrap" th:each="order, orderStat : ${orderList}">
-                                <input type="hidden" id="order-no" th:value="${order.orderNo}">
-                                <input type="hidden" id="menu-no" th:value="${order.menuNo}">
+                                <input type="hidden" name="order-no" th:value="${order.orderNo}">
+                                <input type="hidden" name="menu-no" th:value="${order.menuNo}">
                                 <div class="table-content-1">
                                     <div th:text="${order.no}"></div>
                                 </div>
@@ -82,22 +82,22 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div class="bottom-left-main">
                         <div class="top-line">
                             <div class="button-wrap">
-                                <button type="submit" class="top-line-button">전체취소</button>
+                                <button type="button" class="top-line-button" onclick="cancelWhole();">전체취소</button>
                             </div>
                             <div class="button-wrap">
                                 <button type="button" class="top-line-button" onclick="cancelSelection();">선택취소</button>
                             </div>
                             <div class="button-wrap">
-                                <button type="submit" class="top-line-button">수량변경</button>
+                                <button type="button" class="top-line-button" onclick="quantityChange();">수량변경</button>
                             </div>
                             <div class="button-wrap">
-                                <button type="submit" class="top-line-button">단가변경</button>
+                                <button type="button" class="top-line-button" onclick="quantitySalePrice();">단가변경</button>
                             </div>
                             <div class="button-wrap">
-                                <button type="submit" class="top-line-button-2">서비스</button>
+                                <button type="button" class="top-line-button-2" onclick="service();">서비스</button>
                             </div>
                             <div class="input-wrap">
-                                <input type="text" class="top-line-input">
+                                <input type="text" name="inputValue" class="top-line-input" value="0">
                             </div>
                         </div>
                         <div class="bottom-line">

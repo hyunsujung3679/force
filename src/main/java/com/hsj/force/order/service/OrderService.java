@@ -79,10 +79,7 @@ public class OrderService {
         MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
 
         if(quantity == null) {
-            String orderNo = orderMapper.selectOrderNo(order);
-            String orderSeq = orderMapper.selectOrderSeq(orderNo);
-
-            order.setOrderNo(orderNo);
+            String orderSeq = orderMapper.selectOrderSeq(order.getOrderNo());
             order.setOrderSeq(ComUtils.getNextSeq(orderSeq));
             order.setSalePrice(menu.getSalePrice());
             order.setQuantity(1);
@@ -94,10 +91,6 @@ public class OrderService {
             order.setServiceYn("0");
             order.setDiscountPrice(0);
             order.setOrderStatusNo("OS001");
-
-//            order.setOrderSeqInt(Integer.parseInt(order.getOrderSeq()));
-//            order.setMenuName(menu.getMenuName());
-//            order.setEtc("");
 
             result = orderMapper.insertOrder(order);
         } else {
@@ -134,5 +127,42 @@ public class OrderService {
         order.setOrderStatusNo("OS002");
         order.setModifyId(loginMember.getUserId());
         return orderMapper.updateOrderStatusV2(order);
+    }
+
+    public int cancelWhole(User loginMember, OrderDTO order) {
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setOrderStatusNo("OS002");
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateOrderStatusV3(order);
+    }
+
+    public int changeQuantity(User loginMember, OrderDTO order) {
+        order.setQuantity(Integer.parseInt(order.getQuantityStr().replaceAll(",", "")));
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateQuantity(order);
+    }
+
+    public int changeSalePrice(User loginMember, OrderDTO order) {
+        order.setSalePrice(Integer.parseInt(order.getSalePriceStr().replaceAll(",", "")));
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateSalePrice(order);
+    }
+
+    public int service(User loginMember, OrderDTO order) {
+        order.setStoreNo(loginMember.getStoreNo());
+        String serviceYn = orderMapper.selectServiceYn(order);
+        int totalSalePrice = 0;
+        if("0".equals(serviceYn)) {
+            serviceYn = "1";
+        } else {
+            serviceYn = "0";
+            totalSalePrice = orderMapper.selectTotalSalePrice(order);
+        }
+        order.setServiceYn(serviceYn);
+        order.setDiscountPrice(totalSalePrice);
+        order.setModifyId(loginMember.getUserId());
+        return orderMapper.updateService(order);
     }
 }

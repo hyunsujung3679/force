@@ -91,7 +91,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                 <button type="button" class="top-line-button" onclick="quantityChange();">수량변경</button>
                             </div>
                             <div class="button-wrap">
-                                <button type="button" class="top-line-button" onclick="SalePriceChange();">단가변경</button>
+                                <button type="button" class="top-line-button" onclick="salePriceChange();">단가변경</button>
                             </div>
                             <div class="button-wrap">
                                 <button type="button" class="top-line-button-2" onclick="service();">서비스</button>
@@ -125,13 +125,13 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                         <div class="discount-top-left-title-1">%</div>
                                         <div class="discount-top-left-title-2">전체할인</div>
                                     </div>
-                                    <div class="discount-top-left-title">
+                                    <div class="discount-top-left-title" onclick="selPer();">
                                         <div class="discount-top-left-title-3">%</div>
                                         <div class="discount-top-left-title-4">선택할인</div>
                                     </div>
                                 </div>
                                 <div class="discount-button">
-                                    <div class="discount-top-left-title">
+                                    <div class="discount-top-left-title" onclick="fullPrice();">
                                         <div class="discount-top-left-title-1">$</div>
                                         <div class="discount-top-left-title-5">전체할인</div>
                                     </div>
@@ -141,7 +141,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                     </div>
                                 </div>
                                 <div class="discount-button">
-                                    <div class="discount-top-left-title">
+                                    <div class="discount-top-left-title" onclick="fullCancel();">
                                         <div class="discount-top-left-title-7">전체할인취소</div>
                                     </div>
                                     <div class="discount-top-left-title">

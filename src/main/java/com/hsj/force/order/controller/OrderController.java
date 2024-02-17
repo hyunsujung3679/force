@@ -106,4 +106,25 @@ public class OrderController {
         return orderService.discountFullPer(loginMember, order);
     }
 
+    @PostMapping("/discount/full/price")
+    @ResponseBody
+    public int discountFullPrice(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountFullPrice(loginMember, order);
+    }
+
+    @PostMapping("/discount/full/cancel")
+    @ResponseBody
+    public int discountFullCancel(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountFullCancel(loginMember, order);
+    }
+
+    @PostMapping("/discount/sel/per")
+    @ResponseBody
+    public int discountSelPer(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountSelPer(loginMember, order);
+    }
+
 }

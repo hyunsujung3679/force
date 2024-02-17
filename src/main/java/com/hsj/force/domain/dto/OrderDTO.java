@@ -21,5 +21,8 @@ public class OrderDTO extends Order {
     private OrderTotalDTO orderTotal;
     private String salePriceStr;
     private String quantityStr;
+    private String percentStr;
+    private int percent;
+    private String discountPriceStr;
 
 }

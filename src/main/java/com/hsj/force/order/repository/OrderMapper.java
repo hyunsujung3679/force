@@ -39,4 +39,12 @@ public interface OrderMapper {
     int selectSalePrice(OrderDTO order);
 
     List<OrderDTO> selectOrderInfoList(OrderDTO order);
+
+    int updateDiscountFullPer(OrderDTO orderInfo);
+
+    int updateDiscountFullPrice(OrderDTO orderInfo);
+
+    int updateDiscountFullCancel(OrderDTO orderInfo);
+
+    int updateDiscountSelPer(OrderDTO orderInfo);
 }

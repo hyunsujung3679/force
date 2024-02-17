@@ -193,7 +193,7 @@ function quantityChange() {
     });
 }
 
-function SalePriceChange() {
+function salePriceChange() {
     const orderNo = $(".order-color").children().eq(0).val();
     const menuNo = $(".order-color").children().eq(1).val();
     const salePrice = $("input[name=inputValue]").val();
@@ -318,13 +318,87 @@ function selectOrderList() {
 }
 
 function fullPer() {
-    const orderNo = $(".order-color").children().eq(0).val();
-    const percent = $("input[name=inputValue]").val();
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const percentStr = $("input[name=inputValue]").val();
     const tableNo = $(".table-no").val();
-    const parameter = {orderNo : orderNo, percent : percent, tableNo : tableNo};
+    const parameter = {orderNo : orderNo, percentStr : percentStr, tableNo : tableNo};
 
     $.ajax({
         url: "/order/discount/full/per",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function fullPrice() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const discountPriceStr = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, discountPriceStr : discountPriceStr, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/full/price",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function fullCancel() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/full/cancel",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function selPer() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const percentStr = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, percentStr : percentStr, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/sel/per",
         type: "post",
         data: JSON.stringify(parameter),
         dataType : "json",

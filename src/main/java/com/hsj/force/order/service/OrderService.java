@@ -16,6 +16,8 @@ import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import java.time.LocalDateTime;
@@ -202,10 +204,11 @@ public class OrderService {
         order.setStoreNo(loginMember.getStoreNo());
 
         OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if(orderInfo == null ) return 0;
         if("0".equals(orderInfo.getServiceYn())) {
             order.setTotalSalePrice(0);
             order.setServiceYn("1");
-            order.setDiscountPrice(orderInfo.getTotalSalePrice());
+            order.setDiscountPrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
         } else {
             order.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
             order.setServiceYn("0");
@@ -216,12 +219,113 @@ public class OrderService {
     }
 
     public int discountFullPer(User loginMember, OrderDTO order) {
+        int count = 0;
+        int percent = 0;
+        try {
+            percent = Integer.parseInt(order.getPercentStr().replaceAll(",", ""));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+        if(percent > 100) {
+            percent = 100;
+        } else if(percent == 0) {
+            return 1;
+        }
         order.setStoreNo(loginMember.getStoreNo());
 
-//        List<OrderDTO> orderInfo = orderMapper.selectOrderInfoList(order);
-//        if("0".equals(orderInfo.getFullPerYn())) {
-//
-//        }
-        return 0;
+        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(OrderDTO orderInfo : orderInfoList) {
+            orderInfo.setOrderNo(order.getOrderNo());
+            orderInfo.setStoreNo(order.getStoreNo());
+            orderInfo.setTableNo(order.getTableNo());
+            orderInfo.setFullPerYn("1");
+            orderInfo.setDiscountPrice(orderInfo.getSalePrice() * orderInfo.getQuantity() * percent / 100);
+            orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
+            orderInfo.setModifyId(loginMember.getUserId());
+            count += orderMapper.updateDiscountFullPer(orderInfo);
+        }
+
+        if(orderInfoList.size() == count) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public int discountFullPrice(User loginMember, OrderDTO order) {
+        int count = 0;
+        int discountSalePrice = 0;
+        try {
+            discountSalePrice = Integer.parseInt(order.getDiscountPriceStr().replaceAll(",", ""));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+        if(discountSalePrice == 0) return 1;
+        order.setStoreNo(loginMember.getStoreNo());
+
+        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(OrderDTO orderInfo : orderInfoList) {
+            orderInfo.setOrderNo(order.getOrderNo());
+            orderInfo.setStoreNo(order.getStoreNo());
+            orderInfo.setTableNo(order.getTableNo());
+            if(discountSalePrice > orderInfo.getSalePrice() * orderInfo.getQuantity()) {
+                discountSalePrice = orderInfo.getSalePrice() * orderInfo.getQuantity();
+            }
+            orderInfo.setFullPriceYn("1");
+            orderInfo.setDiscountPrice(discountSalePrice);
+            orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
+            orderInfo.setModifyId(loginMember.getUserId());
+            count += orderMapper.updateDiscountFullPrice(orderInfo);
+        }
+
+        if(orderInfoList.size() == count) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public int discountFullCancel(User loginMember, OrderDTO order) {
+        int count = 0;
+        order.setStoreNo(loginMember.getStoreNo());
+
+        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(OrderDTO orderInfo : orderInfoList) {
+            if("1".equals(orderInfo.getFullPerYn()) || "1".equals(orderInfo.getFullPriceYn())) {
+                orderInfo.setOrderNo(order.getOrderNo());
+                orderInfo.setStoreNo(order.getStoreNo());
+                orderInfo.setTableNo(order.getTableNo());
+                orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
+                orderInfo.setModifyId(loginMember.getUserId());
+                count += orderMapper.updateDiscountFullCancel(orderInfo);
+            }
+        }
+        return count;
+    }
+
+    public int discountSelPer(User loginMember, OrderDTO order) {
+        int percent = 0;
+        try {
+            percent = Integer.parseInt(order.getPercentStr().replaceAll(",", ""));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+        if(percent > 100) {
+            percent = 100;
+        } else if(percent == 0) {
+            return 1;
+        }
+        order.setStoreNo(loginMember.getStoreNo());
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if(orderInfo == null)  return 0;
+        orderInfo.setOrderNo(order.getOrderNo());
+        orderInfo.setMenuNo(order.getMenuNo());
+        orderInfo.setStoreNo(order.getStoreNo());
+        orderInfo.setTableNo(order.getTableNo());
+        orderInfo.setSelPerYn("1");
+        orderInfo.setDiscountPrice(orderInfo.getSalePrice() * orderInfo.getQuantity() * percent / 100);
+        orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
+        orderInfo.setModifyId(loginMember.getUserId());
+        return orderMapper.updateDiscountSelPer(orderInfo);
     }
 }

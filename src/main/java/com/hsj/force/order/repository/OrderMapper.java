@@ -32,11 +32,11 @@ public interface OrderMapper {
 
     int updateSalePrice(OrderDTO order);
 
-    String selectServiceYn(OrderDTO order);
-
-    int selectTotalSalePrice(OrderDTO order);
-
     int updateService(OrderDTO order);
 
+    OrderDTO selectOrderInfo(OrderDTO order);
 
+    int selectSalePrice(OrderDTO order);
+
+    List<OrderDTO> selectOrderInfoList(OrderDTO order);
 }

@@ -14,6 +14,7 @@ import com.hsj.force.domain.dto.OrderTotalDTO;
 import com.hsj.force.menu.repository.MenuMapper;
 import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -27,6 +28,7 @@ public class OrderService {
     private final MenuMapper menuMapper;
     private final CategoryMapper categoryMapper;
     private final OrderMapper orderMapper;
+    private final MessageSource messageSource;
 
     public OrderDTO selectOrderInfo(User loginMember, String tableNo) {
 
@@ -40,6 +42,21 @@ public class OrderService {
         for(int i = 0; i < orderList.size(); i++) {
             OrderDTO order = orderList.get(i);
             order.setNo(String.valueOf(i + 1));
+
+            if("1".equals(order.getFullPriceYn())) {
+                order.setEtc(messageSource.getMessage("word.full.price",null, null));
+            } else if("1".equals(order.getFullPerYn())) {
+                order.setEtc(messageSource.getMessage("word.full.per",null, null));
+            } else if("1".equals(order.getSelPriceYn())) {
+                order.setEtc(messageSource.getMessage("word.sel.price",null, null));
+            } else if("1".equals(order.getSelPerYn())) {
+                order.setEtc(messageSource.getMessage("word.sel.per",null, null));
+            } else if("1".equals(order.getServiceYn())) {
+                order.setEtc(messageSource.getMessage("word.service",null, null));
+            } else {
+                order.setEtc("");
+            }
+
             totalQuantity += order.getQuantity();
             totalDiscountPrice += order.getDiscountPrice();
             totalSalePrice += order.getTotalSalePrice();
@@ -72,6 +89,8 @@ public class OrderService {
         int result = 0;
 
         order.setStoreNo(loginMember.getStoreNo());
+        String orderNo = orderMapper.selectOrderNo(order);
+        order.setOrderNo(orderNo);
         order.setInsertId(loginMember.getUserId());
         order.setModifyId(loginMember.getUserId());
 
@@ -108,7 +127,20 @@ public class OrderService {
         for(int i = 0; i < orderList.size(); i++) {
             OrderDTO order = orderList.get(i);
             order.setNo(String.valueOf(i + 1));
-            order.setEtc("");
+
+            if("1".equals(order.getFullPriceYn())) {
+                order.setEtc(messageSource.getMessage("word.full.price",null, null));
+            } else if("1".equals(order.getFullPerYn())) {
+                order.setEtc(messageSource.getMessage("word.full.per",null, null));
+            } else if("1".equals(order.getSelPriceYn())) {
+                order.setEtc(messageSource.getMessage("word.sel.price",null, null));
+            } else if("1".equals(order.getSelPerYn())) {
+                order.setEtc(messageSource.getMessage("word.sel.per",null, null));
+            } else if("1".equals(order.getServiceYn())) {
+                order.setEtc(messageSource.getMessage("word.service",null, null));
+            } else {
+                order.setEtc("");
+            }
         }
         return orderList;
     }
@@ -137,32 +169,59 @@ public class OrderService {
     }
 
     public int changeQuantity(User loginMember, OrderDTO order) {
-        order.setQuantity(Integer.parseInt(order.getQuantityStr().replaceAll(",", "")));
         order.setStoreNo(loginMember.getStoreNo());
+        order.setQuantity(Integer.parseInt(order.getQuantityStr().replaceAll(",", "")));
+
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if("1".equals(orderInfo.getServiceYn())) {
+            order.setDiscountPrice(orderInfo.getSalePrice() * order.getQuantity());
+            order.setTotalSalePrice(0);
+        } else {
+            order.setTotalSalePrice(orderInfo.getSalePrice() * order.getQuantity());
+        }
         order.setModifyId(loginMember.getUserId());
         return orderMapper.updateQuantity(order);
     }
 
     public int changeSalePrice(User loginMember, OrderDTO order) {
-        order.setSalePrice(Integer.parseInt(order.getSalePriceStr().replaceAll(",", "")));
         order.setStoreNo(loginMember.getStoreNo());
+        order.setSalePrice(Integer.parseInt(order.getSalePriceStr().replaceAll(",", "")));
+
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if("1".equals(orderInfo.getServiceYn())) {
+            order.setDiscountPrice(order.getSalePrice() * orderInfo.getQuantity());
+            order.setTotalSalePrice(0);
+        } else {
+            order.setTotalSalePrice(order.getSalePrice() * orderInfo.getQuantity());
+        }
         order.setModifyId(loginMember.getUserId());
         return orderMapper.updateSalePrice(order);
     }
 
     public int service(User loginMember, OrderDTO order) {
         order.setStoreNo(loginMember.getStoreNo());
-        String serviceYn = orderMapper.selectServiceYn(order);
-        int totalSalePrice = 0;
-        if("0".equals(serviceYn)) {
-            serviceYn = "1";
+
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if("0".equals(orderInfo.getServiceYn())) {
+            order.setTotalSalePrice(0);
+            order.setServiceYn("1");
+            order.setDiscountPrice(orderInfo.getTotalSalePrice());
         } else {
-            serviceYn = "0";
-            totalSalePrice = orderMapper.selectTotalSalePrice(order);
+            order.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
+            order.setServiceYn("0");
+            order.setDiscountPrice(0);
         }
-        order.setServiceYn(serviceYn);
-        order.setDiscountPrice(totalSalePrice);
         order.setModifyId(loginMember.getUserId());
         return orderMapper.updateService(order);
+    }
+
+    public int discountFullPer(User loginMember, OrderDTO order) {
+        order.setStoreNo(loginMember.getStoreNo());
+
+//        List<OrderDTO> orderInfo = orderMapper.selectOrderInfoList(order);
+//        if("0".equals(orderInfo.getFullPerYn())) {
+//
+//        }
+        return 0;
     }
 }

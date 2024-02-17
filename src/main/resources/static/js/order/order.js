@@ -96,10 +96,9 @@ $(function() {
 
 function saveOrder() {
 
-    const orderNo = $("input[name=order-no]").eq(0).val();
     const menuNo = $(".menu-color").children().children().eq(0).val();
     const tableNo = $(".table-no").val();
-    const parameter = {orderNo : orderNo, menuNo : menuNo ,tableNo : tableNo};
+    const parameter = {menuNo : menuNo ,tableNo : tableNo};
 
     $.ajax({
         url: "/order/save",
@@ -157,6 +156,9 @@ function cancelWhole() {
         success: function(data) {
             if(data > 0) {
                 $(".table-middle").html("");
+                $("#total-quantity").text(0);
+                $("#total-discount-price").text(0);
+                $("#total-sale-price").text(0);
             }
         },
         error: function(xhr) {
@@ -182,6 +184,7 @@ function quantityChange() {
             if(data > 0) {
                 selectOrderList();
                 $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
             }
         },
         error: function(xhr) {
@@ -190,7 +193,7 @@ function quantityChange() {
     });
 }
 
-function quantitySalePrice() {
+function SalePriceChange() {
     const orderNo = $(".order-color").children().eq(0).val();
     const menuNo = $(".order-color").children().eq(1).val();
     const salePrice = $("input[name=inputValue]").val();
@@ -207,6 +210,7 @@ function quantitySalePrice() {
             if(data > 0) {
                 selectOrderList();
                 $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
             }
         },
         error: function(xhr) {
@@ -306,6 +310,31 @@ function selectOrderList() {
             nonClickOrder.forEach((e) => {
                 e.addEventListener("click", handleMenuOrder);
             });
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function fullPer() {
+    const orderNo = $(".order-color").children().eq(0).val();
+    const percent = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, percent : percent, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/full/per",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
+            }
         },
         error: function(xhr) {
             console.log(xhr);

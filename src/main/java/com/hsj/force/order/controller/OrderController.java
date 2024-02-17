@@ -99,4 +99,11 @@ public class OrderController {
         return orderService.service(loginMember, order);
     }
 
+    @PostMapping("/discount/full/per")
+    @ResponseBody
+    public int discountFullPer(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountFullPer(loginMember, order);
+    }
+
 }

@@ -21,6 +21,11 @@
              , O.QUANTITY
              , O.DISCOUNT_PRICE
              , O.TOTAL_SALE_PRICE
+             , O.FULL_PRICE_YN
+             , O.FULL_PER_YN
+             , O.SEL_PRICE_YN
+             , O.SEL_PER_YN
+             , O.SERVICE_YN
           FROM TORDER O
              , TMENU M
          WHERE O.MENU_NO = M.MENU_NO
@@ -141,40 +146,41 @@
 
     <update id="updateQuantity">
         UPDATE TORDER O
-        SET O.QUANTITY = #{quantity}
-          , O.MODIFY_ID = #{modifyId}
-          , O.MODIFY_DATE = NOW()
-        WHERE O.STORE_NO = #{storeNo}
-          AND O.ORDER_NO = #{orderNo}
-          AND O.TABLE_NO = #{tableNo}
-          AND O.MENU_NO = #{menuNo}
-          AND O.ORDER_STATUS_NO = 'OS001'
+           SET O.QUANTITY = #{quantity}
+             , O.DISCOUNT_PRICE = #{discountPrice}
+             , O.TOTAL_SALE_PRICE = #{totalSalePrice}
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+           WHERE O.STORE_NO = #{storeNo}
+             AND O.ORDER_NO = #{orderNo}
+             AND O.TABLE_NO = #{tableNo}
+             AND O.MENU_NO = #{menuNo}
+             AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateSalePrice">
         UPDATE TORDER O
-        SET O.SALE_PRICE = #{salePrice}
-          , O.MODIFY_ID = #{modifyId}
-          , O.MODIFY_DATE = NOW()
-        WHERE O.STORE_NO = #{storeNo}
-          AND O.ORDER_NO = #{orderNo}
-          AND O.TABLE_NO = #{tableNo}
-          AND O.MENU_NO = #{menuNo}
-          AND O.ORDER_STATUS_NO = 'OS001'
-    </update>
-
-    <select id="selectServiceYn" resultType="String">
-        SELECT O.SERVICE_YN
-          FROM TORDER O
+           SET O.SALE_PRICE = #{salePrice}
+             , O.DISCOUNT_PRICE = #{discountPrice}
+             , O.TOTAL_SALE_PRICE = #{totalSalePrice}
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
            AND O.ORDER_NO = #{orderNo}
            AND O.TABLE_NO = #{tableNo}
            AND O.MENU_NO = #{menuNo}
            AND O.ORDER_STATUS_NO = 'OS001'
-    </select>
+    </update>
 
-    <select id="selectTotalSalePrice" resultType="int">
-        SELECT O.TOTAL_SALE_PRICE
+    <select id="selectOrderInfo" resultType="com.hsj.force.domain.dto.OrderDTO">
+        SELECT O.FULL_PRICE_YN
+             , O.FULL_PER_YN
+             , O.SEL_PRICE_YN
+             , O.SEL_PER_YN
+             , O.SERVICE_YN
+             , O.SALE_PRICE
+             , O.QUANTITY
+             , O.TOTAL_SALE_PRICE
           FROM TORDER O
          WHERE O.STORE_NO = #{storeNo}
            AND O.ORDER_NO = #{orderNo}
@@ -186,7 +192,12 @@
     <update id="updateService">
         UPDATE TORDER O
            SET O.DISCOUNT_PRICE = #{discountPrice}
-             , O.SERVICE_YN = '1'
+             , O.TOTAL_SALE_PRICE = #{totalSalePrice}
+             , O.FULL_PRICE_YN = '0'
+             , O.FULL_PER_YN = '0'
+             , O.SEL_PRICE_YN = '0'
+             , O.SEL_PER_YN = '0'
+             , O.SERVICE_YN = #{serviceYn}
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
@@ -195,4 +206,29 @@
            AND O.TABLE_NO = #{tableNo}
            AND O.ORDER_STATUS_NO = 'OS001'
     </update>
+
+    <select id="selectSalePrice" resultType="int">
+        SELECT O.SALE_PRICE
+          FROM TORDER O
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
+
+    <select id="selectOrderInfoList" resultType="com.hsj.force.domain.dto.OrderDTO">
+        SELECT O.FULL_PRICE_YN
+             , O.FULL_PER_YN
+             , O.SEL_PRICE_YN
+             , O.SEL_PER_YN
+             , O.SERVICE_YN
+             , O.SALE_PRICE
+             , O.QUANTITY
+             , O.TOTAL_SALE_PRICE
+        FROM TORDER O
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.ORDER_NO = #{orderNo}
+          AND O.TABLE_NO = #{tableNo}
+          AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
 </mapper>

@@ -39,6 +39,7 @@
           FROM TORDER O
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO =  #{tableNo}
+         ORDER BY O.ORDER_NO DESC
          LIMIT 1
     </select>
 
@@ -118,8 +119,8 @@
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
-           AND O.ORDER_NO = #{orderNo}
            AND O.TABLE_NO = #{tableNo}
+           AND 0.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateOrderStatusV2">
@@ -269,7 +270,7 @@
           AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
-    <update id="updateDiscountFullCancel">
+    <update id="updateDiscountCancel">
         UPDATE TORDER O
            SET O.DISCOUNT_PRICE = '0'
              , O.TOTAL_SALE_PRICE = #{totalSalePrice}
@@ -304,4 +305,36 @@
           AND O.TABLE_NO = #{tableNo}
           AND O.ORDER_STATUS_NO = 'OS001'
     </update>
+
+    <update id="updateDiscountSelPrice">
+        UPDATE TORDER O
+           SET O.DISCOUNT_PRICE = #{discountPrice}
+             , O.TOTAL_SALE_PRICE = #{totalSalePrice}
+             , O.FULL_PRICE_YN = '0'
+             , O.FULL_PER_YN = '0'
+             , O.SEL_PRICE_YN = #{selPriceYn}
+             , O.SEL_PER_YN = '0'
+             , O.SERVICE_YN = '0'
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
+
+    <select id="selectOrderStatusNoList" resultType="String">
+        SELECT O.ORDER_STATUS_NO
+          FROM TORDER O
+         WHERE O.ORDER_NO = #{orderNo}
+    </select>
+
+    <select id="selectLastOrderNo" resultType="String">
+        SELECT O.ORDER_NO
+          FROM TORDER O
+         ORDER BY O.ORDER_NO DESC
+         LIMIT 1
+    </select>
+
 </mapper>

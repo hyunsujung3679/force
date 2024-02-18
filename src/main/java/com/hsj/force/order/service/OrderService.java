@@ -92,7 +92,14 @@ public class OrderService {
 
         order.setStoreNo(loginMember.getStoreNo());
         String orderNo = orderMapper.selectOrderNo(order);
-        order.setOrderNo(orderNo);
+        List<String> orderStatusNoList = orderMapper.selectOrderStatusNoList(orderNo);
+        boolean isNew = orderStatusNoList.stream().anyMatch(value -> !value.equals("OS001"));
+        if(isNew) {
+            String lastOrderNo = orderMapper.selectLastOrderNo();
+            order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
+        } else {
+            order.setOrderNo(orderNo);
+        }
         order.setInsertId(loginMember.getUserId());
         order.setModifyId(loginMember.getUserId());
 
@@ -297,7 +304,7 @@ public class OrderService {
                 orderInfo.setTableNo(order.getTableNo());
                 orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
                 orderInfo.setModifyId(loginMember.getUserId());
-                count += orderMapper.updateDiscountFullCancel(orderInfo);
+                count += orderMapper.updateDiscountCancel(orderInfo);
             }
         }
         return count;
@@ -327,5 +334,47 @@ public class OrderService {
         orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
         orderInfo.setModifyId(loginMember.getUserId());
         return orderMapper.updateDiscountSelPer(orderInfo);
+    }
+
+    public int discountSelPrice(User loginMember, OrderDTO order) {
+        int discountSalePrice = 0;
+        try {
+            discountSalePrice = Integer.parseInt(order.getDiscountPriceStr().replaceAll(",", ""));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
+        if(discountSalePrice == 0) return 1;
+        order.setStoreNo(loginMember.getStoreNo());
+
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        orderInfo.setOrderNo(order.getOrderNo());
+        orderInfo.setMenuNo(order.getMenuNo());
+        orderInfo.setStoreNo(order.getStoreNo());
+        orderInfo.setTableNo(order.getTableNo());
+        if(discountSalePrice > orderInfo.getSalePrice() * orderInfo.getQuantity()) {
+            discountSalePrice = orderInfo.getSalePrice() * orderInfo.getQuantity();
+        }
+        orderInfo.setSelPriceYn("1");
+        orderInfo.setDiscountPrice(discountSalePrice);
+        orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
+        orderInfo.setModifyId(loginMember.getUserId());
+        return orderMapper.updateDiscountSelPrice(orderInfo);
+    }
+
+    public int discountSelCancel(User loginMember, OrderDTO order) {
+        int count = 0;
+        order.setStoreNo(loginMember.getStoreNo());
+
+        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if("1".equals(orderInfo.getSelPerYn()) || "1".equals(orderInfo.getSelPriceYn())) {
+            orderInfo.setOrderNo(order.getOrderNo());
+            orderInfo.setMenuNo(order.getMenuNo());
+            orderInfo.setStoreNo(order.getStoreNo());
+            orderInfo.setTableNo(order.getTableNo());
+            orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity());
+            orderInfo.setModifyId(loginMember.getUserId());
+            count = orderMapper.updateDiscountCancel(orderInfo);
+        }
+        return count;
     }
 }

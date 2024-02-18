@@ -9,8 +9,9 @@ public class OpenSaveDTO {
 
     private String openCloseNo;
     private String openCloseSeq;
-    private String openMoney;
+    private int openMoney;
     private String insertId;
     private String modifyId;
+    private String openMoneyStr;
 
 }

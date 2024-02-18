@@ -127,4 +127,17 @@ public class OrderController {
         return orderService.discountSelPer(loginMember, order);
     }
 
+    @PostMapping("/discount/sel/price")
+    @ResponseBody
+    public int discountSelPrice(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountSelPrice(loginMember, order);
+    }
+
+    @PostMapping("/discount/sel/cancel")
+    @ResponseBody
+    public int discountSelCancel(HttpSession session, @RequestBody OrderDTO order) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return orderService.discountSelCancel(loginMember, order);
+    }
 }

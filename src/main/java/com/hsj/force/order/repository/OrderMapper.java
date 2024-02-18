@@ -44,7 +44,13 @@ public interface OrderMapper {
 
     int updateDiscountFullPrice(OrderDTO orderInfo);
 
-    int updateDiscountFullCancel(OrderDTO orderInfo);
+    int updateDiscountCancel(OrderDTO orderInfo);
 
     int updateDiscountSelPer(OrderDTO orderInfo);
+
+    int updateDiscountSelPrice(OrderDTO orderInfo);
+
+    List<String> selectOrderStatusNoList(String orderNo);
+
+    String selectLastOrderNo();
 }

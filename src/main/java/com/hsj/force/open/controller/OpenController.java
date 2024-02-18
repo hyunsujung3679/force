@@ -46,19 +46,17 @@ public class OpenController {
 
     @PostMapping
     public String open(@ModelAttribute OpenSaveDTO open,
-                       BindingResult bindingResult,
                        HttpSession session) {
-
-        if(bindingResult.hasErrors()) {
-            return "open/openForm";
-        }
-
         User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
-        open.setOpenMoney(open.getOpenMoney().replaceAll(",", ""));
+        try {
+            open.setOpenMoney(Integer.parseInt(open.getOpenMoneyStr().replaceAll(",", "")));
+        } catch (NumberFormatException e) {
+            return "redirect:/open";
+        }
         open.setInsertId(user.getUserId());
         open.setModifyId(user.getUserId());
-
         openService.insertOpen(open);
+
         return "redirect:/table";
     }
 }

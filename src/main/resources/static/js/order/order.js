@@ -254,6 +254,7 @@ function selectOrderList() {
         success: function(data) {
             $(".table-middle").html("");
 
+            let totalPrice = 0;
             let totalQuantity = 0;
             let totalDiscountPrice = 0;
             let totalSalePrice = 0;
@@ -286,6 +287,7 @@ function selectOrderList() {
                 html +=     '</div>'
                 html += '</div>'
 
+                totalPrice += data[index].salePrice;
                 totalQuantity += data[index].quantity;
                 totalDiscountPrice += data[index].discountPrice;
                 totalSalePrice += data[index].totalSalePrice;
@@ -299,6 +301,9 @@ function selectOrderList() {
             $("#total-quantity").text(totalQuantity);
             $("#total-discount-price").text(totalDiscountPrice.toLocaleString());
             $("#total-sale-price").text(totalSalePrice.toLocaleString());
+            $("#total-price").text(totalPrice.toLocaleString());
+            $("#discount-price").text(totalDiscountPrice.toLocaleString());
+            $("#receive-price").text(totalSalePrice.toLocaleString());
 
             const nonClickOrder = document.querySelectorAll(".table-middle-wrap");
             function handleMenuOrder(event) {
@@ -408,6 +413,56 @@ function selPer() {
                 selectOrderList();
                 $(".menu-color").removeClass("order-color");
                 $("input[name=inputValue]").val(0);
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function selPrice() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const discountPriceStr = $("input[name=inputValue]").val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, discountPriceStr : discountPriceStr, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/sel/price",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
+                $("input[name=inputValue]").val(0);
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
+}
+
+function selCancel() {
+    const orderNo = $("input[name=order-no]").eq(0).val();
+    const menuNo = $(".order-color").children().eq(1).val();
+    const tableNo = $(".table-no").val();
+    const parameter = {orderNo : orderNo, menuNo : menuNo, tableNo : tableNo};
+
+    $.ajax({
+        url: "/order/discount/sel/cancel",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("order-color");
             }
         },
         error: function(xhr) {

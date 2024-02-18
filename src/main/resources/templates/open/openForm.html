@@ -14,35 +14,35 @@
             <p class="sub-title" th:text="#{title.close.status}"></p>
             <ul class="sub-content">
                 <li>
-                    <label th:text="#{label.close.date}"></label>
+                    <label th:text="|#{label.close.date} : |"></label>
                     <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeDate, 'YYYY-MM-dd (E)')}" disabled>
                 </li>
                 <li>
-                    <label th:text="#{label.close_time}"></label>
+                    <label th:text="|#{label.close_time} : |"></label>
                     <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeTime, 'YYYY-MM-dd HH:mm')}" disabled>
                 </li>
                 <li>
-                    <label th:text="#{label.closer}"></label>
+                    <label th:text="|#{label.closer} : |"></label>
                     <input type="text" th:field="*{closer}" class="input-box-2" disabled>
                 </li>
             </ul>
             <p class="sub-title" th:text="#{title.open}"></p>
             <ul class="sub-content">
                 <li>
-                    <label th:text="#{label.system.date}"></label>
+                    <label th:text="|#{label.system.date} : |"></label>
                     <input type="text" class="input-box-2" th:value="${#temporals.format(openSaveDTO.currentDate, 'YYYY-MM-dd (E)')}" disabled>
                 </li>
                 <li>
-                    <label th:text="#{label.open.date}"></label>
+                    <label th:text="|#{label.open.date} : |"></label>
                     <input type="text" class="input-box-3" th:value="${#temporals.format(openSaveDTO.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
                     <input type="text" class="input-box-4" th:value="|${openSaveDTO.procedure}#{label.procedure}|" disabled>
                 </li>
                 <li>
-                    <label th:text="#{label.open.money}"></label>
-                    <input type="text" th:field="*{openMoney}" class="input-box-2">
+                    <label th:text="|#{label.open.money} : |"></label>
+                    <input type="text" th:field="*{openMoneyStr}" class="input-box-2">
                 </li>
                 <li>
-                    <label th:text="#{label.opener}"></label>
+                    <label th:text="|#{label.opener} : |"></label>
                     <input type="text" th:field="*{opener}" class="input-box-2" disabled>
                 </li>
             </ul>

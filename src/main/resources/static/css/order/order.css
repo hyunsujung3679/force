@@ -1,5 +1,6 @@
 html {
     height: 100%;
+    font-size: 100%;
 }
 
 body {
@@ -71,8 +72,17 @@ section {
     pointer-events : none;
 }
 
+.table-content-6 {
+    text-align: center;
+    width: 11.8%;
+    border: 1px solid black;
+    pointer-events : none;
+    font-size: 0.8rem;
+}
+
 .table-content-name {
     color: #F0EB66;
+    font-size: 1rem;
 }
 
 .table-middle {

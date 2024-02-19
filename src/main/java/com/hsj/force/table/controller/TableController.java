@@ -31,8 +31,8 @@ public class TableController {
         TableDTO tableForm = tableService.selectTableInfo(loginMember);
         model.addAttribute("header", tableForm.getCommonLayoutForm());
         model.addAttribute("tableList", tableForm.getTableList());
-        model.addAttribute("orderList", tableForm.getOrderList());
         model.addAttribute("tableTotalPriceList", tableForm.getTableTotalPriceList());
+        model.addAttribute("tableOfOrderMap", tableForm.getTableOfOrderMap());
 
         return "table/" + loginMember.getStoreNo() + "/tableForm";
     }

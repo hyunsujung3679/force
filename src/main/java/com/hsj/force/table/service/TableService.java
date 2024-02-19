@@ -26,6 +26,18 @@ public class TableService {
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         List<Table> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
         List<OrderDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
+        Map<String, List<OrderDTO>> tableOfOrderMap = new HashMap<>();
+        List<OrderDTO> tempOrderList = null;
+
+        for(Table table : tableList) {
+            tempOrderList = new ArrayList<>();
+            for(OrderDTO order : orderList) {
+                if(table.getTableNo().equals(order.getTableNo())) {
+                    tempOrderList.add(order);
+                }
+            }
+            tableOfOrderMap.put(table.getTableNo(), tempOrderList);
+        }
 
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
@@ -35,9 +47,9 @@ public class TableService {
 
         TableDTO tableForm = new TableDTO();
         tableForm.setTableList(tableList);
-        tableForm.setOrderList(orderList);
         tableForm.setCommonLayoutForm(commonLayoutForm);
         tableForm.setTableTotalPriceList(getTableTotalPriceList(tableList, orderList));
+        tableForm.setTableOfOrderMap(tableOfOrderMap);
 
         return tableForm;
     }

@@ -1,16 +1,23 @@
+/* 고객를 선택하기 위한 모달창 */
 function tableMove() {
-    const nonClickTable = document.querySelectorAll(".line-warp");
-    function handleTableClick(event) {
 
-        nonClickTable.forEach((e) => {
-            e.classList.remove("menu-color");
-        });
-        event.target.classList.add("menu-color");
+    $("#table-move-modal").modal({
+        fadeDuration: 1000,
+        fadeDelay: 0.5
+    });
 
-    }
-
-    nonClickTable.forEach((e) => {
-        e.addEventListener("click", handleTableClick);
+    $.ajax({
+        url: "/table/move/before/list",
+        type: "get",
+        success: function(data) {
+            if(data > 0) {
+                selectOrderList();
+                $(".menu-color").removeClass("menu-color");
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
     });
 
 }

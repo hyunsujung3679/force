@@ -30,5 +30,14 @@
            AND O.STORE_NO = #{storeNo}
     </select>
 
+    <select id="selectTableMoveBeforeList" resultType="table">
+        SELECT DISTINCT(T.TABLE_NO)
+             , T.TABLE_NAME
+          FROM TTABLE T
+             , TORDER O
+         WHERE T.TABLE_NO = O.TABLE_NO
+           AND T.STORE_NO = #{storeNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
 
 </mapper>

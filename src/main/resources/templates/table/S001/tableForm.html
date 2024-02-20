@@ -3,41 +3,50 @@
 xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/table/tableS001.css}">
+    <script th:inline="javascript" th:src="@{/js/table/tableS001.js}"></script>
 </head>
-<script></script>
 <body>
 
     <section class="section">
         <div class="line">
             <div class="first-line" th:if="${tableStat.index} < 3" th:each="table, tableStat : ${tableList}" th:onclick="|location.href='@{order/{param}(param=${table.tableNo})}'|">
                 <div class="table-number" th:text="${table.tableName}"></div>
-                    <div class="table-content" th:each="order : ${orderList}">
-                        <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
-                        <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
+                <th:block th:if="${table.tableNo == order.key}" th:each="order, orderStat : ${tableOfOrderMap}">
+                    <div class="table-content" th:if="${listStat.index} < 3" th:each="list, listStat : ${order.value}">
+                        <div class="table-menu" th:text="${list.menuName}"></div>
+                        <div class="table-quantity" th:text="${list.quantity}"></div>
                     </div>
+                    <div class="dot" th:if="${listStat.index} >= 3" th:each="list, listStat : ${order.value}" th:text="#{label.dot}"></div>
+                </th:block>
                 <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
-            <button class="line-button" th:text="#{button.move}"></button>
+            <button type="button" class="line-button" th:text="#{button.move}" onclick="tableMove();"></button>
             <button class="line-button" th:text="#{button.join}"></button>
             <button class="line-button" th:text="#{button.division}"></button>
         </div>
         <div class="line">
             <div class="second-line" th:if="${tableStat.index} >= 3 and ${tableStat.index} < 6" th:each="table, tableStat : ${tableList}" th:onclick="|location.href='@{order/{param}(param=${table.tableNo})}'|">
                 <div class="table-number" th:text="${table.tableName}"></div>
-                <div class="table-content" th:each="order : ${orderList}">
-                    <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
-                    <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
-                </div>
+                <th:block th:if="${table.tableNo == order.key}" th:each="order, orderStat : ${tableOfOrderMap}">
+                        <div class="table-content" th:if="${listStat.index} < 3" th:each="list, listStat : ${order.value}">
+                            <div class="table-menu" th:text="${list.menuName}"></div>
+                            <div class="table-quantity" th:text="${list.quantity}"></div>
+                        </div>
+                        <div class="dot" th:if="${listStat.index} >= 3" th:each="list, listStat : ${order.value}" th:text="#{label.dot}"></div>
+                </th:block>
                 <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
         </div>
         <div class="line">
             <div class="third-line" th:if="${tableStat.index} >= 6 and ${tableStat.index} < 9" th:each="table, tableStat : ${tableList}" th:onclick="|location.href='@{order/{param}(param=${table.tableNo})}'|">
                 <div class="table-number" th:text="${table.tableName}"></div>
-                <div class="table-content" th:each="order : ${orderList}">
-                    <div class="table-menu" th:if="${table.tableNo == order.tableNo}" th:text="${order.menuName}"></div>
-                    <div class="table-quantity" th:if="${table.tableNo == order.tableNo}" th:text="${order.quantity}"></div>
-                </div>
+                <th:block th:if="${table.tableNo == order.key}" th:each="order, orderStat : ${tableOfOrderMap}">
+                    <div class="table-content" th:if="${listStat.index} < 3" th:each="list, listStat : ${order.value}">
+                        <div class="table-menu" th:text="${list.menuName}"></div>
+                        <div class="table-quantity" th:text="${list.quantity}"></div>
+                    </div>
+                    <div class="dot" th:if="${listStat.index} >= 3" th:each="list, listStat : ${order.value}" th:text="#{label.dot}"></div>
+                </th:block>
                 <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
         </div>

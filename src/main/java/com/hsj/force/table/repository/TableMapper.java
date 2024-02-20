@@ -13,4 +13,5 @@ public interface TableMapper {
 
     List<OrderDTO> selectOrderList(String storeNo);
 
+    List<Table> selectTableMoveBeforeList(String storeNo);
 }

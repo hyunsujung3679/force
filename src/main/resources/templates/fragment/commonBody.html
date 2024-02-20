@@ -5,6 +5,9 @@
     <title>Force</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/fragment/commonBody.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
     <th:block th:replace="${links}"/>
     <th:block th:replace="${script}"/>
 </head>
@@ -44,5 +47,27 @@
         <div th:replace="${content}"></div>
     </div>
 
+    <div id="table-move-modal" class="modal">
+        <div class="top-area">
+            <div class="before-text">이동 전 테이블</div>
+            <div class="before-text">이동 후 테이블</div>
+        </div>
+        <div class="middle-area">
+           <select class="middle-area-select">
+               <option value="">옵션 1</option>
+               <option value="">옵션 2</option>
+               <option value="">옵션 3</option>
+           </select>
+           <select class="middle-area-select">
+               <option value="">옵션 1</option>
+               <option value="">옵션 2</option>
+               <option value="">옵션 3</option>
+           </select>
+        </div>
+        <div class="bottom-area">
+            <button type="button" class="bottom-button">완료</button>
+            <button type="button" class="bottom-button">취소</button>
+        </div>
+    </div>
 </body>
 </html>

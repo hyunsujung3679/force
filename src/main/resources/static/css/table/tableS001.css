@@ -107,3 +107,49 @@ html {
 .menu-color {
     background-color: #8AD2F9;
 }
+
+.modal {
+    height: 35%;
+}
+
+.top-area {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5%;
+    height: 10%;
+}
+
+.before-text {
+    font-size: 1.2rem;
+}
+
+.middle-area {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5%;
+    height: 30%;
+}
+
+.middle-area-select {
+    width: 30%;
+    height: 80%;
+}
+
+.bottom-area {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5%;
+    height: 100%;
+}
+
+.bottom-button {
+    width: 30%;
+    height: 20%;
+    background-color: #5DA4EF;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1rem;
+    border: none;
+    cursor:pointer;
+}

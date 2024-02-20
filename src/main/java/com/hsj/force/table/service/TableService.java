@@ -71,4 +71,8 @@ public class TableService {
         }
         return tableTotalPriceList;
     }
+
+    public List<Table> selectTableMoveBeforeList(String storeNo) {
+        return tableMapper.selectTableMoveBeforeList(storeNo);
+    }
 }

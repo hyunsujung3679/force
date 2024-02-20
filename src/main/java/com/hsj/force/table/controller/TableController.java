@@ -1,5 +1,6 @@
 package com.hsj.force.table.controller;
 
+import com.hsj.force.domain.Table;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.TableDTO;
 import com.hsj.force.open.service.OpenService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import java.util.*;
 @Controller
 @RequestMapping("/table")
 @RequiredArgsConstructor
@@ -35,6 +37,12 @@ public class TableController {
         model.addAttribute("tableOfOrderMap", tableForm.getTableOfOrderMap());
 
         return "table/" + loginMember.getStoreNo() + "/tableForm";
+    }
+
+    @GetMapping("/move/before/list")
+    public List<Table> selectTableMoveBeforeList(HttpSession session) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return tableService.selectTableMoveBeforeList(loginMember.getStoreNo());
     }
 
 }

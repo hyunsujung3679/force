@@ -6,7 +6,7 @@
 </head>
 <body>
 
-    <form th:action th:object="${userDTO}" method="post">
+    <form action="/login" th:object="${userDTO}" method="post">
         <div class="login-box">
             <div class="login-system-title" th:text="#{title.force}"></div>
             <div class="login-system-subtitle" th:text="#{title.sub.force}"></div>

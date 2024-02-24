@@ -30,7 +30,7 @@
            AND O.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectTableMoveBeforeList" resultType="table">
+    <select id="selectTableExistOrderList" resultType="table">
         SELECT DISTINCT(T.TABLE_NO)
              , T.TABLE_NAME
           FROM TTABLE T
@@ -38,6 +38,29 @@
          WHERE T.TABLE_NO = O.TABLE_NO
            AND T.STORE_NO = #{storeNo}
            AND O.ORDER_STATUS_NO = 'OS001'
+         ORDER BY T.TABLE_NO ASC
     </select>
+
+    <select id="selectTableNotExistOrderList" resultType="table">
+        SELECT T.TABLE_NO
+             , T.TABLE_NAME
+          FROM TTABLE T
+         WHERE NOT EXISTS (SELECT *
+                             FROM TORDER O
+                            WHERE T.TABLE_NO = O.TABLE_NO
+                              AND O.ORDER_STATUS_NO = 'OS001'
+        )
+           AND T.STORE_NO = #{storeNo}
+         ORDER BY T.TABLE_NO ASC
+    </select>
+
+    <update id="updateTableNo">
+        UPDATE TORDER O
+           SET O.TABLE_NO = #{afterTableNo}
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.TABLE_NO = #{beforeTableNo}
+    </update>
 
 </mapper>

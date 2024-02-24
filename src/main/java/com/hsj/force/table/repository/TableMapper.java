@@ -2,6 +2,7 @@ package com.hsj.force.table.repository;
 
 import com.hsj.force.domain.Table;
 import com.hsj.force.domain.dto.OrderDTO;
+import com.hsj.force.domain.dto.TableDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,5 +14,9 @@ public interface TableMapper {
 
     List<OrderDTO> selectOrderList(String storeNo);
 
-    List<Table> selectTableMoveBeforeList(String storeNo);
+    List<Table> selectTableExistOrderList(String storeNo);
+
+    List<Table> selectTableNotExistOrderList(String storeNo);
+
+    int updateTableNo(String storeNo, String afterTableNo, String beforeTableNo, String modifyId);
 }

@@ -53,21 +53,29 @@
             <div class="before-text">이동 후 테이블</div>
         </div>
         <div class="middle-area">
-           <select class="middle-area-select">
-               <option value="">옵션 1</option>
-               <option value="">옵션 2</option>
-               <option value="">옵션 3</option>
-           </select>
-           <select class="middle-area-select">
-               <option value="">옵션 1</option>
-               <option value="">옵션 2</option>
-               <option value="">옵션 3</option>
-           </select>
+           <select id="beforeTableNo" name="beforeTableNo" class="middle-area-select before-list"></select>
+           <select id="afterTableNo" name="afterTableNo" class="middle-area-select after-list"></select>
         </div>
         <div class="bottom-area">
-            <button type="button" class="bottom-button">완료</button>
-            <button type="button" class="bottom-button">취소</button>
+            <button type="button" class="bottom-button" onclick="tableMove();">완료</button>
+            <button type="button" class="bottom-button" onclick="reload();">취소</button>
         </div>
     </div>
+
+    <div id="table-combine-modal" class="modal">
+        <div class="top-area">
+            <div class="before-text">첫번째 테이블</div>
+            <div class="before-text">두번째 테이블</div>
+        </div>
+        <div class="middle-area">
+            <select id="firstTableNo" name="firstTableNo" class="middle-area-select first-list"></select>
+            <select id="secondTableNo" name="secondTableNo" class="middle-area-select second-list"></select>
+        </div>
+        <div class="bottom-area">
+            <button type="button" class="bottom-button" onclick="tableCombine();">완료</button>
+            <button type="button" class="bottom-button" onclick="reload();">취소</button>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -72,7 +72,19 @@ public class TableService {
         return tableTotalPriceList;
     }
 
-    public List<Table> selectTableMoveBeforeList(String storeNo) {
-        return tableMapper.selectTableMoveBeforeList(storeNo);
+    public List<Table> selectTableExistOrderList(String storeNo) {
+        return tableMapper.selectTableExistOrderList(storeNo);
+    }
+
+    public List<Table> selectTableNotExistOrderList(String storeNo) {
+        return tableMapper.selectTableNotExistOrderList(storeNo);
+    }
+
+    public int moveTable(User loginMember, TableDTO table) {
+        return tableMapper.updateTableNo(loginMember.getStoreNo(), table.getAfterTableNo(), table.getBeforeTableNo(), loginMember.getUserId());
+    }
+
+    public int combineTable(User loginMember, TableDTO table) {
+        return tableMapper.updateTableNo(loginMember.getStoreNo(), table.getFirstTableNo(), table.getSecondTableNo(), loginMember.getUserId());
     }
 }

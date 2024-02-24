@@ -20,8 +20,8 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 </th:block>
                 <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
-            <button type="button" class="line-button" th:text="#{button.move}" onclick="tableMove();"></button>
-            <button class="line-button" th:text="#{button.join}"></button>
+            <button type="button" class="line-button" th:text="#{button.move}" onclick="tableMovePopup();"></button>
+            <button type="button" class="line-button" th:text="#{button.join}" onclick="tableCombinePopup();"></button>
             <button class="line-button" th:text="#{button.division}"></button>
         </div>
         <div class="line">

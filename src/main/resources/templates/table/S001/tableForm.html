@@ -16,13 +16,11 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         <div class="table-menu" th:text="${list.menuName}"></div>
                         <div class="table-quantity" th:text="${list.quantity}"></div>
                     </div>
-                    <div class="dot" th:if="${listStat.index} >= 3" th:each="list, listStat : ${order.value}" th:text="#{label.dot}"></div>
                 </th:block>
                 <div class="table-price" th:if="${tableTotalPrice.tableTotalPrice != 0 and tableTotalPrice.tableNo == table.tableNo}" th:each="tableTotalPrice, tableTotalPriceStat : ${tableTotalPriceList}" th:text="${#numbers.formatInteger(tableTotalPrice.tableTotalPrice, 0, 'COMMA')}"></div>
             </div>
             <button type="button" class="line-button" th:text="#{button.move}" onclick="tableMovePopup();"></button>
             <button type="button" class="line-button" th:text="#{button.join}" onclick="tableCombinePopup();"></button>
-            <button class="line-button" th:text="#{button.division}"></button>
         </div>
         <div class="line">
             <div class="second-line" th:if="${tableStat.index} >= 3 and ${tableStat.index} < 6" th:each="table, tableStat : ${tableList}" th:onclick="|location.href='@{order/{param}(param=${table.tableNo})}'|">

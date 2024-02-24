@@ -15,11 +15,8 @@ function selectMenuListByCategoryNo(div) {
                 let html = "";
 
                 html += '<div class="menu-content">';
-                html +=     '<div class="menu-content-write">';
-                html +=         '<input type="hidden" name="menu-no-1">'
-                html +=         '<div class="menu-name">' + data[index].menuName + '</div>';
-                html +=         '<div class="menu-price">' + data[index].salePrice.toLocaleString() + '</div>';
-                html +=     '</div>'
+                html +=     '<input type="hidden" name="menu-no-1">'
+                html +=     '<button type="button" class="menu-content-button">' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
                 html += '</div>'
 
                 if(index < 6) {

@@ -99,9 +99,8 @@ function tableCombine() {
             if(data > 0) {
                 location.reload();
             } else {
-                alert("같은 번호로 합석 할 수 없습니다.")
+                $(".field-error").text($(".field-error-text").val());
             }
-
         },
         error: function(xhr) {
             console.log(xhr);

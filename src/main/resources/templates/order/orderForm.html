@@ -82,7 +82,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div class="bottom-left-main">
                         <div class="top-line">
                             <div class="button-wrap">
-                                <button type="button" class="top-line-button" onclick="cancelWhole();" th:text="#{button.cancle.whole}"></button>
+                                <button type="button" class="top-line-button" onclick="cancelWhole();" th:text="#{button.cancel.whole}"></button>
                             </div>
                             <div class="button-wrap">
                                 <button type="button" class="top-line-button" onclick="cancelSelection();" th:text="#{button.cancel.selection}"></button>
@@ -120,33 +120,17 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                             <div class="discount">
                                 <div class="discount-title" th:text="#{label.discount.processing}"></div>
                                 <div class="line-2"></div>
-                                <div class="discount-button">
-                                    <div class="discount-top-left-title" onclick="fullPer();">
-                                        <div class="discount-top-left-title-1">%</div>
-                                        <div class="discount-top-left-title-2" th:text="#{label.total.discount}"></div>
-                                    </div>
-                                    <div class="discount-top-left-title" onclick="selPer();">
-                                        <div class="discount-top-left-title-3">%</div>
-                                        <div class="discount-top-left-title-4" th:text="#{label.selection.discount}"></div>
-                                    </div>
+                                <div class="discount-button-wrap">
+                                    <button type="button" class="discount-button" onclick="fullPer();" th:text="|#{label.percent} #{label.total.discount}|"></button>
+                                    <button type="button" class="discount-button" onclick="selPer();" th:text="|#{label.percent} #{label.selection.discount}|"></button>
                                 </div>
-                                <div class="discount-button">
-                                    <div class="discount-top-left-title" onclick="fullPrice();">
-                                        <div class="discount-top-left-title-1">$</div>
-                                        <div class="discount-top-left-title-5" th:text="#{label.total.discount}"></div>
-                                    </div>
-                                    <div class="discount-top-left-title" onclick="selPrice();">
-                                        <div class="discount-top-left-title-3">$</div>
-                                        <div class="discount-top-left-title-6" th:text="#{label.selection.discount}"></div>
-                                    </div>
+                                <div class="discount-button-wrap">
+                                    <button type="button" class="discount-button" onclick="fullPrice();" th:text="|#{label.dollar} #{label.total.discount}|"></button>
+                                    <button type="button" class="discount-button" onclick="selPrice();" th:text="|#{label.dollar} #{label.selection.discount}|"></button>
                                 </div>
-                                <div class="discount-button">
-                                    <div class="discount-top-left-title" onclick="fullCancel();">
-                                        <div class="discount-top-left-title-7" th:text="#{label.total.discount.cancle}"></div>
-                                    </div>
-                                    <div class="discount-top-left-title" onclick="selCancel();">
-                                        <div class="discount-top-left-title-8" th:text="#{label.selection.discount.cancle}"></div>
-                                    </div>
+                                <div class="discount-button-wrap">
+                                    <button type="button" class="discount-button" onclick="fullCancel();" th:text="#{label.total.discount.cancle}"></button>
+                                    <button type="button" class="discount-button" onclick="selCancel();" th:text="#{label.selection.discount.cancle}"></button>
                                 </div>
                             </div>
                         </div>
@@ -157,53 +141,44 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div class="category">
                         <div class="category-content" th:if="${categoryStat.index} < 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
                             <input type="hidden" th:value="${category.categoryNo}">
-                            <div class="category-content-write" th:text="${category.categoryName}"></div>
+                            <button type="button" class="category-content-button" th:text="${category.categoryName}"></button>
                         </div>
                     </div>
                     <div class="category">
                         <div class="category-content" th:if="${categoryStat.index} >= 6" th:each="category, categoryStat : ${categoryList}" onclick="selectMenuListByCategoryNo(this);">
                             <input type="hidden" th:value="${category.categoryNo}">
-                            <div class="category-content-write" th:text="${category.categoryName}"></div>
+                            <button type="button" class="category-content-button" th:text="${category.categoryName}"></button>
                         </div>
                     </div>
                     <div class="line-3"></div>
                     <div id="menu-1" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}">
-                            <div class="menu-content-write">
-                                <input type="hidden" th:value="${menu.menuNo}">
-                                <div class="menu-name" th:text="${menu.menuName}"></div>
-                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                            </div>
+                            <input type="hidden" th:value="${menu.menuNo}">
+                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
                         </div>
                     </div>
                     <div id="menu-2" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}">
-                            <div class="menu-content-write">
-                                <input type="hidden" th:value="${menu.menuNo}">
-                                <div class="menu-name" th:text="${menu.menuName}"></div>
-                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                            </div>
+                            <input type="hidden" th:value="${menu.menuNo}">
+                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
                         </div>
                     </div>
                     <div id="menu-3" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
-                            <div class="menu-content-write">
-                                <input type="hidden" th:value="${menu.menuNo}">
-                                <div class="menu-name" th:text="${menu.menuName}"></div>
-                                <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
-                            </div>
+                            <input type="hidden" th:value="${menu.menuNo}">
+                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
                         </div>
                     </div>
                     <div class="line-3"></div>
                     <div class="right-button">
                         <div class="right-button-detail" onclick="saveOrder();">
-                            <div class="button-content-write" th:text="#{button.order}"></div>
+                            <button type="button" class="button-content-write-1" th:text="#{button.order}"></button>
                         </div>
                         <div class="right-button-detail">
                             <button type="submit" class="button-content-write-1" th:text="#{button.payment}"></button>
                         </div>
                         <div class="right-button-detail" th:onclick="|location.href='@{/table}'|">
-                            <div class="button-content-write" th:text="#{button.back}"></div>
+                            <button type="button" class="button-content-write-1" th:text="#{button.back}"></button>
                         </div>
                     </div>
                 </div>

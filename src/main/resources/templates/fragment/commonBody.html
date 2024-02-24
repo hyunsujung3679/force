@@ -31,7 +31,6 @@
         </form>
     </div>
 
-
     <div class="main">
         <div class="side-bar">
             <div class="side-bar-button-wrap">
@@ -49,31 +48,33 @@
 
     <div id="table-move-modal" class="modal">
         <div class="top-area">
-            <div class="before-text">이동 전 테이블</div>
-            <div class="before-text">이동 후 테이블</div>
+            <div class="table-modal-text" th:text="#{label.before.move.table}"></div>
+            <div class="table-modal-text" th:text="#{label.after.move.table}"></div>
         </div>
         <div class="middle-area">
            <select id="beforeTableNo" name="beforeTableNo" class="middle-area-select before-list"></select>
            <select id="afterTableNo" name="afterTableNo" class="middle-area-select after-list"></select>
         </div>
         <div class="bottom-area">
-            <button type="button" class="bottom-button" onclick="tableMove();">완료</button>
-            <button type="button" class="bottom-button" onclick="reload();">취소</button>
+            <button type="button" class="bottom-button" onclick="tableMove();" th:text="#{button.complete}"></button>
+            <button type="button" class="bottom-button" onclick="reload();" th:text="#{button.cancel}"></button>
         </div>
     </div>
 
     <div id="table-combine-modal" class="modal">
         <div class="top-area">
-            <div class="before-text">첫번째 테이블</div>
-            <div class="before-text">두번째 테이블</div>
+            <div class="table-modal-text" th:text="#{label.first.table}"></div>
+            <div class="table-modal-text" th:text="#{label.second.table}"></div>
         </div>
         <div class="middle-area">
             <select id="firstTableNo" name="firstTableNo" class="middle-area-select first-list"></select>
             <select id="secondTableNo" name="secondTableNo" class="middle-area-select second-list"></select>
         </div>
+        <input class="field-error-text" type="hidden" th:value="#{message.no.combine.same.table}">
+        <div class="field-error"></div>
         <div class="bottom-area">
-            <button type="button" class="bottom-button" onclick="tableCombine();">완료</button>
-            <button type="button" class="bottom-button" onclick="reload();">취소</button>
+            <button type="button" class="bottom-button" onclick="tableCombine();" th:text="#{button.complete}"></button>
+            <button type="button" class="bottom-button" onclick="reload();" th:text="#{button.cancel}"></button>
         </div>
     </div>
 

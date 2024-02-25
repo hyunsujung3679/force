@@ -120,7 +120,7 @@
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{tableNo}
-           AND 0.ORDER_STATUS_NO = 'OS001'
+           AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateOrderStatusV2">

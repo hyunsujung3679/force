@@ -34,13 +34,13 @@
     <div class="main">
         <div class="side-bar">
             <div class="side-bar-button-wrap">
-                <button class="side-bar-button" th:text="#{button.table}"></button>
-                <button class="side-bar-button" th:text="#{button.category}"></button>
-                <button class="side-bar-button" th:text="#{button.menu}"></button>
-                <button class="side-bar-button" th:text="#{button.ingredient}"></button>
-                <button class="side-bar-button" th:text="#{button.sales}"></button>
-                <button class="side-bar-button" th:text="#{button.stock}"></button>
-                <button class="side-bar-button" th:text="#{button.inquiry}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.table}" th:onclick="|location.href='@{/table}'|">></button>
+                <button type="button" class="side-bar-button" th:text="#{button.category}" th:onclick="|location.href='@{/category}'|">></button>
+                <button type="button" class="side-bar-button" th:text="#{button.menu}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.ingredient}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.sales}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.stock}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.inquiry}"></button>
             </div>
         </div>
         <div th:replace="${content}"></div>

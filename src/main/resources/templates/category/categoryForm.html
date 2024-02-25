@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/category/category.css}">
+    <script th:inline="javascript" th:src="@{/js/category/category.js}"></script>
+</head>
+<body>
+
+<section>
+    <div class="category-box">
+        <div class="category-title">
+            <div>카테고리명</div>
+            <div>사용 여부</div>
+            <div>우선 순위</div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

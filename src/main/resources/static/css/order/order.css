@@ -9,6 +9,26 @@ body {
     background-color: #ABA8A8;
 }
 
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
+}
+
 section {
     height: 100%;
 }
@@ -248,61 +268,6 @@ section {
     cursor:pointer;
 }
 
-.discount-top-left-title {
-    display: flex;
-    justify-content: center;
-    width: 45%;
-    background-color: #5C5E8A;
-    border: 1px solid black;
-    cursor:pointer;
-}
-
-.discount-top-left-title-1 {
-    font-size: 150%;
-    color: #D4AA6C;
-}
-
-.discount-top-left-title-2 {
-    margin-left: 5%;
-    margin-top: 3%;
-    color: #D4AA6C;
-}
-
-.discount-top-left-title-3 {
-    font-size: 150%;
-    color: white;
-}
-
-.discount-top-left-title-4 {
-    margin-left: 5%;
-    margin-top: 3%;
-    color: white;
-}
-
-.discount-top-left-title-5 {
-    margin-left: 7%;
-    margin-top: 3%;
-    color: #D4AA6C;
-}
-
-.discount-top-left-title-6 {
-    margin-left: 7%;
-    margin-top: 3%;
-    color: white;
-}
-
-.discount-top-left-title-7 {
-    margin-top: 3%;
-    color: #D4AA6C;
-    padding-bottom: 3%;
-}
-
-.discount-top-left-title-8 {
-    margin-top: 3%;
-    color: white;
-    padding-bottom: 3%;
-}
-
 .category {
     display: flex;
     width: 100%;
@@ -325,12 +290,6 @@ section {
     cursor:pointer;
 }
 
-.category-content-write {
-    text-align: center;
-    padding-top: 15%;
-    color:white;
-}
-
 .menu {
     display: flex;
     width: 100%;
@@ -342,7 +301,6 @@ section {
     margin-top: 2%;
     width: 12%;
     border-radius: 5px;
-    cursor:pointer;
     background-color: white;
 }
 
@@ -353,21 +311,7 @@ section {
     border-radius: 5px;
     border: none;
     background-color: white;
-}
-
-.menu-content-write {
-    text-align: center;
-    padding-top: 5%;
-    font-size: 70%;
-    pointer-events : none;
-}
-
-.menu-name {
-    pointer-events : none;
-}
-
-.menu-price {
-    pointer-events : none;
+    cursor:pointer;
 }
 
 .right-button {
@@ -384,13 +328,6 @@ section {
     border-radius: 5px;
     cursor:pointer;
     background-color: #757575;
-}
-
-.button-content-write {
-    text-align: center;
-    padding-top: 20%;
-    color: white;
-    font-weight: bold;
 }
 
 .button-content-write-1 {

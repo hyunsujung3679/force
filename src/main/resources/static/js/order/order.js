@@ -32,7 +32,7 @@ function selectMenuListByCategoryNo(div) {
                 $("input[name=menu-no-1]").eq(index).val(data[index].menuNo);
             }
 
-            const nonClickMenu = document.querySelectorAll(".menu-content");
+            const nonClickMenu = document.querySelectorAll(".menu-content-button");
             function handleMenuClick(event) {
                 nonClickMenu.forEach((e) => {
                     e.classList.remove("menu-color");
@@ -53,7 +53,7 @@ function selectMenuListByCategoryNo(div) {
 }
 
 $(function() {
-    const nonClickMenu = document.querySelectorAll(".menu-content");
+    const nonClickMenu = document.querySelectorAll(".menu-content-button");
     const nonClickOrder = document.querySelectorAll(".table-middle-wrap");
     const inputValue = document.querySelector('.top-line-input');
 
@@ -93,7 +93,7 @@ $(function() {
 
 function saveOrder() {
 
-    const menuNo = $(".menu-color").children().children().eq(0).val();
+    const menuNo = $(".menu-color").parent().children().eq(0).val();
     const tableNo = $(".table-no").val();
     const parameter = {menuNo : menuNo ,tableNo : tableNo};
 
@@ -262,25 +262,25 @@ function selectOrderList() {
                 html +=     '<input type="hidden" name="order-no">'
                 html +=     '<input type="hidden" name="menu-no">'
                 html +=     '<div class="table-content-1">'
-                html +=         '<div class="table-content-name-1">' + data[index].no + '</div>'
+                html +=         '<div>' + data[index].no + '</div>'
                 html +=     '</div>'
                 html +=     '<div class="table-content-2">'
-                html +=         '<div class="table-content-name-1">' + data[index].menuName + '</div>'
+                html +=         '<div>' + data[index].menuName + '</div>'
                 html +=     '</div>'
                 html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data[index].salePrice.toLocaleString() + '</div>'
+                html +=         '<div>' + data[index].salePrice.toLocaleString() + '</div>'
                 html +=     '</div>'
                 html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data[index].quantity + '</div>'
+                html +=         '<div>' + data[index].quantity + '</div>'
                 html +=     '</div>'
                 html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data[index].discountPrice.toLocaleString() + '</div>'
+                html +=         '<div>' + data[index].discountPrice.toLocaleString() + '</div>'
                 html +=     '</div>'
                 html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data[index].totalSalePrice.toLocaleString() + '</div>'
+                html +=         '<div>' + data[index].totalSalePrice.toLocaleString() + '</div>'
                 html +=     '</div>'
-                html +=     '<div class="table-content-3">'
-                html +=         '<div class="table-content-name-1">' + data[index].etc + '</div>'
+                html +=     '<div class="table-content-6">'
+                html +=         '<div>' + data[index].etc + '</div>'
                 html +=     '</div>'
                 html += '</div>'
 

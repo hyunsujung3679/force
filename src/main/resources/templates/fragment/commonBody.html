@@ -78,5 +78,29 @@
         </div>
     </div>
 
+    <div id="category-add-modal" class="modal">
+        <div class="top-area">
+            <label>카테고리명 : </label>
+            <input name="category-name" class="top-area-input"/>
+        </div>
+        <div class="middle-area-1">
+            <label>사용 유무 : </label>
+            <select name="category-use-yn" class="middle-area-1-select">
+                <option>Y</option>
+                <option>N</option>
+            </select>
+        </div>
+        <div class="middle-area-2">
+            <label>우선 순위 : </label>
+            <input name="category-priority" class="middle-area-2-input"/>
+        </div>
+        <input class="field-error-text" type="hidden" th:value="#{message.no.combine.same.table}">
+        <div class="field-error"></div>
+        <div class="bottom-area">
+            <button type="button" class="bottom-button-1" onclick="addCategory();" th:text="#{button.complete}"></button>
+            <button type="button" class="bottom-button-2" onclick="reload();" th:text="#{button.cancel}"></button>
+        </div>
+    </div>
+
 </body>
 </html>

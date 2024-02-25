@@ -10,10 +10,21 @@
 <section>
     <div class="category-box">
         <div class="category-title">
-            <div>카테고리명</div>
-            <div>사용 여부</div>
-            <div>우선 순위</div>
+            <div class="category-title-name" th:text="#{label.category.name}"></div>
+            <div class="category-title-use" th:text="#{label.use.yn}"></div>
+            <div class="category-title-rank" th:text="#{label.priority}"></div>
         </div>
+        <div class="category-content" th:each="category : ${categoryList}">
+            <input type="hidden" name="category-no" th:value="${category.categoryNo}">
+            <div class="category-name" th:text="${category.categoryName}"></div>
+            <div class="category-use" th:text="${category.useYn} == 1 ? 'Y' : 'N'"></div>
+            <div class="category-rank" th:text="${category.priority}"></div>
+        </div>
+    </div>
+
+    <div class="category-button-wrap">
+        <button type="button" class="category-button-1" th:text="#{button.add}" onclick="addCategoryPopup();"></button>
+        <button type="button" class="category-button-2" th:text="#{button.modify}"></button>
     </div>
 </section>
 

@@ -7,6 +7,8 @@
         SELECT C.CATEGORY_NO
              , C.STORE_NO
              , C.CATEGORY_NAME
+             , C.USE_YN
+             , C.PRIORITY
         FROM TCATEGORY  C
         WHERE C.USE_YN = '1'
           AND C.STORE_NO = #{storeNo}

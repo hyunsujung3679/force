@@ -5,7 +5,7 @@ html {
 }
 
 body {
-    width: 100%;
+    width: 99%;
     height: 100%;
 }
 
@@ -36,13 +36,159 @@ section {
 
 .category-box {
     width: 40%;
-    height: 50%;
+    height: 60%;
     background-color: white;
     margin-left: 30%;
     margin-top: 5%;
+    overflow-y: auto;
+    border: 1px solid black;
 }
 
 .category-title {
     display: flex;
     background-color: #757575;
+}
+
+.category-title-name {
+    color: #F0EB66;
+    width: 50%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-title-use {
+    color: #F0EB66;
+    width: 25%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-title-rank {
+    color: #F0EB66;
+    width: 25%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-content {
+    display: flex;
+}
+
+.category-name {
+    width: 50%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-use {
+    width: 25%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-rank {
+    width: 25%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.category-button-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 1%;
+    height: 100%;
+}
+
+.category-button-1 {
+    background-color: #5DA4EF;
+    font-weight: bold;
+    font-family: fantasy;
+    color: white;
+    cursor:pointer;
+    border-color: grey;
+    width: 7%;
+    height: 7%;
+    margin-right: 1%;
+}
+
+.category-button-2 {
+    background-color: #5DA4EF;
+    font-weight: bold;
+    font-family: fantasy;
+    color: white;
+    cursor:pointer;
+    border-color: grey;
+    width: 7%;
+    height: 7%;
+}
+
+.modal {
+    width: 100%;
+    height: 30%;
+}
+
+.top-area {
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+}
+
+.top-area-input {
+    margin-left: 1%;
+    width: 40%;
+}
+
+.middle-area-1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+    margin-right: 29.5%;
+}
+
+.middle-area-1-select {
+    margin-left: 1%;
+    width: 15%;
+}
+
+.middle-area-2 {
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+    margin-right: 27.5%;
+}
+
+.middle-area-2-input {
+    margin-left: 1%;
+    width: 15%;
+}
+
+.bottom-area {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 3%;
+}
+
+.bottom-button-1 {
+    width: 30%;
+    height: 20%;
+    background-color: #5DA4EF;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor:pointer;
+    margin-right: 1%;
+}
+
+.bottom-button-2 {
+    width: 30%;
+    height: 20%;
+    background-color: #5DA4EF;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor:pointer;
 }

@@ -30,6 +30,7 @@ public class CategoryController {
         CategoryDTO categoryForm = categoryService.selectCategoryInfo(loginMember);
 
         model.addAttribute("header", categoryForm.getCommonLayoutForm());
+        model.addAttribute("categoryList", categoryForm.getCategoryList());
 
         return "category/categoryForm";
     }

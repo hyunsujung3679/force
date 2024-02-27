@@ -43,7 +43,7 @@ function tableMove() {
     const parameter = {beforeTableNo : beforeTableNo, afterTableNo : afterTableNo};
 
     $.ajax({
-        url: "/table/move",
+        url: "/table/update/V1",
         type: "post",
         data: JSON.stringify(parameter),
         dataType : "json",
@@ -90,7 +90,7 @@ function tableCombine() {
     const parameter = {firstTableNo : firstTableNo, secondTableNo : secondTableNo};
 
     $.ajax({
-        url: "/table/combine",
+        url: "/table/update/V2",
         type: "post",
         data: JSON.stringify(parameter),
         dataType : "json",
@@ -99,7 +99,7 @@ function tableCombine() {
             if(data > 0) {
                 location.reload();
             } else {
-                $(".field-error").text($(".field-error-text").val());
+                $(".field-error-1").text($("input[name=field-error-1]").val());
             }
         },
         error: function(xhr) {

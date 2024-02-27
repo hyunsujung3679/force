@@ -56,14 +56,14 @@ public class TableController {
         return tableService.selectTableNotExistOrderList(loginMember.getStoreNo());
     }
 
-    @PostMapping("/move")
+    @PostMapping("/update/V1")
     @ResponseBody
     public int moveTable(HttpSession session, @RequestBody TableDTO table) {
         User loginMember = (User) session.getAttribute("loginMember");
         return tableService.moveTable(loginMember, table);
     }
 
-    @PostMapping("/combine")
+    @PostMapping("/update/V2")
     @ResponseBody
     public int combineTable(HttpSession session, @RequestBody TableDTO table) {
         if(table.getFirstTableNo().equals(table.getSecondTableNo())) {

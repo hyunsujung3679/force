@@ -15,4 +15,60 @@
         ORDER BY PRIORITY ASC;
     </select>
 
+    <select id="selectCategoryNo" resultType="String">
+        SELECT MAX(C.CATEGORY_NO)
+          FROM TCATEGORY C
+         WHERE C.STORE_NO = #{storeNo}
+    </select>
+
+    <insert id="insertCategory">
+        INSERT
+          INTO TCATEGORY
+        (
+          CATEGORY_NO
+        , STORE_NO
+        , CATEGORY_NAME
+        , PRIORITY
+        , USE_YN
+        , INSERT_ID
+        , INSERT_DATE
+        , MODIFY_ID
+        , MODIFY_DATE
+        )
+        VALUES
+        (
+          #{categoryNo}
+        , #{storeNo}
+        , #{categoryName}
+        , #{priority}
+        , #{useYn}
+        , #{insertId}
+        , NOW()
+        , #{modifyId}
+        , NOW()
+        )
+    </insert>
+
+    <select id="selectPriority" resultType="int">
+        SELECT 1
+          FROM TCATEGORY C
+         WHERE C.STORE_NO = #{storeNo}
+           AND C.PRIORITY = #{priority}
+    </select>
+
+    <select id="selectMaxPriority" resultType="int">
+        SELECT MAX(C.PRIORITY)
+          FROM TCATEGORY C
+         WHERE C.STORE_NO = #{storeNo}
+    </select>
+
+    <update id="updatePriority">
+        UPDATE
+               TCATEGORY C
+           SET C.PRIORITY = #{maxPriority}
+             , C.MODIFY_ID = #{modifyId}
+             , C.MODIFY_DATE = NOW()
+         WHERE C.STORE_NO = #{storeNo}
+           AND C.PRIORITY = #{priority}
+    </update>
 </mapper>

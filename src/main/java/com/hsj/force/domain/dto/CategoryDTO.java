@@ -12,4 +12,5 @@ public class CategoryDTO extends Category {
 
     private CommonLayoutDTO commonLayoutForm;
     private List<Category> categoryList;
+    private int maxPriority;
 }

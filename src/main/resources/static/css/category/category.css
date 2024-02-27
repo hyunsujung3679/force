@@ -78,18 +78,21 @@ section {
     width: 50%;
     text-align: center;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .category-use {
     width: 25%;
     text-align: center;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .category-rank {
     width: 25%;
     text-align: center;
     border: 1px solid black;
+    pointer-events : none;
 }
 
 .category-button-wrap {
@@ -124,7 +127,7 @@ section {
 
 .modal {
     width: 100%;
-    height: 30%;
+    height: 32%;
 }
 
 .top-area {
@@ -191,4 +194,15 @@ section {
     border-radius: 5px;
     border: none;
     cursor:pointer;
+}
+
+.field-error-2 {
+    margin-top: 3%;
+    color: red;
+    text-align: center;
+    height: 11%;
+}
+
+.category-color {
+    background-color: #8AD2F9;
 }

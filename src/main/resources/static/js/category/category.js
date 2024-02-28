@@ -49,13 +49,45 @@ function reload() {
 }
 
 function modifyCategoryPopup() {
-    const categoryName = $(".category-color").children().eq(1).val();
-    const useYn = $(".category-color").children().eq(2).val();
-    const priority = $(".category-color").children().eq(3).val();
+    const categoryNo = $(".category-color").children().eq(0).val();
+    const categoryName = $(".category-color").children().eq(1).text();
+    const useYn = $(".category-color").children().eq(2).text();
+    const priority = $(".category-color").children().eq(3).text();
 
-    $("input[name=category-name-modify]").val(categoryName);
-    $("input[name=category-use-yn-modify]").val(useYn);
-    $("input[name=category-priority-modify]").val(priority);
+    if(categoryNo === undefined) {
+        $("#exception-modal").modal({});
+    } else {
+        $("input[name=category-no-modify]").val(categoryNo);
+        $("input[name=category-name-modify]").val(categoryName);
+        $("input[name=category-use-yn-modify]").val(useYn);
+        $("input[name=category-priority-modify]").val(priority);
 
-    $("#category-modify-modal").modal({});
+        $("#category-modify-modal").modal({});
+    }
+}
+
+function modifyCategory() {
+    const categoryNo = $("input[name=category-no-modify]").val();
+    const categoryName = $("input[name=category-name-modify]").val();
+    const useYn = $("select[name=category-use-yn-modify]").val();
+    const priority = $("input[name=category-priority-modify]").val();
+    const parameter = {categoryNo : categoryNo, categoryName : categoryName, useYn : useYn, priority : priority};
+
+    $.ajax({
+        url: "/category/update",
+        type: "post",
+        data: JSON.stringify(parameter),
+        dataType : "json",
+        contentType: "application/json",
+        success: function(data) {
+            if(data > 0) {
+                location.reload();
+            } else {
+                $(".field-error-2-modify").text($("input[name=field-error-2-modify]").val());
+            }
+        },
+        error: function(xhr) {
+            console.log(xhr);
+        }
+    });
 }

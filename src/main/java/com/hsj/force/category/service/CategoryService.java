@@ -52,6 +52,23 @@ public class CategoryService {
         category.setInsertId(loginMember.getUserId());
         category.setModifyId(loginMember.getUserId());
 
+        checkPriority(loginMember, category);
+
+        return categoryMapper.insertCategory(category);
+    }
+
+
+    public int updateCategory(User loginMember, Category category) {
+        category.setStoreNo(loginMember.getStoreNo());
+        category.setInsertId(loginMember.getUserId());
+        category.setModifyId(loginMember.getUserId());
+
+        checkPriority(loginMember, category);
+
+        return categoryMapper.updateCategory(category);
+    }
+
+    private void checkPriority(User loginMember, Category category) {
         Integer priority = categoryMapper.selectPriority(category);
         if(priority != null) {
             int maxPriority = categoryMapper.selectMaxPriority(category);
@@ -62,7 +79,5 @@ public class CategoryService {
             categoryDTO.setPriority(category.getPriority());
             categoryMapper.updatePriority(categoryDTO);
         }
-
-        return categoryMapper.insertCategory(category);
     }
 }

@@ -36,7 +36,7 @@
             <div class="side-bar-button-wrap">
                 <button type="button" class="side-bar-button" th:text="#{button.table}" th:onclick="|location.href='@{/table}'|">></button>
                 <button type="button" class="side-bar-button" th:text="#{button.category}" th:onclick="|location.href='@{/category}'|">></button>
-                <button type="button" class="side-bar-button" th:text="#{button.menu}"></button>
+                <button type="button" class="side-bar-button" th:text="#{button.menu}" th:onclick="|location.href='@{/menu}'|"></button>
                 <button type="button" class="side-bar-button" th:text="#{button.ingredient}"></button>
                 <button type="button" class="side-bar-button" th:text="#{button.sales}"></button>
                 <button type="button" class="side-bar-button" th:text="#{button.stock}"></button>
@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div id="category-add-modal" class="modal">
+    <div id="category-add-modal" class="category-modal">
         <div class="top-area">
             <label th:text="|#{label.category.name} : |"></label>
             <input type="text" name="category-name" class="top-area-input"/>
@@ -102,7 +102,8 @@
         </div>
     </div>
 
-    <div id="category-modify-modal" class="modal">
+    <div id="category-modify-modal" class="category-modal">
+        <input type="hidden" name="category-no-modify">
         <div class="top-area">
             <label th:text="|#{label.category.name} : |"></label>
             <input type="text" name="category-name-modify" class="top-area-input"/>
@@ -118,12 +119,16 @@
             <label th:text="|#{label.priority} : |"></label>
             <input type="number" min="1" name="category-priority-modify" class="middle-area-2-input"/>
         </div>
-        <input type="hidden" class="field-error-text" name="field-error-2" th:value="#{message.no.minus.priority}">
-        <div class="field-error-2"></div>
+        <input type="hidden" class="field-error-text" name="field-error-2-modify" th:value="#{message.no.minus.priority}">
+        <div class="field-error-2-modify"></div>
         <div class="bottom-area">
-            <button type="button" class="bottom-button-1" onclick="addCategory();" th:text="#{button.complete}"></button>
+            <button type="button" class="bottom-button-1" onclick="modifyCategory();" th:text="#{button.complete}"></button>
             <button type="button" class="bottom-button-2" onclick="reload();" th:text="#{button.cancel}"></button>
         </div>
+    </div>
+
+    <div id="exception-modal" class="modal">
+        <p>수정 할 카테고리를 선택해주세요.</p>
     </div>
 
 </body>

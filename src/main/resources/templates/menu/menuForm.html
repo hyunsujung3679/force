@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menu.css}">
+    <script th:inline="javascript" th:src="@{/js/menu/menu.js}"></script>
+</head>
+<body>
+
+<section>
+    <div class="menu-box">
+        <div class="menu-title">
+            <div class="menu-title-no">No</div>
+            <div class="menu-title-name">메뉴명</div>
+            <div class="menu-title-status">판매상태</div>
+            <div class="menu-title-category">카테고리</div>
+            <div class="menu-title-stock">판매가능재고</div>
+            <div class="menu-title-price">가격</div>
+        </div>
+        <div class="menu-content">
+            <input type="hidden" name="category-no">
+            <div class="menu-no">1</div>
+            <div class="menu-name">광어 + 소라</div>
+            <div class="menu-status">판매중</div>
+            <div class="menu-category">SET</div>
+            <div class="menu-stock">10</div>
+            <div class="menu-price">48,000</div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

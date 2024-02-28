@@ -39,11 +39,23 @@ public class CategoryController {
     @ResponseBody
     public int insertCategory(HttpSession session, @RequestBody Category category) {
 
-        if(category.getPriority() < 0) {
+        if(category.getPriority() < 1) {
             return category.getPriority();
         }
 
         User loginMember = (User) session.getAttribute("loginMember");
         return categoryService.insertCategory(loginMember, category);
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public int updateCategory(HttpSession session, @RequestBody Category category) {
+
+        if(category.getPriority() < 1) {
+            return category.getPriority();
+        }
+
+        User loginMember = (User) session.getAttribute("loginMember");
+        return categoryService.updateCategory(loginMember, category);
     }
 }

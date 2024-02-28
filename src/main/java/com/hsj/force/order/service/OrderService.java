@@ -34,7 +34,7 @@ public class OrderService {
 
     public OrderDTO selectOrderInfo(User loginMember, String tableNo) {
 
-        List<Category> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
+        List<Category> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
         List<MenuDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
         List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
 

@@ -9,7 +9,18 @@
              , C.CATEGORY_NAME
              , C.USE_YN
              , C.PRIORITY
-        FROM TCATEGORY  C
+         FROM TCATEGORY  C
+        WHERE C.STORE_NO = #{storeNo}
+        ORDER BY PRIORITY ASC;
+    </select>
+
+    <select id="selectCategoryListByOrderForm" resultType="Category">
+        SELECT C.CATEGORY_NO
+             , C.STORE_NO
+             , C.CATEGORY_NAME
+             , C.USE_YN
+             , C.PRIORITY
+         FROM TCATEGORY  C
         WHERE C.USE_YN = '1'
           AND C.STORE_NO = #{storeNo}
         ORDER BY PRIORITY ASC;
@@ -70,5 +81,17 @@
              , C.MODIFY_DATE = NOW()
          WHERE C.STORE_NO = #{storeNo}
            AND C.PRIORITY = #{priority}
+    </update>
+
+    <update id="updateCategory">
+        UPDATE
+               TCATEGORY C
+           SET C.CATEGORY_NAME = #{categoryName}
+             , C.USE_YN = #{useYn}
+             , C.PRIORITY = #{priority}
+             , C.MODIFY_ID = #{modifyId}
+             , C.MODIFY_DATE = NOW()
+         WHERE C.STORE_NO = #{storeNo}
+           AND C.CATEGORY_NO = #{categoryNo}
     </update>
 </mapper>

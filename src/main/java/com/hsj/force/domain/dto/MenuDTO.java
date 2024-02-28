@@ -1,13 +1,14 @@
 package com.hsj.force.domain.dto;
 
+import com.hsj.force.domain.Menu;
 import lombok.Data;
+import java.util.List;
 
 @Data
-public class MenuDTO {
+public class MenuDTO extends Menu {
 
-    private String menuNo;
-    private String menuName;
-    private String categoryNo;
     private int salePrice;
+    private CommonLayoutDTO commonLayoutForm;
+    private List<MenuDTO> menuList;
 
 }

@@ -1,0 +1,138 @@
+html {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+}
+
+body {
+    width: 99%;
+    height: 100%;
+}
+
+section {
+    width: 89.5%;
+    height: 100%;
+}
+
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
+}
+
+.menu-box {
+    width: 80%;
+    height: 60%;
+    background-color: white;
+    margin-left: 10%;
+    margin-top: 5%;
+    overflow-y: auto;
+    border: 1px solid black;
+}
+
+.menu-title {
+    display: flex;
+    background-color: #757575;
+}
+
+.menu-title-no {
+    color: #F0EB66;
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-title-name {
+    color: #F0EB66;
+    width: 50%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-title-status {
+    color: #F0EB66;
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-title-category {
+    color: #F0EB66;
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-title-stock {
+    color: #F0EB66;
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-title-price {
+    color: #F0EB66;
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+}
+
+.menu-content {
+    display: flex;
+}
+
+.menu-no {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
+.menu-name {
+    width: 50%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
+.menu-status {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
+.menu-category {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
+.menu-stock {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
+.menu-price {
+    width: 10%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}

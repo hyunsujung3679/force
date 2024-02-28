@@ -125,7 +125,7 @@ section {
     height: 7%;
 }
 
-.modal {
+.category-modal {
     width: 100%;
     height: 32%;
 }
@@ -197,6 +197,13 @@ section {
 }
 
 .field-error-2 {
+    margin-top: 3%;
+    color: red;
+    text-align: center;
+    height: 11%;
+}
+
+.field-error-2-modify {
     margin-top: 3%;
     color: red;
     text-align: center;

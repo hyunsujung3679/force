@@ -10,6 +10,8 @@ import java.util.List;
 public interface CategoryMapper {
     List<Category> selectCategoryList(String storeNo);
 
+    List<Category> selectCategoryListByOrderForm(String storeNo);
+
     String selectCategoryNo(String storeNo);
 
     int insertCategory(Category category);
@@ -19,4 +21,6 @@ public interface CategoryMapper {
     int selectMaxPriority(Category category);
 
     int updatePriority(CategoryDTO category);
+
+    int updateCategory(Category category);
 }

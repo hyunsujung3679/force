@@ -7,10 +7,7 @@ import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.Order;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.MenuDTO;
-import com.hsj.force.domain.dto.OrderDTO;
-import com.hsj.force.domain.dto.OrderTotalDTO;
+import com.hsj.force.domain.dto.*;
 import com.hsj.force.menu.repository.MenuMapper;
 import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +34,7 @@ public class OrderService {
         List<Category> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
         List<MenuDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
         List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
+        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(loginMember.getStoreNo());
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
@@ -69,6 +67,19 @@ public class OrderService {
         orderTotal.setTotalDiscountPrice(totalDiscountPrice);
         orderTotal.setTotalSalePrice(totalSalePrice);
 
+        boolean isEnoughStock = true;
+        for(MenuDTO menu : menuList) {
+            for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+                if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
+                    if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
+                        isEnoughStock = false;
+                        break;
+                    }
+                }
+            }
+            menu.setEnoughStock(isEnoughStock);
+        }
+
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
@@ -87,6 +98,9 @@ public class OrderService {
     }
 
     public int saveOrder(User loginMember, OrderDTO order) {
+
+
+
 
         int result = 0;
         String lastOrderNo = "";
@@ -382,5 +396,21 @@ public class OrderService {
             count = orderMapper.updateDiscountCancel(orderInfo);
         }
         return count;
+    }
+
+    public boolean checkStock(String storeNo, String menuNo) {
+        List<MenuDTO> menuList = menuMapper.selectMenuList(storeNo);
+        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
+
+        boolean isEnoughStock = true;
+        for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+            if(menuNo.equals(menuIngredient.getMenuNo())) {
+                if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
+                    isEnoughStock = false;
+                    break;
+                }
+            }
+        }
+        return isEnoughStock;
     }
 }

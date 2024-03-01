@@ -16,7 +16,11 @@ function selectMenuListByCategoryNo(div) {
 
                 html += '<div class="menu-content">';
                 html +=     '<input type="hidden" name="menu-no-1">'
-                html +=     '<button type="button" class="menu-content-button">' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
+                if(data[index].enoughStock === true) {
+                    html +=     '<button type="button" class="menu-content-button">' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
+                } else {
+                    html +=     '<button type="button" class="menu-content-button" disabled>' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
+                }
                 html += '</div>'
 
                 if(index < 6) {
@@ -107,6 +111,8 @@ function saveOrder() {
             if(data > 0) {
                 selectOrderList();
                 $(".menu-color").removeClass("menu-color");
+            } else {
+                $("#exception-modal").modal({});
             }
         },
         error: function(xhr) {

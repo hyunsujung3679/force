@@ -53,6 +53,12 @@ public class OrderController {
     @ResponseBody
     public int saveOrder(HttpSession session, @RequestBody OrderDTO order) {
         User loginMember = (User) session.getAttribute("loginMember");
+
+        boolean isEnoughStock = orderService.checkStock(loginMember.getStoreNo(), order.getMenuNo());
+        if(!isEnoughStock) {
+            return 0;
+        }
+
         return orderService.saveOrder(loginMember, order);
     }
 

@@ -1,6 +1,7 @@
 package com.hsj.force.menu.repository;
 
 import com.hsj.force.domain.dto.MenuDTO;
+import com.hsj.force.domain.dto.MenuIngredientDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface MenuMapper {
     MenuDTO selectMenu(String menuNo);
 
     List<MenuDTO> selectMenuListByMenuForm(String storeNo);
+
+    List<MenuIngredientDTO> selectMenuIngredientList(String storeNo);
 }

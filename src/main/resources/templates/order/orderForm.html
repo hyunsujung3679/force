@@ -154,19 +154,22 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     <div id="menu-1" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} < 6" th:each="menu, menuStat : ${menuList}">
                             <input type="hidden" name="menu-no-1" th:value="${menu.menuNo}">
-                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == true}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == false}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|" disabled></button>
                         </div>
                     </div>
                     <div id="menu-2" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} >= 6 and ${menuStat.index} < 12" th:each="menu, menuStat : ${menuList}">
                             <input type="hidden" name="menu-no-1" th:value="${menu.menuNo}">
-                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == true}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == false}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|" disabled></button>
                         </div>
                     </div>
                     <div id="menu-3" class="menu">
                         <div class="menu-content" th:if="${menuStat.index} >= 12 and ${menuStat.index} < 18" th:each="menu, menuStat : ${menuList}">
                             <input type="hidden" name="menu-no-1" th:value="${menu.menuNo}">
-                            <button type="button" class="menu-content-button" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == true}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|"></button>
+                            <button type="button" class="menu-content-button" th:if="${menu.isEnoughStock() == false}" th:text="|${menu.menuName} ${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}|" disabled></button>
                         </div>
                     </div>
                     <div class="line-3"></div>

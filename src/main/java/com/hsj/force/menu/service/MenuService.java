@@ -5,6 +5,7 @@ import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.MenuDTO;
+import com.hsj.force.domain.dto.MenuIngredientDTO;
 import com.hsj.force.menu.repository.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,27 @@ public class MenuService {
 
     public List<MenuDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
         List<MenuDTO> menuList = menuMapper.selectMenuList(storeNo);
+        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
         List<MenuDTO> menuListByCategoryNo = new ArrayList<>();
         for(MenuDTO menu : menuList) {
-            if (categoryNo.equals(menu.getCategoryNo())) {
+            if(categoryNo.equals(menu.getCategoryNo())) {
                 menuListByCategoryNo.add(menu);
             }
         }
+
+        boolean isEnoughStock = true;
+        for(MenuDTO menu : menuListByCategoryNo) {
+            for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+                if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
+                    if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
+                        isEnoughStock = false;
+                        break;
+                    }
+                }
+            }
+            menu.setEnoughStock(isEnoughStock);
+        }
+
         return menuListByCategoryNo;
     }
 

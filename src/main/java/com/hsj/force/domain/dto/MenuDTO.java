@@ -10,5 +10,6 @@ public class MenuDTO extends Menu {
     private int salePrice;
     private CommonLayoutDTO commonLayoutForm;
     private List<MenuDTO> menuList;
+    private boolean isEnoughStock;
 
 }

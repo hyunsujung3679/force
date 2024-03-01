@@ -11,4 +11,6 @@ public interface MenuMapper {
     List<MenuDTO> selectMenuList(String storeNo);
 
     MenuDTO selectMenu(String menuNo);
+
+    List<MenuDTO> selectMenuListByMenuForm(String storeNo);
 }

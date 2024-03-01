@@ -333,6 +333,7 @@
     <select id="selectLastOrderNo" resultType="String">
         SELECT O.ORDER_NO
           FROM TORDER O
+           AND O.STORE_NO = #{storeNo}
          ORDER BY O.ORDER_NO DESC
          LIMIT 1
     </select>

@@ -28,14 +28,13 @@ public class OpenController {
     @GetMapping
     public String openForm(HttpSession session, Model model) {
 
-          if(openService.selectIsOpen() > 0) {
+        User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);
+          if(openService.selectIsOpen(loginMember.getStoreNo()) > 0) {
             return "redirect:/table";
         }
 
-        User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
-
-        OpenDTO open = openService.selectOpenInfo();
-        open.setOpener(user.getUserId() + " - " + user.getUserName());
+        OpenDTO open = openService.selectOpenInfo(loginMember.getStoreNo());
+        open.setOpener(loginMember.getUserId() + " - " + loginMember.getUserName());
         open.setCurrentDate(LocalDateTime.now());
         open.setCurrentTime(LocalDateTime.now());
 
@@ -46,14 +45,15 @@ public class OpenController {
 
     @PostMapping
     public String insertOpen(@ModelAttribute OpenSaveDTO open, HttpSession session) {
-        User user = (User) session.getAttribute(Constants.LOGIN_MEMBER);
+        User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);
         try {
             open.setOpenMoney(Integer.parseInt(open.getOpenMoneyStr().replaceAll(",", "")));
         } catch (NumberFormatException e) {
             return "redirect:/open";
         }
-        open.setInsertId(user.getUserId());
-        open.setModifyId(user.getUserId());
+        open.setStoreNo(loginMember.getStoreNo());
+        open.setInsertId(loginMember.getUserId());
+        open.setModifyId(loginMember.getUserId());
         openService.insertOpen(open);
 
         return "redirect:/table";

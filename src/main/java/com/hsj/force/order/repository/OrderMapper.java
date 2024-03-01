@@ -52,5 +52,5 @@ public interface OrderMapper {
 
     List<String> selectOrderStatusNoList(String orderNo);
 
-    String selectLastOrderNo();
+    String selectLastOrderNo(String storeNo);
 }

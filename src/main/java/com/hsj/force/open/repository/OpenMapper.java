@@ -7,14 +7,14 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface OpenMapper {
 
-    int selectIsOpen();
+    int selectIsOpen(String storeNo);
 
-    OpenDTO selectOpenInfo();
+    OpenDTO selectOpenInfo(String storeNo);
 
-    String selectOpenCloseSeq();
+    String selectOpenCloseSeq(String storeNo);
 
 
-    String selectOpenCloseNo();
+    String selectOpenCloseNo(String storeNo);
 
     int insertOpen(OpenSaveDTO openSave);
 }

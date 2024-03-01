@@ -14,13 +14,13 @@ public class OpenService {
 
     public final OpenMapper openMapper;
 
-    public int selectIsOpen() {
-        return openMapper.selectIsOpen();
+    public int selectIsOpen(String storeNo) {
+        return openMapper.selectIsOpen(storeNo);
     }
 
-    public OpenDTO selectOpenInfo() {
+    public OpenDTO selectOpenInfo(String storeNo) {
 
-        OpenDTO open = openMapper.selectOpenInfo();
+        OpenDTO open = openMapper.selectOpenInfo(storeNo);
         if(open != null) {
             open.setCloser(open.getCloserId() + " - " + open.getCloserName());
             open.setCloseDate(ComUtils.stringTolocalDateTime(open.getModifyDate()));
@@ -30,7 +30,7 @@ public class OpenService {
         }
 
         int procedure = 1;
-        String procedureStr = openMapper.selectOpenCloseSeq();
+        String procedureStr = openMapper.selectOpenCloseSeq(storeNo);
         if(procedureStr == null) {
             open.setProcedure(procedure);
         } else {
@@ -41,8 +41,8 @@ public class OpenService {
     }
 
     public int insertOpen(OpenSaveDTO openSave) {
-        openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(), OPEN_CLOSE_NO_PREFIX));
-        openSave.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq()));
+        openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(openSave.getStoreNo()), OPEN_CLOSE_NO_PREFIX));
+        openSave.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq(openSave.getStoreNo())));
         return openMapper.insertOpen(openSave);
     }
 }

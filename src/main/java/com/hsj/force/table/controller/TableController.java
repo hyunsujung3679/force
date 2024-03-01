@@ -27,11 +27,10 @@ public class TableController {
     @GetMapping
     public String tableForm(HttpSession session, Model model) {
 
-        if(openService.selectIsOpen() == 0) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
             return "redirect:/open";
         }
-
-        User loginMember = (User) session.getAttribute("loginMember");
 
         TableDTO tableForm = tableService.selectTableInfo(loginMember);
         model.addAttribute("header", tableForm.getCommonLayoutForm());

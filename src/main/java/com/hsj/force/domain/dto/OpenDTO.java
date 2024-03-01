@@ -1,11 +1,14 @@
 package com.hsj.force.domain.dto;
 
+import com.hsj.force.domain.OpenClose;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class OpenDTO {
+public class OpenDTO extends OpenClose {
 
     private LocalDateTime closeDate;    //마감 처리 일자
     private LocalDateTime closeTime;    //마감 처리 시간
@@ -15,9 +18,7 @@ public class OpenDTO {
     private LocalDateTime currentDate;  //시스템 일자
     private LocalDateTime currentTime;  //개점 영업 일자
     private Integer procedure;          //차수
-    private Integer openMoney;          //개점 준비금
     private String openMoneyStr;        //개점 준비금 String
     private String opener;              //개점 판매원
-    private String modifyDate;          //수정 일자
 
 }

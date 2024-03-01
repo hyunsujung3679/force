@@ -94,13 +94,13 @@ public class OrderService {
         order.setStoreNo(loginMember.getStoreNo());
         String orderNo = orderMapper.selectOrderNo(order);
         if(orderNo == null) {
-            lastOrderNo = orderMapper.selectLastOrderNo();
+            lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
             order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
         } else {
             List<String> orderStatusNoList = orderMapper.selectOrderStatusNoList(orderNo);
             boolean isOld = orderStatusNoList.stream().anyMatch(value -> value.equals("OS001"));
             if(!isOld) {
-                lastOrderNo = orderMapper.selectLastOrderNo();
+                lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
                 order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
             } else {
                 order.setOrderNo(orderNo);

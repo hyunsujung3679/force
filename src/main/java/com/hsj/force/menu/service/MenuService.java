@@ -40,7 +40,7 @@ public class MenuService {
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        List<MenuDTO> menuList = menuMapper.selectMenuList();
+        List<MenuDTO> menuList = menuMapper.selectMenuListByMenuForm(loginMember.getStoreNo());
 
         MenuDTO menuForm = new MenuDTO();
         menuForm.setCommonLayoutForm(commonLayoutForm);

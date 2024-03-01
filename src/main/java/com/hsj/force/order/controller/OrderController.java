@@ -25,11 +25,11 @@ public class OrderController {
                             HttpSession session,
                             Model model) {
 
-        if(openService.selectIsOpen() == 0) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
             return "redirect:/open";
         }
 
-        User loginMember = (User) session.getAttribute("loginMember");
         OrderDTO order = orderService.selectOrderInfo(loginMember, tableNo);
         model.addAttribute("header", order.getCommonLayoutForm());
         model.addAttribute("categoryList", order.getCategoryList());

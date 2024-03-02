@@ -4,10 +4,9 @@ import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.domain.Category;
-import com.hsj.force.domain.Order;
-import com.hsj.force.domain.User;
+import com.hsj.force.domain.*;
 import com.hsj.force.domain.dto.*;
+import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
 import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +26,7 @@ public class OrderService {
     private final MenuMapper menuMapper;
     private final CategoryMapper categoryMapper;
     private final OrderMapper orderMapper;
+    private final IngredientMapper ingredientMapper;
     private final MessageSource messageSource;
 
     public OrderDTO selectOrderInfo(User loginMember, String tableNo) {
@@ -69,6 +69,7 @@ public class OrderService {
 
         boolean isEnoughStock = true;
         for(MenuDTO menu : menuList) {
+            isEnoughStock = true;
             for(MenuIngredientDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
                     if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
@@ -99,10 +100,9 @@ public class OrderService {
 
     public int saveOrder(User loginMember, OrderDTO order) {
 
-
-
-
-        int result = 0;
+        int orderSaveResult = 0;
+        int ingredientHisSaveResult = 0;
+        int ingredientSaveResult = 0;
         String lastOrderNo = "";
 
         order.setStoreNo(loginMember.getStoreNo());
@@ -113,7 +113,7 @@ public class OrderService {
         } else {
             List<String> orderStatusNoList = orderMapper.selectOrderStatusNoList(orderNo);
             boolean isOld = orderStatusNoList.stream().anyMatch(value -> value.equals("OS001"));
-            if(!isOld) {
+             if(!isOld) {
                 lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
                 order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
             } else {
@@ -140,14 +140,41 @@ public class OrderService {
             order.setDiscountPrice(0);
             order.setOrderStatusNo("OS001");
 
-            result = orderMapper.insertOrder(order);
+            orderSaveResult = orderMapper.insertOrder(order);
         } else {
             order.setQuantity(quantity + 1);
             order.setTotalSalePrice(menu.getSalePrice() * order.getQuantity());
-            result = orderMapper.updateOrder(order);
+            orderSaveResult = orderMapper.updateOrder(order);
         }
 
-        return result;
+        IngredientHis ingredientHis = null;
+        Ingredient ingredient = null;
+        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNo(order);
+        for(MenuIngredientDTO menuIngredientDTO : menuIngredientList) {
+            ingredient = new Ingredient();
+            ingredient.setIngredientNo(menuIngredientDTO.getIngredientNo());
+            ingredient.setStoreNo(loginMember.getStoreNo());
+            ingredient.setQuantity(menuIngredientDTO.getStockQuantity() - menuIngredientDTO.getNeedQuantity());
+            ingredient.setModifyId(loginMember.getUserId());
+            ingredientSaveResult += ingredientMapper.updateIngredient(ingredient);
+
+            ingredientHis = new IngredientHis();
+            ingredientHis.setStoreNo(loginMember.getStoreNo());
+            ingredientHis.setIngredientNo(menuIngredientDTO.getIngredientNo());
+            ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
+            ingredientHis.setInDeQuantity(-(menuIngredientDTO.getNeedQuantity()));
+            ingredientHis.setInDeReasonNo("ID001");
+            ingredientHis.setExpirationDate("");
+            ingredientHis.setInsertId(loginMember.getUserId());
+            ingredientHis.setModifyId(loginMember.getUserId());
+            ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
+        }
+
+        if(orderSaveResult == 1 && (ingredientHisSaveResult == menuIngredientList.size()) && (ingredientSaveResult == menuIngredientList.size())) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public List<OrderDTO> selectOrderList(String storeNo, String tableNo) {
@@ -399,7 +426,7 @@ public class OrderService {
     }
 
     public boolean checkStock(String storeNo, String menuNo) {
-        List<MenuDTO> menuList = menuMapper.selectMenuList(storeNo);
+
         List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         boolean isEnoughStock = true;

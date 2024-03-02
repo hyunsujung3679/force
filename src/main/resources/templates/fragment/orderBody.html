@@ -5,6 +5,9 @@
     <title>Force</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/fragment/orderBody.css}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css"/>
     <th:block th:replace="${links}"/>
     <th:block th:replace="${script}"/>
 </head>
@@ -28,6 +31,10 @@
     </div>
 
     <div th:replace="${content}"></div>
+
+    <div id="exception-modal-1" class="modal">
+        <p th:text="#{message.do.not.order.menu}"></p>
+    </div>
 
 </body>
 </html>

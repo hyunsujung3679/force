@@ -6,48 +6,7 @@ function selectMenuListByCategoryNo(div) {
         url: "/menu/" + categoryNo,
         type: "get",
         success: function(data) {
-
-            $("#menu-1").html("");
-            $("#menu-2").html("");
-            $("#menu-3").html("");
-
-            for(let index in data) {
-                let html = "";
-
-                html += '<div class="menu-content">';
-                html +=     '<input type="hidden" name="menu-no-1">'
-                if(data[index].enoughStock === true) {
-                    html +=     '<button type="button" class="menu-content-button">' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
-                } else {
-                    html +=     '<button type="button" class="menu-content-button" disabled>' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
-                }
-                html += '</div>'
-
-                if(index < 6) {
-                    $("#menu-1").append(html);
-                } else if(index >= 6 && index < 12) {
-                    $("#menu-2").append(html);
-                } else if(index >= 12 && index < 18) {
-                    $("#menu-3").append(html);
-                }
-            }
-
-            for(let index in data) {
-                $("input[name=menu-no-1]").eq(index).val(data[index].menuNo);
-            }
-
-            const nonClickMenu = document.querySelectorAll(".menu-content-button");
-            function handleMenuClick(event) {
-                nonClickMenu.forEach((e) => {
-                    e.classList.remove("menu-color");
-                });
-                event.target.classList.add("menu-color");
-            }
-
-            nonClickMenu.forEach((e) => {
-                e.addEventListener("click", handleMenuClick);
-            });
-
+            selectMenuList();
         },
         error: function(xhr) {
             console.log(xhr);
@@ -110,9 +69,10 @@ function saveOrder() {
         success: function(data) {
             if(data > 0) {
                 selectOrderList();
+                selectMenuList();
                 $(".menu-color").removeClass("menu-color");
             } else {
-                $("#exception-modal").modal({});
+                $("#exception-modal-1").modal({});
             }
         },
         error: function(xhr) {
@@ -472,4 +432,50 @@ function selCancel() {
             console.log(xhr);
         }
     });
+}
+
+function selectMenuList() {
+
+    $("#menu-1").html("");
+    $("#menu-2").html("");
+    $("#menu-3").html("");
+
+    for(let index in data) {
+        let html = "";
+
+        html += '<div class="menu-content">';
+        html +=     '<input type="hidden" name="menu-no-1">'
+        if(data[index].enoughStock === true) {
+            html +=     '<button type="button" class="menu-content-button">' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
+        } else {
+            html +=     '<button type="button" class="menu-content-button" disabled>' + data[index].menuName + ' ' + data[index].salePrice.toLocaleString() + '</button>'
+        }
+        html += '</div>'
+
+        if(index < 6) {
+            $("#menu-1").append(html);
+        } else if(index >= 6 && index < 12) {
+            $("#menu-2").append(html);
+        } else if(index >= 12 && index < 18) {
+            $("#menu-3").append(html);
+        }
+    }
+
+    for(let index in data) {
+        $("input[name=menu-no-1]").eq(index).val(data[index].menuNo);
+    }
+
+    const nonClickMenu = document.querySelectorAll(".menu-content-button");
+    function handleMenuClick(event) {
+        nonClickMenu.forEach((e) => {
+            e.classList.remove("menu-color");
+        });
+        event.target.classList.add("menu-color");
+    }
+
+    nonClickMenu.forEach((e) => {
+        e.addEventListener("click", handleMenuClick);
+    });
+
+
 }

@@ -84,4 +84,17 @@
            AND MI.STORE_NO = #{storeNo}
     </select>
 
+    <select id="selectMenuIngredientListByMenuNo" resultType="com.hsj.force.domain.dto.MenuIngredientDTO">
+        SELECT MI.MENU_NO
+             , MI.INGREDIENT_NO
+             , MI.QUANTITY AS NEED_QUANTITY
+             , I.QUANTITY AS STOCK_QUANTITY
+        FROM TMENUINGREDIENT MI
+           , TINGREDIENT I
+        WHERE MI.INGREDIENT_NO = I.INGREDIENT_NO
+          AND MI.STORE_NO = I.STORE_NO
+          AND MI.STORE_NO = #{storeNo}
+          AND MI.MENU_NO = #{menuNo}
+    </select>
+
 </mapper>

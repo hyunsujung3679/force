@@ -50,4 +50,22 @@
          WHERE I.STORE_NO = #{storeNo}
            AND I.INGREDIENT_NO = #{ingredientNo}
     </update>
+
+    <select id="selectMenuIngredientList" resultType="com.hsj.force.domain.dto.MenuIngredientDTO">
+        SELECT MI.MENU_NO
+             , MI.INGREDIENT_NO
+             , O.QUANTITY AS MENU_QUANTITY
+             , I.QUANTITY AS INGREDIENT_QUANTITY
+             , MI.QUANTITY AS NEED_QUANTITY
+          FROM TORDER O
+             , TMENUINGREDIENT MI
+             , TINGREDIENT I
+         WHERE O.MENU_NO = MI.MENU_NO
+           AND MI.INGREDIENT_NO = I.INGREDIENT_NO
+           AND O.ORDER_NO = #{orderNo}
+           AND O.STORE_NO = #{storeNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </select>
+
 </mapper>

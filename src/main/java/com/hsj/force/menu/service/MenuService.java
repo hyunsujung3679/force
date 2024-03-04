@@ -31,8 +31,9 @@ public class MenuService {
             }
         }
 
-        boolean isEnoughStock = true;
+        boolean isEnoughStock;
         for(MenuDTO menu : menuListByCategoryNo) {
+            isEnoughStock = true;
             for(MenuIngredientDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
                     if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {

@@ -53,19 +53,14 @@ public class OrderController {
     @ResponseBody
     public int saveOrder(HttpSession session, @RequestBody OrderDTO order) {
         User loginMember = (User) session.getAttribute("loginMember");
-
-         boolean isEnoughStock = orderService.checkStock(loginMember.getStoreNo(), order.getMenuNo());
-         if(!isEnoughStock) {
-            return 0;
-        }
-
+        boolean isEnoughStock = orderService.checkStock(loginMember.getStoreNo(), order.getMenuNo());
+        if(!isEnoughStock) return 0;
         return orderService.saveOrder(loginMember, order);
     }
 
     @GetMapping
     @ResponseBody
-    public List<OrderDTO> selectOrderList(String tableNo,
-                                          HttpSession session) {
+    public List<OrderDTO> selectOrderList(String tableNo, HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return orderService.selectOrderList(loginMember.getStoreNo(), tableNo);
     }

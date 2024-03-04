@@ -6,7 +6,7 @@ function selectMenuListByCategoryNo(div) {
         url: "/menu/" + categoryNo,
         type: "get",
         success: function(data) {
-            selectMenuList();
+            selectMenuList(data);
         },
         error: function(xhr) {
             console.log(xhr);
@@ -68,9 +68,7 @@ function saveOrder() {
         contentType: "application/json",
         success: function(data) {
             if(data > 0) {
-                selectOrderList();
-                selectMenuList();
-                $(".menu-color").removeClass("menu-color");
+                location.reload();
             } else {
                 $("#exception-modal-1").modal({});
             }
@@ -95,8 +93,7 @@ function cancelSelection() {
         contentType: "application/json",
         success: function(data) {
             if(data > 0) {
-                selectOrderList();
-                $(".menu-color").removeClass("order-color");
+                location.reload();
             }
         },
         error: function(xhr) {
@@ -118,10 +115,7 @@ function cancelWhole() {
         contentType: "application/json",
         success: function(data) {
             if(data > 0) {
-                $(".table-middle").html("");
-                $("#total-quantity").text(0);
-                $("#total-discount-price").text(0);
-                $("#total-sale-price").text(0);
+                location.reload();
             }
         },
         error: function(xhr) {
@@ -145,9 +139,7 @@ function quantityChange() {
         contentType: "application/json",
         success: function(data) {
             if(data > 0) {
-                selectOrderList();
-                $(".menu-color").removeClass("order-color");
-                $("input[name=inputValue]").val(0);
+                location.reload();
             }
         },
         error: function(xhr) {
@@ -434,7 +426,7 @@ function selCancel() {
     });
 }
 
-function selectMenuList() {
+function selectMenuList(data) {
 
     $("#menu-1").html("");
     $("#menu-2").html("");

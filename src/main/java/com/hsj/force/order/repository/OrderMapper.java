@@ -3,6 +3,7 @@ package com.hsj.force.order.repository;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.Order;
 import com.hsj.force.domain.dto.MenuDTO;
+import com.hsj.force.domain.dto.MenuIngredientDTO;
 import com.hsj.force.domain.dto.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.*;
@@ -53,4 +54,6 @@ public interface OrderMapper {
     List<String> selectOrderStatusNoList(String orderNo);
 
     String selectLastOrderNo(String storeNo);
+
+    List<String> selectMenuNoList(String storeNo, String orderNo);
 }

@@ -10,4 +10,6 @@ public class MenuIngredientDTO extends MenuIngredient {
 
     private double needQuantity;
     private double stockQuantity;
+    private double menuQuantity;
+    private double ingredientQuantity;
 }

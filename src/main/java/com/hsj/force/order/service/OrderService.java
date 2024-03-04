@@ -67,7 +67,7 @@ public class OrderService {
         orderTotal.setTotalDiscountPrice(totalDiscountPrice);
         orderTotal.setTotalSalePrice(totalSalePrice);
 
-        boolean isEnoughStock = true;
+        boolean isEnoughStock;
         for(MenuDTO menu : menuList) {
             isEnoughStock = true;
             for(MenuIngredientDTO menuIngredient : menuIngredientList) {
@@ -211,17 +211,95 @@ public class OrderService {
     }
 
     public int cancelSelection(User loginMember, OrderDTO order) {
+
+        Ingredient ingredient = null;
+        IngredientHis ingredientHis = null;
+        int ingredientSaveResult = 0;
+        int ingredientHisSaveResult = 0;
+
+        List<MenuIngredientDTO> menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), order.getOrderNo(), order.getMenuNo());
+
+        for(MenuIngredientDTO menuIngredient : menuIngredientDTOList) {
+            ingredient = new Ingredient();
+            ingredient.setIngredientNo(menuIngredient.getIngredientNo());
+            ingredient.setStoreNo(loginMember.getStoreNo());
+            ingredient.setQuantity(menuIngredient.getIngredientQuantity() + menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
+            ingredient.setModifyId(loginMember.getUserId());
+            ingredientSaveResult += ingredientMapper.updateIngredient(ingredient);
+
+            ingredientHis = new IngredientHis();
+            ingredientHis.setStoreNo(loginMember.getStoreNo());
+            ingredientHis.setIngredientNo(menuIngredient.getIngredientNo());
+            ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
+            ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
+            ingredientHis.setInDeReasonNo("ID002");
+            ingredientHis.setExpirationDate("");
+            ingredientHis.setInsertId(loginMember.getUserId());
+            ingredientHis.setModifyId(loginMember.getUserId());
+            ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
+        }
+
         order.setStoreNo(loginMember.getStoreNo());
         order.setOrderStatusNo("OS002");
         order.setModifyId(loginMember.getUserId());
-        return orderMapper.updateOrderStatusV2(order);
+        int ordrSaveResult = orderMapper.updateOrderStatusV2(order);
+
+        if((ingredientSaveResult == menuIngredientDTOList.size()) && (ingredientHisSaveResult == menuIngredientDTOList.size()) && ordrSaveResult == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public int cancelWhole(User loginMember, OrderDTO order) {
+
+        Ingredient ingredient = null;
+        IngredientHis ingredientHis = null;
+        int ingredientSaveResult = 0;
+        int ingredientHisSaveResult = 0;
+        List<MenuIngredientDTO> menuIngredientDTOList = null;
+
+        List<String> menuNoList = orderMapper.selectMenuNoList(loginMember.getStoreNo(), order.getOrderNo());
+        for(String menuNo : menuNoList) {
+            menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), order.getOrderNo(), menuNo);
+            ingredientSaveResult = 0;
+            ingredientHisSaveResult = 0;
+            for(MenuIngredientDTO menuIngredient : menuIngredientDTOList) {
+                ingredient = new Ingredient();
+                ingredient.setIngredientNo(menuIngredient.getIngredientNo());
+                ingredient.setStoreNo(loginMember.getStoreNo());
+                ingredient.setQuantity(menuIngredient.getIngredientQuantity() + menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
+                ingredient.setModifyId(loginMember.getUserId());
+                ingredientSaveResult += ingredientMapper.updateIngredient(ingredient);
+
+                ingredientHis = new IngredientHis();
+                ingredientHis.setStoreNo(loginMember.getStoreNo());
+                ingredientHis.setIngredientNo(menuIngredient.getIngredientNo());
+                ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
+                ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
+                ingredientHis.setInDeReasonNo("ID002");
+                ingredientHis.setExpirationDate("");
+                ingredientHis.setInsertId(loginMember.getUserId());
+                ingredientHis.setModifyId(loginMember.getUserId());
+                ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
+            }
+
+            if(!(ingredientSaveResult == menuIngredientDTOList.size() && ingredientHisSaveResult == menuIngredientDTOList.size())) {
+                return 0;
+            }
+
+        }
+
         order.setStoreNo(loginMember.getStoreNo());
         order.setOrderStatusNo("OS002");
         order.setModifyId(loginMember.getUserId());
-        return orderMapper.updateOrderStatusV3(order);
+        int ordrSaveResult = orderMapper.updateOrderStatusV3(order);
+        if(ordrSaveResult > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 
     public int changeQuantity(User loginMember, OrderDTO order) {

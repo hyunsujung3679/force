@@ -59,7 +59,7 @@
          `QUANTITY`,
          `DISCOUNT_PRICE`,
          `ORDER_DATE`,
-         `CANCLE_DATE`,
+         `CANCEL_DATE`,
          `INSERT_ID`,
          `INSERT_DATE`,
          `MODIFY_ID`,
@@ -125,24 +125,27 @@
 
     <update id="updateOrderStatusV2">
         UPDATE TORDER O
-        SET O.ORDER_STATUS_NO = #{orderStatusNo}
-          , O.MODIFY_ID = #{modifyId}
-          , O.MODIFY_DATE = NOW()
-        WHERE O.STORE_NO = #{storeNo}
-          AND O.ORDER_NO = #{orderNo}
-          AND O.TABLE_NO = #{tableNo}
-          AND O.MENU_NO = #{menuNo}
+           SET O.ORDER_STATUS_NO = #{orderStatusNo}
+             , O.CANCEL_DATE = NOW()
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.MENU_NO = #{menuNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateOrderStatusV3">
         UPDATE TORDER O
-        SET O.ORDER_STATUS_NO = #{orderStatusNo}
-          , O.MODIFY_ID = #{modifyId}
-          , O.MODIFY_DATE = NOW()
-        WHERE O.STORE_NO = #{storeNo}
-          AND O.ORDER_NO = #{orderNo}
-          AND O.TABLE_NO = #{tableNo}
-          AND O.ORDER_STATUS_NO = 'OS001'
+           SET O.ORDER_STATUS_NO = #{orderStatusNo}
+             , O.CANCEL_DATE = NOW()
+             , O.MODIFY_ID = #{modifyId}
+             , O.MODIFY_DATE = NOW()
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.TABLE_NO = #{tableNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateQuantity">
@@ -152,11 +155,11 @@
              , O.TOTAL_SALE_PRICE = #{totalSalePrice}
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
-           WHERE O.STORE_NO = #{storeNo}
-             AND O.ORDER_NO = #{orderNo}
-             AND O.TABLE_NO = #{tableNo}
-             AND O.MENU_NO = #{menuNo}
-             AND O.ORDER_STATUS_NO = 'OS001'
+         WHERE O.STORE_NO = #{storeNo}
+         AND O.ORDER_NO = #{orderNo}
+         AND O.TABLE_NO = #{tableNo}
+         AND O.MENU_NO = #{menuNo}
+         AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
     <update id="updateSalePrice">
@@ -336,6 +339,14 @@
          WHERE O.STORE_NO = #{storeNo}
          ORDER BY O.ORDER_NO DESC
          LIMIT 1
+    </select>
+
+    <select id="selectMenuNoList" resultType="String">
+        SELECT O.MENU_NO
+          FROM TORDER O
+         WHERE O.STORE_NO = #{storeNo}
+           AND O.ORDER_NO = #{orderNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
 </mapper>

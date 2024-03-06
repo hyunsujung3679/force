@@ -68,4 +68,15 @@
            AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
+    <select id="selectMenuIngredientListByMenuForm" resultType="com.hsj.force.domain.dto.MenuIngredientDTO">
+        SELECT MI.MENU_NO
+             , MI.INGREDIENT_NO
+             , I.QUANTITY AS INGREDIENT_QUANTITY
+             , MI.QUANTITY AS NEED_QUANTITY
+        FROM TMENUINGREDIENT MI
+           , TINGREDIENT I
+        WHERE MI.INGREDIENT_NO = I.INGREDIENT_NO
+          AND I.STORE_NO = #{storeNo}
+    </select>
+
 </mapper>

@@ -46,29 +46,30 @@
     <select id="selectMenuListByMenuForm" resultType="com.hsj.force.domain.dto.MenuDTO">
         SELECT A.MENU_NO
              , A.MENU_NAME
-             , A.CATEGORY_NO
+             , A.SALE_STATUS
+             , A.CATEGORY_NAME
              , A.SALE_PRICE
-          FROM (SELECT RANK() OVER(PARTITION BY MP.MENU_NO ORDER BY MP.MENU_SEQ DESC, M.MENU_NO ASC) AS RN
-                     , M.MENU_NO
-                     , M.MENU_NAME
-                     , M.CATEGORY_NO
-                     , MP.SALE_PRICE
-                     , SS.SALE_STATUS
-                FROM TMENU M
-                   , TCATEGORY C
-                   , TMENUPRICE MP
-                   , TSALESTATUS SS
-               WHERE M.CATEGORY_NO = C.CATEGORY_NO
-                 AND M.MENU_NO = MP.MENU_NO
-                 AND M.SALE_STATUS_NO = SS.SALE_STATUS_NO
-                 AND C.STORE_NO = #{storeNo}
-                 AND C.CATEGORY_NO = (SELECT C1.CATEGORY_NO
-                                        FROM TCATEGORY C1
-                                       WHERE C1.STORE_NO = #{storeNo}
-                                         AND C1.USE_YN = '1'
-                                       ORDER BY C1.PRIORITY ASC
-                                       LIMIT 1)
-                 AND C.USE_YN = '1') A
+        FROM (SELECT RANK() OVER(PARTITION BY MP.MENU_NO ORDER BY MP.MENU_SEQ DESC, M.MENU_NO ASC) AS RN
+			       , M.MENU_NO
+                   , M.MENU_NAME
+                   , SS.SALE_STATUS
+                   , C.CATEGORY_NAME
+                   , MP.SALE_PRICE
+              FROM TMENU M
+                 , TCATEGORY C
+                 , TMENUPRICE MP
+                 , TSALESTATUS SS
+              WHERE M.CATEGORY_NO = C.CATEGORY_NO
+                AND M.MENU_NO = MP.MENU_NO
+                AND M.SALE_STATUS_NO = SS.SALE_STATUS_NO
+                AND C.STORE_NO = #{storeNo}
+                AND C.CATEGORY_NO = (SELECT C1.CATEGORY_NO
+                                     FROM TCATEGORY C1
+                                     WHERE C1.STORE_NO = #{storeNo}
+                                       AND C1.USE_YN = '1'
+                                     ORDER BY C1.PRIORITY ASC
+                  LIMIT 1)
+            AND C.USE_YN = '1') A
         WHERE RN = 1
     </select>
 

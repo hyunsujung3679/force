@@ -10,22 +10,27 @@
 <section>
     <div class="menu-box">
         <div class="menu-title">
-            <div class="menu-title-no">No</div>
-            <div class="menu-title-name">메뉴명</div>
-            <div class="menu-title-status">판매상태</div>
-            <div class="menu-title-category">카테고리</div>
-            <div class="menu-title-stock">판매가능재고</div>
-            <div class="menu-title-price">가격</div>
+            <div class="menu-title-no" th:text="#{label.no}"></div>
+            <div class="menu-title-name"  th:text="#{label.menu.name}"></div>
+            <div class="menu-title-status"  th:text="#{label.sale.status}"></div>
+            <div class="menu-title-category"  th:text="#{label.category}"></div>
+            <div class="menu-title-stock"  th:text="#{label.sale.able.stock}"></div>
+            <div class="menu-title-price"  th:text="#{label.price}"></div>
         </div>
-        <div class="menu-content">
-            <input type="hidden" name="category-no">
-            <div class="menu-no">1</div>
-            <div class="menu-name">광어 + 소라</div>
-            <div class="menu-status">판매중</div>
-            <div class="menu-category">SET</div>
-            <div class="menu-stock">10</div>
-            <div class="menu-price">48,000</div>
+        <div class="menu-content" th:each="menu : ${menuList}">
+            <input type="hidden" name="menu-no" th:value="${menu.menuNo}">
+            <div class="menu-no" th:text="${menu.no}"></div>
+            <div class="menu-name" th:text="${menu.menuName}"></div>
+            <div class="menu-status" th:text="${menu.saleStatus}"></div>
+            <div class="menu-category" th:text="${menu.categoryName}"></div>
+            <div class="menu-stock" th:text="${menu.stock}"></div>
+            <div class="menu-price" th:text="${#numbers.formatInteger(menu.salePrice, 0, 'COMMA')}"></div>
         </div>
+    </div>
+
+    <div class="menu-button-wrap">
+        <button type="button" class="menu-button-1" th:text="#{button.add}" onclick="addMenuPopup();"></button>
+        <button type="button" class="menu-button-2" th:text="#{button.modify}" onclick="modifyCategoryPopup();"></button>
     </div>
 </section>
 

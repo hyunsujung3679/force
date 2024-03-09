@@ -80,4 +80,8 @@ public class CategoryService {
             categoryMapper.updatePriority(categoryDTO);
         }
     }
+
+    public List<Category> selectCategoryList(String storeNo) {
+        return categoryMapper.selectCategoryList(storeNo);
+    }
 }

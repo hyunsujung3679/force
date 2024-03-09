@@ -19,4 +19,6 @@ public interface IngredientMapper {
     List<MenuIngredientDTO> selectMenuIngredientList(String storeNo, String orderNo, String menuNo);
 
     List<MenuIngredientDTO> selectMenuIngredientListByMenuForm(String storeNo);
+
+    List<Ingredient> selectIngredientList(String storeNo);
 }

@@ -79,4 +79,11 @@
           AND I.STORE_NO = #{storeNo}
     </select>
 
+    <select id="selectIngredientList" resultType="Ingredient">
+        SELECT I.INGREDIENT_NO
+             , I.INGREDIENT_NAME
+        FROM TINGREDIENT I
+        WHERE I.STORE_NO = #{storeNo}
+    </select>
+
 </mapper>

@@ -169,8 +169,15 @@ section {
 
 .menu-modal {
     width: 100%;
-    height: 32%;
+    height: 44%;
 }
+
+.content-wrap {
+    height: 68%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 
 .top-area {
     display: flex;
@@ -208,10 +215,11 @@ section {
 }
 
 .middle-area-3 {
+    width:80%;
     display: flex;
     justify-content: center;
     margin-top: 3%;
-    margin-left: 15.5%;
+    margin-left: 20%;
 }
 
 .middle-area-3-input {
@@ -223,6 +231,43 @@ section {
     margin-left: 1%;
 }
 
+.menu-image-1 {
+    width: 5%;
+    height: 5%;
+    margin-left: 2%;
+    margin-top: 1%;
+    cursor:pointer;
+}
+
+.menu-image-2 {
+    width: 5%;
+    height: 5%;
+    margin-left: 2%;
+    margin-top: 3%;
+    cursor:pointer;
+}
+
+.middle-area-3-wrap {
+    width: 100%;
+}
+
+.middle-area-4 {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
+    margin-left: 25%;
+}
+
+
+
+
+
+
+
+
+
+
 .bottom-area {
     display: flex;
     justify-content: center;
@@ -233,7 +278,7 @@ section {
 
 .bottom-button-1 {
     width: 30%;
-    height: 20%;
+    height: 13%;
     background-color: #5DA4EF;
     color: white;
     font-weight: bold;
@@ -245,7 +290,7 @@ section {
 
 .bottom-button-2 {
     width: 30%;
-    height: 20%;
+    height: 13%;
     background-color: #5DA4EF;
     color: white;
     font-weight: bold;

@@ -9,4 +9,10 @@
          WHERE S.STORE_NO = #{storeNo}
     </select>
 
+    <select id="selectSaleStatusList" resultType="SaleStatus">
+        SELECT SS.SALE_STATUS_NO
+             , SS.SALE_STATUS
+        FROM TSALESTATUS SS
+    </select>
+
 </mapper>

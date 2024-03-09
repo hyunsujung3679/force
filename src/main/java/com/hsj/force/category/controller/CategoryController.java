@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.*;
 
 @Controller
 @RequestMapping("/category")
@@ -57,5 +58,12 @@ public class CategoryController {
 
         User loginMember = (User) session.getAttribute("loginMember");
         return categoryService.updateCategory(loginMember, category);
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public List<Category> selectCategoryList(HttpSession session) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return categoryService.selectCategoryList(loginMember.getStoreNo());
     }
 }

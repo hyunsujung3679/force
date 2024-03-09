@@ -13,6 +13,7 @@
         SELECT SS.SALE_STATUS_NO
              , SS.SALE_STATUS
         FROM TSALESTATUS SS
+        ORDER BY SS.SALE_STATUS_NO ASC
     </select>
 
 </mapper>

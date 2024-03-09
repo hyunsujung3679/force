@@ -84,6 +84,7 @@
              , I.INGREDIENT_NAME
         FROM TINGREDIENT I
         WHERE I.STORE_NO = #{storeNo}
+        ORDER BY I.INGREDIENT_NO ASC
     </select>
 
 </mapper>

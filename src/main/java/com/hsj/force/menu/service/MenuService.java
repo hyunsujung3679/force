@@ -1,6 +1,10 @@
 package com.hsj.force.menu.service;
 
+import com.hsj.force.common.ComUtils;
+import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
+import com.hsj.force.domain.Menu;
+import com.hsj.force.domain.MenuIngredient;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -87,5 +92,43 @@ public class MenuService {
             }
         }
         return stock;
+    }
+
+    public int insertMenu(User loginMember, Map<String, Object> parameter) {
+
+        int menuSaveResult = 0;
+        int menuIngredientSaveResult = 0;
+
+        String menuNo = menuMapper.selectMenuNo(loginMember.getStoreNo());
+        String nextMenuNo = ComUtils.getNextNo(menuNo, Constants.MENU_NO_PREFIX);
+
+        Menu menu = new Menu();
+        menu.setMenuNo(nextMenuNo);
+        menu.setMenuName((String) parameter.get("menuName"));
+        menu.setSaleStatusNo((String) parameter.get("saleStatusNo"));
+        menu.setCategoryNo((String) parameter.get("categoryNo"));
+        menu.setInsertId(loginMember.getUserId());
+        menu.setModifyId(loginMember.getUserId());
+        menuSaveResult = menuMapper.insertMenu(menu);
+
+        String[] ingredientNoArr = (String[]) parameter.get("ingredientNoArr");
+        Double[] quantityArr = (Double[]) parameter.get("quantityArr");
+        for(int i = 0; i < ingredientNoArr.length; i++) {
+            MenuIngredient menuIngredient = new MenuIngredient();
+            menuIngredient.setMenuNo(nextMenuNo);
+            menuIngredient.setIngredientNo(ingredientNoArr[i]);
+            menuIngredient.setStoreNo(loginMember.getStoreNo());
+            menuIngredient.setQuantity(quantityArr[i]);
+            menuIngredient.setInsertId(loginMember.getStoreNo());
+            menuIngredient.setModifyId(loginMember.getStoreNo());
+            menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
+        }
+
+        if(menuSaveResult > 0 && (ingredientNoArr.length == menuIngredientSaveResult)) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 }

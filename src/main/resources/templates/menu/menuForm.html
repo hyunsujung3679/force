@@ -40,6 +40,32 @@
             }
         });
 
+        selectIngredientList();
+    }
+
+    function addIngredient() {
+
+        const numberLabel = [[#{label.number}]];
+
+        let html = "";
+
+        html += '<div class="middle-area-4">'
+        html +=     '<select name="ingredient" class="middle-area-1-select"></select>'
+        html +=     '<input type="number" min="0.1" step="0.1" name="quantity" class="middle-area-3-input"/>'
+        html +=     '<label class="label-number">' + numberLabel + '</label>'
+        html +=     '<img class="menu-image-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>'
+        html += '</div>'
+
+        $(".middle-area-3-wrap").append(html);
+
+        selectIngredientList();
+    }
+
+    function removeIngredient(img) {
+        img.parentNode.remove();
+    }
+
+    function selectIngredientList() {
         $.ajax({
             url: "/ingredient",
             type: "get",
@@ -57,21 +83,48 @@
         });
     }
 
-    function addIngredient() {
+    function insertMenu() {
+        const menuName = $("input[name=menu-name]").val();
+        const categoryNo = $("select[name=category]").val();
+        const saleStatus = $("select[name=sale-status]").val();
+        const ingredientNoSize = $("select[name=ingredient]").length;
+        const ingredientArr = new Array(ingredientNoSize);
+        const quantitySize = $("input[name=quantity]").length;
+        const quantityArr = new Array(quantitySize);
 
-        const numberLabel = [[#{label.number}]];
+        if(ingredientNoSize !== quantitySize) {
+            $(".field-error-1").text("재료의 개(마리)를 입력해주세요.")
+        }
 
-        let html = "";
+        for(let i = 0; i < ingredientNoSize; i++) {
+            ingredientArr[i] = $("input[name=ingredient]").eq(i).val();
+        }
 
-        html += '<div class="middle-area-4">'
-        html +=     '<select name="ingredient" class="middle-area-1-select"></select>'
-        html +=     '<input type="number" min="0.1" step="0.1" name="quantity" class="middle-area-3-input"/>'
-        html +=     '<label class="label-number">' + numberLabel + '</label>'
-        html +=     '<img class="menu-image-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient();"/>'
-        html += '</div>'
+        for(let i = 0; i < quantitySize; i++) {
+            quantityArr[i] = $("input[name=quantity]").eq(i).val();
+        }
 
-        $(".middle-area-3-wrap").append(html);
+        const parameter = {menuName : menuName,
+                           categoryNo : categoryNo,
+                           saleStatus : saleStatus,
+                           ingredientArr : ingredientArr,
+                           quantityArr : quantityArr};
+
+        $.ajax({
+            url: "/menu/insert",
+            type: "post",
+            data: JSON.stringify(parameter),
+            dataType : "json",
+            contentType: "application/json",
+            success: function(data) {
+                alert(data);
+            },
+            error: function(xhr) {
+                console.log(xhr);
+            }
+        });
     }
+
 </script>
 </head>
 <body>

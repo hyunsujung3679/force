@@ -9,10 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -45,5 +42,19 @@ public class MenuController {
     public List<MenuDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
         User loginMember = (User) session.getAttribute("loginMember");
         return menuService.selectMenuListByCategoryNo(loginMember.getStoreNo(), categoryNo);
+    }
+
+    @PostMapping("/insert")
+    @ResponseBody
+    public int insertMenu(HttpSession session, @RequestBody Map<String, Object> parameter) {
+        User loginMember = (User) session.getAttribute("loginMember");
+
+        String[] ingredientNoArr = (String[]) parameter.get("ingredientArr");
+        String[] quantityArr = (String[]) parameter.get("quantityArr");
+        if(ingredientNoArr.length != quantityArr.length) {
+            return 0;
+        }
+
+        return menuService.insertMenu(loginMember, parameter);
     }
 }

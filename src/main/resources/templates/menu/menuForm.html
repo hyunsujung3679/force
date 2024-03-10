@@ -84,31 +84,41 @@
     }
 
     function insertMenu() {
+
+        const systemErrorMsg = [[#{message.system.error}]];
+        const inputIngredientQuantityMsg = [[#{message.input.ingredient.quantity}]];
+        const inputMenuNameMsg = [[#{message.input.menu.name}]];
+        const inputPriceMsg = [[#{message.input.price}]];
+
         const menuName = $("input[name=menu-name]").val();
         const categoryNo = $("select[name=category]").val();
-        const saleStatus = $("select[name=sale-status]").val();
-        const ingredientNoSize = $("select[name=ingredient]").length;
-        const ingredientArr = new Array(ingredientNoSize);
-        const quantitySize = $("input[name=quantity]").length;
-        const quantityArr = new Array(quantitySize);
+        const saleStatusNo = $("select[name=sale-status]").val();
+        const quantity = $("input[name=quantity]");
+        const ingredientNo = $("select[name=ingredient]");
 
-        if(ingredientNoSize !== quantitySize) {
-            $(".field-error-1").text("재료의 개(마리)를 입력해주세요.")
+        if(menuName === "") {
+            $(".field-error-1").text(inputMenuNameMsg);
+            return;
         }
 
-        for(let i = 0; i < ingredientNoSize; i++) {
-            ingredientArr[i] = $("input[name=ingredient]").eq(i).val();
-        }
+        if()
 
-        for(let i = 0; i < quantitySize; i++) {
-            quantityArr[i] = $("input[name=quantity]").eq(i).val();
+        let quantityArr = new Array(quantity.length);
+        let ingredientNoArr = new Array(ingredientNo.length);
+        for(let i = 0; i < quantity.length; i++) {
+            if(quantity.eq(i).val() === '') {
+                $(".field-error-1").text(inputIngredientQuantityMsg);
+                return;
+            }
+            quantityArr[i] = quantity.eq(i).val();
+            ingredientNoArr[i] = ingredientNo.eq(i).val();
         }
 
         const parameter = {menuName : menuName,
                            categoryNo : categoryNo,
-                           saleStatus : saleStatus,
-                           ingredientArr : ingredientArr,
-                           quantityArr : quantityArr};
+                           saleStatusNo : saleStatusNo,
+                           quantityArr : quantityArr,
+                           ingredientNoArr : ingredientNoArr};
 
         $.ajax({
             url: "/menu/insert",
@@ -117,7 +127,13 @@
             dataType : "json",
             contentType: "application/json",
             success: function(data) {
-                alert(data);
+                if(data === 0) {
+                    $(".field-error-1").text(inputIngredientQuantityMsg);
+                } else if(data === -1) {
+                    $(".field-error-1").text(systemErrorMsg);
+                } else if(data > 0) {
+                    $("#menu-add-modal-2").modal({});
+                }
             },
             error: function(xhr) {
                 console.log(xhr);

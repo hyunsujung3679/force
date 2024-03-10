@@ -111,23 +111,28 @@ public class MenuService {
         menu.setModifyId(loginMember.getUserId());
         menuSaveResult = menuMapper.insertMenu(menu);
 
-        String[] ingredientNoArr = (String[]) parameter.get("ingredientNoArr");
-        Double[] quantityArr = (Double[]) parameter.get("quantityArr");
-        for(int i = 0; i < ingredientNoArr.length; i++) {
-            MenuIngredient menuIngredient = new MenuIngredient();
-            menuIngredient.setMenuNo(nextMenuNo);
-            menuIngredient.setIngredientNo(ingredientNoArr[i]);
-            menuIngredient.setStoreNo(loginMember.getStoreNo());
-            menuIngredient.setQuantity(quantityArr[i]);
-            menuIngredient.setInsertId(loginMember.getStoreNo());
-            menuIngredient.setModifyId(loginMember.getStoreNo());
-            menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
+        List<String> ingredientNoList = (List<String>) parameter.get("ingredientNoArr");
+        List<String> quantityList = (List<String>) parameter.get("quantityArr");
+        MenuIngredient menuIngredient = null;
+        for(int i = 0; i < ingredientNoList.size(); i++) {
+            for(int j = 0; j < quantityList.size(); j++) {
+                if(i == j) {
+                    menuIngredient = new MenuIngredient();
+                    menuIngredient.setMenuNo(nextMenuNo);
+                    menuIngredient.setIngredientNo(ingredientNoList.get(i));
+                    menuIngredient.setStoreNo(loginMember.getStoreNo());
+                    menuIngredient.setQuantity(Double.parseDouble(quantityList.get(i)));
+                    menuIngredient.setInsertId(loginMember.getUserId());
+                    menuIngredient.setModifyId(loginMember.getUserId());
+                    menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
+                }
+            }
         }
 
-        if(menuSaveResult > 0 && (ingredientNoArr.length == menuIngredientSaveResult)) {
+        if(menuSaveResult > 0 && (ingredientNoList.size() == menuIngredientSaveResult)) {
             return 1;
         } else {
-            return 0;
+            return -1;
         }
 
     }

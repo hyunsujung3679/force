@@ -49,12 +49,13 @@ public class MenuController {
     public int insertMenu(HttpSession session, @RequestBody Map<String, Object> parameter) {
         User loginMember = (User) session.getAttribute("loginMember");
 
-        String[] ingredientNoArr = (String[]) parameter.get("ingredientArr");
-        String[] quantityArr = (String[]) parameter.get("quantityArr");
-        if(ingredientNoArr.length != quantityArr.length) {
-            return 0;
+        List<String> quantityList = (List<String>) parameter.get("quantityArr");
+        for(String quantity : quantityList) {
+            if("".equals(quantity)) {
+                return 0;
+            }
         }
-
-        return menuService.insertMenu(loginMember, parameter);
+return 0;
+//        return menuService.insertMenu(loginMember, parameter);
     }
 }

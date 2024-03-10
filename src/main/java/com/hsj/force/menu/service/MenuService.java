@@ -5,6 +5,7 @@ import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.Menu;
 import com.hsj.force.domain.MenuIngredient;
+import com.hsj.force.domain.MenuPrice;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
@@ -14,12 +15,14 @@ import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class MenuService {
@@ -98,6 +101,7 @@ public class MenuService {
 
         int menuSaveResult = 0;
         int menuIngredientSaveResult = 0;
+        int menuPriceSaveResult = 0;
 
         String menuNo = menuMapper.selectMenuNo(loginMember.getStoreNo());
         String nextMenuNo = ComUtils.getNextNo(menuNo, Constants.MENU_NO_PREFIX);
@@ -129,10 +133,21 @@ public class MenuService {
             }
         }
 
-        if(menuSaveResult > 0 && (ingredientNoList.size() == menuIngredientSaveResult)) {
+        int salePrice = Integer.parseInt(parameter.get("salePrice").toString().replaceAll(",", ""));
+        MenuPrice menuPrice = new MenuPrice();
+        menuPrice.setMenuNo(nextMenuNo);
+        menuPrice.setMenuSeq("001");
+        menuPrice.setSalePrice(salePrice);
+        menuPrice.setInsertId(loginMember.getUserId());
+        menuPrice.setModifyId(loginMember.getUserId());
+        menuPriceSaveResult = menuMapper.insertMenuPrice(menuPrice);
+
+        if(menuSaveResult > 0 &&
+          (ingredientNoList.size() == menuIngredientSaveResult) &&
+          menuPriceSaveResult > 0) {
             return 1;
         } else {
-            return -1;
+            return 0;
         }
 
     }

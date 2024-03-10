@@ -45,17 +45,30 @@ public class MenuController {
     }
 
     @PostMapping("/insert")
-    @ResponseBody
     public int insertMenu(HttpSession session, @RequestBody Map<String, Object> parameter) {
         User loginMember = (User) session.getAttribute("loginMember");
+
+        if("".equals(parameter.get("menuName"))) {
+            return -1;
+        }
+
+        if("".equals(parameter.get("salePrice"))) {
+            return -2;
+        }
 
         List<String> quantityList = (List<String>) parameter.get("quantityArr");
         for(String quantity : quantityList) {
             if("".equals(quantity)) {
-                return 0;
+                return -3;
             }
         }
-return 0;
-//        return menuService.insertMenu(loginMember, parameter);
+
+        try {
+            Integer.parseInt(parameter.get("salePrice").toString().replaceAll(",", ""));
+        } catch (NumberFormatException e) {
+            return -4;
+        }
+
+        return menuService.insertMenu(loginMember, parameter);
     }
 }

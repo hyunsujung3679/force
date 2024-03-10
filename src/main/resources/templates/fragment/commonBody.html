@@ -131,6 +131,7 @@
         <p th:text="#{message.select.modify.category}"></p>
     </div>
 
+    <form id="insert-menu" th:action="@{/menu/insert}" method="post"></form>
     <div id="menu-add-modal" class="menu-modal">
         <div class="content-wrap">
             <div class="top-area">
@@ -147,7 +148,7 @@
             </div>
             <div class="middle-area-2">
                 <label th:text="|#{label.price} : |"></label>
-                <input type="number" min="0" step="100" name="sale-price" class="middle-area-2-input"/>
+                <input type="text" id="sale-price" name="sale-price" class="middle-area-2-input"/>
             </div>
             <div class="middle-area-3-wrap">
                 <div class="middle-area-3">
@@ -161,7 +162,7 @@
         </div>
         <div class="field-error-1"></div>
         <div class="bottom-area">
-            <button type="button" class="bottom-button-1" onclick="insertMenu();" th:text="#{button.next}"></button>
+            <button type="submit" class="bottom-button-1" th:text="#{button.next}" form="insert-menu"></button>
         </div>
     </div>
 

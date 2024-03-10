@@ -2,6 +2,7 @@ package com.hsj.force.menu.repository;
 
 import com.hsj.force.domain.Menu;
 import com.hsj.force.domain.MenuIngredient;
+import com.hsj.force.domain.MenuPrice;
 import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.MenuIngredientDTO;
 import com.hsj.force.domain.dto.OrderDTO;
@@ -27,4 +28,6 @@ public interface MenuMapper {
     int insertMenu(Menu menu);
 
     int insertMenuIngredient(MenuIngredient menuIngredient);
+
+    int insertMenuPrice(MenuPrice menuPrice);
 }

@@ -89,10 +89,12 @@
         const inputIngredientQuantityMsg = [[#{message.input.ingredient.quantity}]];
         const inputMenuNameMsg = [[#{message.input.menu.name}]];
         const inputPriceMsg = [[#{message.input.price}]];
+        const inputPriceNumberMsg = [[#{message.input.price_number}]];
 
         const menuName = $("input[name=menu-name]").val();
         const categoryNo = $("select[name=category]").val();
         const saleStatusNo = $("select[name=sale-status]").val();
+        const salePrice = $("input[name=sale-price]").val();
         const quantity = $("input[name=quantity]");
         const ingredientNo = $("select[name=ingredient]");
 
@@ -101,7 +103,10 @@
             return;
         }
 
-        if()
+        if(salePrice === "") {
+            $(".field-error-1").text(inputPriceMsg);
+            return;
+        }
 
         let quantityArr = new Array(quantity.length);
         let ingredientNoArr = new Array(ingredientNo.length);
@@ -117,6 +122,7 @@
         const parameter = {menuName : menuName,
                            categoryNo : categoryNo,
                            saleStatusNo : saleStatusNo,
+                           salePrice : salePrice,
                            quantityArr : quantityArr,
                            ingredientNoArr : ingredientNoArr};
 
@@ -128,9 +134,15 @@
             contentType: "application/json",
             success: function(data) {
                 if(data === 0) {
-                    $(".field-error-1").text(inputIngredientQuantityMsg);
-                } else if(data === -1) {
                     $(".field-error-1").text(systemErrorMsg);
+                } else if(data === -1) {
+                    $(".field-error-1").text(inputMenuNameMsg);
+                } else if(data === -2) {
+                    $(".field-error-1").text(inputPriceMsg);
+                } else if(data === -3) {
+                    $(".field-error-1").text(inputIngredientQuantityMsg);
+                } else if(data === -4) {
+                    $(".field-error-1").text(inputPriceNumberMsg);
                 } else if(data > 0) {
                     $("#menu-add-modal-2").modal({});
                 }
@@ -140,6 +152,21 @@
             }
         });
     }
+
+    $(function() {
+        const salePrice = document.querySelector('#sale-price');
+
+        salePrice.addEventListener('keyup', function(e) {
+            let value = e.target.value;
+            value = Number(value.replaceAll(',', ''));
+            if(isNaN(value)) {         //NaN인지 판별
+                salePrice.value = 0;
+            }else {                   //NaN이 아닌 경우
+                const formatValue = value.toLocaleString('ko-KR');
+                salePrice.value = formatValue;
+            }
+        })
+    })
 
 </script>
 </head>

@@ -168,4 +168,28 @@
         )
     </insert>
 
+    <insert id="insertMenuPrice">
+        INSERT
+        INTO TMENUPRICE
+        (
+          MENU_NO
+        , MENU_SEQ
+        , SALE_PRICE
+        , INSERT_ID
+        , INSERT_DATE
+        , MODIFY_ID
+        , MODIFY_DATE
+        )
+        VALUES
+        (
+          #{menuNo}
+        , #{menuSeq}
+        , #{salePrice}
+        , #{insertId}
+        , NOW()
+        , #{modifyId}
+        , NOW()
+        )
+    </insert>
+
 </mapper>

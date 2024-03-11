@@ -2,7 +2,7 @@
 <html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/category/category.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/category/categoryList.css}">
     <script th:inline="javascript" th:src="@{/js/category/category.js}"></script>
 </head>
 <body>
@@ -23,7 +23,7 @@
     </div>
 
     <div class="category-button-wrap">
-        <button type="button" class="category-button-1" th:text="#{button.add}" onclick="addCategoryPopup();"></button>
+        <button type="button" class="category-button-1" th:onclick="|location.href='@{category/insert}'|" th:text="#{button.add}"></button>
         <button type="button" class="category-button-2" th:text="#{button.modify}" onclick="modifyCategoryPopup();"></button>
     </div>
 </section>

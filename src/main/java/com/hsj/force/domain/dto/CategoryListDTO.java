@@ -8,7 +8,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CategoryDTO extends Category {
+public class CategoryListDTO extends Category {
 
     private CommonLayoutDTO commonLayoutForm;
     private List<Category> categoryList;

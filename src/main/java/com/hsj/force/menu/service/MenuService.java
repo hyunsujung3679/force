@@ -7,7 +7,6 @@ import com.hsj.force.domain.Menu;
 import com.hsj.force.domain.MenuIngredient;
 import com.hsj.force.domain.MenuPrice;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.MenuIngredientDTO;

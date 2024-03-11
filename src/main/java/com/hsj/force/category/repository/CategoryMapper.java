@@ -1,7 +1,7 @@
 package com.hsj.force.category.repository;
 
 import com.hsj.force.domain.Category;
-import com.hsj.force.domain.dto.CategoryDTO;
+import com.hsj.force.domain.dto.CategoryListDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public interface CategoryMapper {
 
     int selectMaxPriority(Category category);
 
-    int updatePriority(CategoryDTO category);
+    int updatePriority(CategoryListDTO category);
 
     int updateCategory(Category category);
 }

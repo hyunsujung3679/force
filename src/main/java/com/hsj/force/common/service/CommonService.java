@@ -2,9 +2,12 @@ package com.hsj.force.common.service;
 
 import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.SaleStatus;
+import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,5 +18,15 @@ public class CommonService {
 
     public List<SaleStatus> selectSaleStatusList() {
         return commonMapper.selectSaleStatusList();
+    }
+
+    public CommonLayoutDTO selectHeaderInfo(User loginMember) {
+        String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
+        CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
+        commonLayoutForm.setSalesMan(loginMember.getUserName());
+        commonLayoutForm.setStoreName(storeName);
+        commonLayoutForm.setCurrentDate(LocalDateTime.now());
+        commonLayoutForm.setBusinessDate(LocalDateTime.now());
+        return commonLayoutForm;
     }
 }

@@ -1,7 +1,6 @@
 package com.hsj.force.menu.controller;
 
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryDTO;
 import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;

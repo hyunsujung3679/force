@@ -2,6 +2,7 @@ package com.hsj.force.category.repository;
 
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.dto.CategoryListDTO;
+import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface CategoryMapper {
     int updatePriority(CategoryListDTO category);
 
     int updateCategory(Category category);
+
+    CategoryUpdateDTO selectCategory(String storeNo, String categoryNo);
 }

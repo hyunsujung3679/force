@@ -3,30 +3,34 @@
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/category/categoryList.css}">
-    <script th:inline="javascript" th:src="@{/js/category/category.js}"></script>
+    <script th:inline="javascript">
+        function categoryUpdateForm(div) {
+            const categoryNo = div.children[0].value;
+            location.href = "/category/" + categoryNo + "/update"
+        }
+    </script>
 </head>
 <body>
 
-<section>
-    <div class="category-box">
-        <div class="category-title">
-            <div class="category-title-name" th:text="#{label.category.name}"></div>
-            <div class="category-title-use" th:text="#{label.use.yn}"></div>
-            <div class="category-title-rank" th:text="#{label.priority}"></div>
+    <section>
+        <div class="category-box">
+            <div class="category-title">
+                <div class="category-title-name" th:text="#{label.category.name}"></div>
+                <div class="category-title-use" th:text="#{label.use.yn}"></div>
+                <div class="category-title-rank" th:text="#{label.priority}"></div>
+            </div>
+            <div class="category-content" th:each="category : ${categoryList}" ondblclick="categoryUpdateForm(this);" >
+                <input type="hidden" th:value="${category.categoryNo}">
+                <div class="category-name" th:text="${category.categoryName}"></div>
+                <div class="category-use" th:text="${category.useYn} == 1 ? 'Y' : 'N'"></div>
+                <div class="category-rank" th:text="${category.priority}"></div>
+            </div>
         </div>
-        <div class="category-content" th:each="category : ${categoryList}">
-            <input type="hidden" name="category-no" th:value="${category.categoryNo}">
-            <div class="category-name" th:text="${category.categoryName}"></div>
-            <div class="category-use" th:text="${category.useYn} == 1 ? 'Y' : 'N'"></div>
-            <div class="category-rank" th:text="${category.priority}"></div>
-        </div>
-    </div>
 
-    <div class="category-button-wrap">
-        <button type="button" class="category-button-1" th:onclick="|location.href='@{category/insert}'|" th:text="#{button.add}"></button>
-        <button type="button" class="category-button-2" th:text="#{button.modify}" onclick="modifyCategoryPopup();"></button>
-    </div>
-</section>
+        <div class="category-button-wrap">
+            <button type="button" class="category-button-1" th:onclick="|location.href='@{category/insert}'|" th:text="#{button.insert}"></button>
+        </div>
+    </section>
 
 </body>
 </html>

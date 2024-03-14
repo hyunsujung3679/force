@@ -4,14 +4,17 @@ import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CategoryListDTO;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -20,6 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CategoryController {
 
+    private final MessageSource messageSource;
     private final OpenService openService;
     private final CategoryService categoryService;
     private final CommonService commonService;
@@ -32,7 +36,7 @@ public class CategoryController {
             return "redirect:/open";
         }
 
-        CategoryListDTO category = categoryService.selectCategoryInfo(loginMember);
+        CategoryListDTO category = categoryService.selectCategoryListInfo(loginMember);
 
         model.addAttribute("header", category.getCommonLayoutForm());
         model.addAttribute("categoryList", category.getCategoryList());
@@ -54,16 +58,47 @@ public class CategoryController {
 
 
     @PostMapping("/insert")
-    @ResponseBody
-    public int insertCategory(HttpSession session, @RequestBody Category category) {
+    public String insertCategory(@ModelAttribute CategoryInsertDTO category,
+                                 HttpSession session,
+                                 Model model) {
 
-        if(category.getPriority() < 1) {
-            return category.getPriority();
+        Map<String, String> errors = new HashMap<>();
+        User loginMember = (User) session.getAttribute("loginMember");
+        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
+
+        if(!StringUtils.hasText(category.getCategoryName())) {
+            errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
+        }
+        if(!StringUtils.hasText(category.getPriorityStr())) {
+            errors.put("priority", messageSource.getMessage("message.input.priority", null, Locale.KOREA));
+        }
+        if(!errors.isEmpty()) {
+            model.addAttribute("header", commonLayoutDTO);
+            model.addAttribute("category", new CategoryInsertDTO());
+            model.addAttribute("errors", errors);
+            return "category/categoryInsert";
         }
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        return categoryService.insertCategory(loginMember, category);
+        categoryService.insertCategory(loginMember, category);
+        return "redirect:/category";
     }
+
+    @GetMapping("/{categoryNo}/update")
+    public String categoryUpdateForm(@PathVariable String categoryNo,
+                                     HttpSession session,
+                                     Model model) {
+
+        User loginMember = (User) session.getAttribute("loginMember");
+
+        Map<String, Object> map = categoryService.selectCategoryUpdateInfo(loginMember, categoryNo);
+
+        model.addAttribute("header", map.get("commonLayoutForm"));
+        model.addAttribute("category", map.get("category"));
+
+        return "category/categoryUpdate";
+    }
+
+
 
     @PostMapping("/update")
     @ResponseBody

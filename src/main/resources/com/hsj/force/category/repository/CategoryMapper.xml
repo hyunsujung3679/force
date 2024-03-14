@@ -94,4 +94,15 @@
          WHERE C.STORE_NO = #{storeNo}
            AND C.CATEGORY_NO = #{categoryNo}
     </update>
+
+    <select id="selectCategory" resultType="com.hsj.force.domain.dto.CategoryUpdateDTO">
+        SELECT C.CATEGORY_NO
+             , C.STORE_NO
+             , C.CATEGORY_NAME
+             , C.USE_YN
+             , C.PRIORITY
+        FROM TCATEGORY  C
+        WHERE C.STORE_NO = #{storeNo}
+        AND C.CATEGORY_NO = #{categoryNo}
+    </select>
 </mapper>

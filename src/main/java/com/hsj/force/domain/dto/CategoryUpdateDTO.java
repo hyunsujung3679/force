@@ -1,14 +1,16 @@
 package com.hsj.force.domain.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import com.hsj.force.domain.Category;
 import lombok.Data;
 
 @Data
-public class CategoryInsertDTO {
+public class CategoryUpdateDTO {
 
+    private String categoryNo;
+    private String storeNo;
     private String categoryName;
     private String useYn;
     private String priorityStr;
+    private int priority;
 
 }

@@ -93,6 +93,7 @@ section {
 
 .menu-content {
     display: flex;
+    cursor:pointer;
 }
 
 .menu-no {

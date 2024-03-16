@@ -124,7 +124,7 @@ public class OrderService {
         order.setModifyId(loginMember.getUserId());
 
         Integer quantity = orderMapper.selectQuantity(order);
-        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo());
+        MenuDTO menu = menuMapper.selectMenu(order.getMenuNo(), loginMember.getStoreNo());
 
         if(quantity == null) {
             String orderSeq = orderMapper.selectOrderSeq(order.getOrderNo());

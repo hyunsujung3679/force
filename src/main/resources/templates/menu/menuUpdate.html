@@ -2,9 +2,15 @@
 <html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menuInsert.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menuUpdate.css}">
     <script th:inline="javascript">
+
+        const categoryNo = [[${menu.categoryNo}]];
+        const saleStatusNo = [[${menu.saleStatusNo}]];
+        const ingredientQuantity = [[${ingredientQuantityList}]];
+
         $(function() {
+
             $.ajax({
                 url: "/category/list",
                 type: "get",
@@ -12,7 +18,12 @@
                     $("select[name=categoryNo]").html("");
                     let html = "";
                     for(let index in data) {
-                        html += '<option value=' + data[index].categoryNo + '>' + data[index].categoryName + '</option>'
+                        if(categoryNo === data[index].categoryNo) {
+                            html += '<option value=' + data[index].categoryNo + ' selected="selected">' + data[index].categoryName + '</option>'
+                        } else {
+                            html += '<option value=' + data[index].categoryNo + '>' + data[index].categoryName + '</option>'
+                        }
+
                     }
                     $("select[name=categoryNo]").append(html);
                 },
@@ -28,7 +39,11 @@
                     $("select[name=saleStatusNo]").html("");
                     let html = "";
                     for(let index in data) {
-                        html += '<option value=' + data[index].saleStatusNo + '>' + data[index].saleStatus + '</option>'
+                        if(saleStatusNo === data[index].saleStatusNo) {
+                            html += '<option value=' + data[index].saleStatusNo + ' selected="selected">' + data[index].saleStatus + '</option>'
+                        } else {
+                            html += '<option value=' + data[index].saleStatusNo + '>' + data[index].saleStatus + '</option>'
+                        }
                     }
                     $("select[name=saleStatusNo]").append(html);
                 },
@@ -44,7 +59,13 @@
                     $("select[name=ingredientNo]").html("");
                     let html = "";
                     for (let index in data) {
-                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        for(let i = 0; i < ingredientQuantity.length; i++) {
+                            if(ingredientQuantity[i].ingredientNo === data[index].ingredientNo) {
+                                html += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                            } else {
+                                html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                            }
+                        }
                     }
                     $("select[name=ingredientNo]").append(html);
                 },
@@ -59,7 +80,7 @@
                 value = Number(value.replaceAll(',', ''));
                 if(isNaN(value)) {         //NaN인지 판별
                     salePrice.value = 0;
-                }else {                   //NaN이 아닌 경우
+                } else {                   //NaN이 아닌 경우
                     const formatValue = value.toLocaleString('ko-KR');
                     salePrice.value = formatValue;
                 }
@@ -95,7 +116,12 @@
                     $("select[name=ingredientNo]").html("");
                     let html = "";
                     for (let index in data) {
-                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        if(index === 0) {
+                            html += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                        } else {
+                            html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        }
+
                     }
                     $("select[name=ingredientNo]").append(html);
                 },
@@ -109,40 +135,49 @@
             img.parentNode.remove();
         }
 
-
     </script>
 </head>
 <body>
 
     <section class="section">
-        <form class="form" th:action th:object="${menu}" method="post" enctype="multipart/form-data">>
+        <form class="form" th:action th:object="${menu}" method="post" enctype="multipart/form-data">
             <div class="div-wrap">
-                <div class="first-div">
-                    <label th:text="|#{label.menu.name} : |"></label>
-                    <input type="text" class="first-div-input" th:field="*{menuName}"/>
+                <div>
+                    <div class="first-div">
+                        <label th:text="|#{label.menu.name} : |"></label>
+                        <input type="text" class="first-div-input" th:field="*{menuName}"/>
+                    </div>
+                    <div class="field-error" th:if="${errors?.containsKey('menuName')}" th:text="${errors['menuName']}"></div>
+                    <div class="second-div">
+                        <label th:text="|#{label.category} : |"></label>
+                        <select class="second-div-select" th:field="*{categoryNo}"></select>
+                    </div>
+                    <div class="third-div">
+                        <label th:text="|#{label.sale.status} : |"></label>
+                        <select class="third-div-select" th:field="*{saleStatusNo}"></select>
+                    </div>
+                    <div class="fourth-div">
+                        <label th:text="|#{label.sale.price-2} : |"></label>
+                        <input type="text" class="fourth-div-input" th:field="*{salePriceStr}"/>
+                    </div>
+                    <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
+                    <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
                 </div>
-                <div class="field-error" th:if="${errors?.containsKey('menuName')}" th:text="${errors['menuName']}"></div>
-                <div class="second-div">
-                    <label th:text="|#{label.category} : |"></label>
-                    <select class="second-div-select" th:field="*{categoryNo}"></select>
-                </div>
-                <div class="third-div">
-                    <label th:text="|#{label.sale.status} : |"></label>
-                    <select class="third-div-select" th:field="*{saleStatusNo}"></select>
-                </div>
-                <div class="fourth-div">
-                    <label th:text="|#{label.sale.price-2} : |"></label>
-                    <input type="text" class="fourth-div-input" th:field="*{salePriceStr}"/>
-                </div>
-                <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
-                <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
+
                 <div class="fifth-div-wrap">
-                    <div class="fifth-div">
+                    <div class="fifth-div" th:if="${ingredientQuantityStat.index} < 1" th:each="ingredientQuantity, ingredientQuantityStat : ${ingredientQuantityList}" >
                         <label th:text="|#{label.ingredient} : |"></label>
-                        <select class="fifth-div-select" th:field="*{ingredientNo}"></select>
-                        <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr}"/>
+                        <select class="fifth-div-select" name="ingredientNo" th:value="${ingredientQuantity.ingredientNo}"></select>
+                        <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr" th:value="${ingredientQuantity.quantity}"/>
                         <label class="fifth-div-label" th:text="#{label.number}"></label>
                         <img class="fifth-div-img" src="/images/menu/plus.png" alt="plus.png" onclick="addIngredient();"/>
+                    </div>
+                    <div class="fifth-div" th:if="${ingredientQuantityStat.index} > 0" th:each="ingredientQuantity, ingredientQuantityStat : ${ingredientQuantityList}" >
+                        <label th:text="|#{label.ingredient} : |"></label>
+                        <select class="fifth-div-select" name="ingredientNo" th:value="${ingredientQuantity.ingredientNo}"></select>
+                        <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr" th:value="${ingredientQuantity.quantity}"/>
+                        <label class="fifth-div-label" th:text="#{label.number}"></label>
+                        <img class="fifth-div-img-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>
                     </div>
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('ingredientNo')}" th:text="${errors['ingredientNo']}"></div>

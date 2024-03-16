@@ -15,7 +15,7 @@ public interface MenuMapper {
 
     List<MenuDTO> selectMenuList(String storeNo);
 
-    MenuDTO selectMenu(String menuNo);
+    MenuDTO selectMenu(String menuNo, String storeNo);
 
     List<MenuDTO> selectMenuListByMenuForm(String storeNo);
 
@@ -30,4 +30,6 @@ public interface MenuMapper {
     int insertMenuIngredient(MenuIngredient menuIngredient);
 
     int insertMenuPrice(MenuPrice menuPrice);
+
+    List<MenuIngredient> selectMenuIngredientListByMenuNoV2(String menuNo, String storeNo);
 }

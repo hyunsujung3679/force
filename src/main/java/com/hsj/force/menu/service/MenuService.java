@@ -3,19 +3,19 @@ package com.hsj.force.menu.service;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
+import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Menu;
 import com.hsj.force.domain.MenuIngredient;
 import com.hsj.force.domain.MenuPrice;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.MenuDTO;
-import com.hsj.force.domain.dto.MenuIngredientDTO;
+import com.hsj.force.domain.dto.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MenuService {
 
+    private final CommonService commonService;
     private final CommonMapper commonMapper;
     private final MenuMapper menuMapper;
     private final IngredientMapper ingredientMapper;
@@ -97,7 +98,7 @@ public class MenuService {
         return stock;
     }
 
-    public int insertMenu(User loginMember, Map<String, Object> parameter) {
+    public int insertMenu(User loginMember, MenuInsertDTO menuInsertDTO) {
 
         int menuSaveResult = 0;
         int menuIngredientSaveResult = 0;
@@ -108,24 +109,28 @@ public class MenuService {
 
         Menu menu = new Menu();
         menu.setMenuNo(nextMenuNo);
-        menu.setMenuName((String) parameter.get("menuName"));
-        menu.setSaleStatusNo((String) parameter.get("saleStatusNo"));
-        menu.setCategoryNo((String) parameter.get("categoryNo"));
+        menu.setMenuName(menuInsertDTO.getMenuName());
+        menu.setSaleStatusNo(menuInsertDTO.getSaleStatusNo());
+        menu.setCategoryNo(menuInsertDTO.getCategoryNo());
+        menu.setImageOriginName(menuInsertDTO.getImageOriginName());
+        menu.setImageSaveName(menuInsertDTO.getImageSaveName());
+        menu.setImageExt(menuInsertDTO.getImageExt());
+        menu.setImagePath(menuInsertDTO.getImagePath());
         menu.setInsertId(loginMember.getUserId());
         menu.setModifyId(loginMember.getUserId());
         menuSaveResult = menuMapper.insertMenu(menu);
 
-        List<String> ingredientNoList = (List<String>) parameter.get("ingredientNoArr");
-        List<String> quantityList = (List<String>) parameter.get("quantityArr");
+        String[] ingredientArr = menuInsertDTO.getIngredientNo();
+        String[] quantityArr = menuInsertDTO.getQuantityStr();
         MenuIngredient menuIngredient = null;
-        for(int i = 0; i < ingredientNoList.size(); i++) {
-            for(int j = 0; j < quantityList.size(); j++) {
+        for(int i = 0; i < ingredientArr.length; i++) {
+            for(int j = 0; j < quantityArr.length; j++) {
                 if(i == j) {
                     menuIngredient = new MenuIngredient();
                     menuIngredient.setMenuNo(nextMenuNo);
-                    menuIngredient.setIngredientNo(ingredientNoList.get(i));
+                    menuIngredient.setIngredientNo(ingredientArr[i]);
                     menuIngredient.setStoreNo(loginMember.getStoreNo());
-                    menuIngredient.setQuantity(Double.parseDouble(quantityList.get(i)));
+                    menuIngredient.setQuantity(Double.parseDouble(quantityArr[i]));
                     menuIngredient.setInsertId(loginMember.getUserId());
                     menuIngredient.setModifyId(loginMember.getUserId());
                     menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
@@ -133,7 +138,7 @@ public class MenuService {
             }
         }
 
-        int salePrice = Integer.parseInt(parameter.get("salePrice").toString().replaceAll(",", ""));
+        int salePrice = Integer.parseInt(menuInsertDTO.getSalePriceStr().replaceAll(",", ""));
         MenuPrice menuPrice = new MenuPrice();
         menuPrice.setMenuNo(nextMenuNo);
         menuPrice.setMenuSeq("001");
@@ -143,12 +148,34 @@ public class MenuService {
         menuPriceSaveResult = menuMapper.insertMenuPrice(menuPrice);
 
         if(menuSaveResult > 0 &&
-          (ingredientNoList.size() == menuIngredientSaveResult) &&
+          (ingredientArr.length == menuIngredientSaveResult) &&
           menuPriceSaveResult > 0) {
             return 1;
         } else {
             return 0;
         }
 
+    }
+
+    public Map<String, Object> selectMenuUpdateInfo(User loginMember, String menuNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
+        MenuDTO menuDTO = menuMapper.selectMenu(menuNo, loginMember.getStoreNo());
+        List<MenuIngredient> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNoV2(menuNo, loginMember.getStoreNo());
+
+        MenuUpdateDTO menuUpdateDTO = new MenuUpdateDTO();
+        menuUpdateDTO.setMenuNo(menuDTO.getMenuNo());
+        menuUpdateDTO.setMenuName(menuDTO.getMenuName());
+        menuUpdateDTO.setSaleStatusNo(menuDTO.getSaleStatusNo());
+        menuUpdateDTO.setCategoryNo(menuDTO.getCategoryNo());
+        menuUpdateDTO.setSalePriceStr(String.valueOf(menuDTO.getSalePrice()));
+        menuUpdateDTO.setImageSaveName(menuDTO.getImageSaveName());
+
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("menu", menuUpdateDTO);
+        map.put("ingredientQuantityList", menuIngredientList);
+
+        return map;
     }
 }

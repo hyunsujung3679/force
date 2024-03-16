@@ -2,86 +2,8 @@
 <html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
       xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menu.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menuList.css}">
 <script th:inline="javascript">
-    function addMenuPopup() {
-
-        $("#menu-add-modal").modal({});
-
-        $.ajax({
-            url: "/category/list",
-            type: "get",
-            success: function(data) {
-                $("select[name=category]").html("");
-                let html = "";
-                for(let index in data) {
-                    html += '<option value=' + data[index].categoryNo + '>' + data[index].categoryName + '</option>'
-                }
-                $("select[name=category]").append(html);
-            },
-            error: function(xhr) {
-                console.log(xhr);
-            }
-        });
-
-        $.ajax({
-            url: "/common/sale-status",
-            type: "get",
-            success: function(data) {
-                $("select[name=sale-status]").html("");
-                let html = "";
-                for(let index in data) {
-                    html += '<option value=' + data[index].saleStatusNo + '>' + data[index].saleStatus + '</option>'
-                }
-                $("select[name=sale-status]").append(html);
-            },
-            error: function(xhr) {
-                console.log(xhr);
-            }
-        });
-
-        selectIngredientList();
-    }
-
-    function addIngredient() {
-
-        const numberLabel = [[#{label.number}]];
-
-        let html = "";
-
-        html += '<div class="middle-area-4">'
-        html +=     '<select name="ingredient" class="middle-area-1-select"></select>'
-        html +=     '<input type="number" min="0.1" step="0.1" name="quantity" class="middle-area-3-input"/>'
-        html +=     '<label class="label-number">' + numberLabel + '</label>'
-        html +=     '<img class="menu-image-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>'
-        html += '</div>'
-
-        $(".middle-area-3-wrap").append(html);
-
-        selectIngredientList();
-    }
-
-    function removeIngredient(img) {
-        img.parentNode.remove();
-    }
-
-    function selectIngredientList() {
-        $.ajax({
-            url: "/ingredient",
-            type: "get",
-            success: function(data) {
-                $("select[name=ingredient]").html("");
-                let html = "";
-                for(let index in data) {
-                    html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
-                }
-                $("select[name=ingredient]").append(html);
-            },
-            error: function(xhr) {
-                console.log(xhr);
-            }
-        });
-    }
 
     function insertMenu() {
 
@@ -194,8 +116,7 @@
     </div>
 
     <div class="menu-button-wrap">
-        <button type="button" class="menu-button-1" th:text="#{button.add}" onclick="addMenuPopup();"></button>
-        <button type="button" class="menu-button-2" th:text="#{button.modify}" onclick="modifyCategoryPopup();"></button>
+        <button type="button" class="menu-button-1" th:onclick="|location.href='@{menu/insert}'|" th:text="#{button.insert}"></button>
     </div>
 </section>
 

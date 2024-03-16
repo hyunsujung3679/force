@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menuInsert.css}">
+    <script th:inline="javascript">
+        $(function() {
+            $.ajax({
+                url: "/category/list",
+                type: "get",
+                success: function(data) {
+                    $("select[name=categoryNo]").html("");
+                    let html = "";
+                    for(let index in data) {
+                        html += '<option value=' + data[index].categoryNo + '>' + data[index].categoryName + '</option>'
+                    }
+                    $("select[name=categoryNo]").append(html);
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            });
+
+            $.ajax({
+                url: "/common/sale-status",
+                type: "get",
+                success: function(data) {
+                    $("select[name=saleStatusNo]").html("");
+                    let html = "";
+                    for(let index in data) {
+                        html += '<option value=' + data[index].saleStatusNo + '>' + data[index].saleStatus + '</option>'
+                    }
+                    $("select[name=saleStatusNo]").append(html);
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            });
+
+            $.ajax({
+                url: "/ingredient/list",
+                type: "get",
+                success: function (data) {
+                    $("select[name=ingredientNo]").html("");
+                    let html = "";
+                    for (let index in data) {
+                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                    }
+                    $("select[name=ingredientNo]").append(html);
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+
+            const salePrice = document.querySelector('#salePriceStr');
+            salePrice.addEventListener('keyup', function(e) {
+                let value = e.target.value;
+                value = Number(value.replaceAll(',', ''));
+                if(isNaN(value)) {         //NaN인지 판별
+                    salePrice.value = 0;
+                }else {                   //NaN이 아닌 경우
+                    const formatValue = value.toLocaleString('ko-KR');
+                    salePrice.value = formatValue;
+                }
+            })
+        })
+
+        function addIngredient() {
+
+            const ingredientNoLength = $("select[name=ingredientNo]").length;
+            if(ingredientNoLength > 3) {
+                return;
+            }
+
+            const numberLabel = [[#{label.number}]];
+            const ingredientLabel = [[#{label.ingredient}]];
+
+            let html = "";
+
+            html += '<div class="fifth-div"">'
+            html += '<label>' + ingredientLabel + ' : </label>'
+            html += '<select class="fifth-div-select" name="ingredientNo" ></select>'
+            html += '<input type="number" min="0.1" step="0.1" name="quantity" class="fifth-div-input"/>'
+            html += '<label class="fifth-div-label">' + numberLabel + '</label>'
+            html += '<img class="fifth-div-img-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>'
+            html += '</div>'
+
+            $(".fifth-div-wrap").append(html);
+
+            $.ajax({
+                url: "/ingredient/list",
+                type: "get",
+                success: function (data) {
+                    $("select[name=ingredientNo]").html("");
+                    let html = "";
+                    for (let index in data) {
+                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                    }
+                    $("select[name=ingredientNo]").append(html);
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+        }
+
+        function removeIngredient(img) {
+            img.parentNode.remove();
+        }
+
+
+    </script>
+</head>
+<body>
+
+    <section class="section">
+        <form class="form" th:action th:object="${menu}" method="post">
+            <div class="div-wrap">
+                <div class="first-div">
+                    <label th:text="|#{label.menu.name} : |"></label>
+                    <input type="text" class="first-div-input" th:field="*{menuName}"/>
+                </div>
+<!--                <div class="field-error" th:if="${errors?.containsKey('menuName')}" th:text="${errors['menuName']}"></div>-->
+                <div class="second-div">
+                    <label th:text="|#{label.category} : |"></label>
+                    <select class="second-div-select" th:field="*{categoryNo}"></select>
+                </div>
+                <div class="third-div">
+                    <label th:text="|#{label.sale.status} : |"></label>
+                    <select class="third-div-select" th:field="*{saleStatusNo}"></select>
+                </div>
+<!--                <div class="field-error" th:if="${errors?.containsKey('priority')}" th:text="${errors['priority']}"></div>-->
+                <div class="fourth-div">
+                    <label th:text="|#{label.sale.price-2} : |"></label>
+                    <input type="text" class="fourth-div-input" th:field="*{salePriceStr}"/>
+                </div>
+                <div class="fifth-div-wrap">
+                    <div class="fifth-div">
+                        <label th:text="|#{label.ingredient} : |"></label>
+                        <select class="fifth-div-select" th:field="*{ingredientNo}"></select>
+                        <input type="number" min="0.1" step="0.1" class="fifth-div-input"/>
+                        <label class="fifth-div-label" th:text="#{label.number}"></label>
+                        <img class="fifth-div-img" src="/images/menu/plus.png" alt="plus.png" onclick="addIngredient();"/>
+                    </div>
+                </div>
+                <div class="sixth-div">
+                    <label th:text="|#{label.image} : |"></label>
+                    <input type="file" class="sixth-div-file" name="file"/>
+                </div>
+                <div class="button-wrap">
+                    <button type="submit" class="save-button" th:text="#{button.save}"></button>
+                    <button type="button" class="back-button" th:onclick="|location.href='@{/menu}'|" th:text="#{button.back}"></button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+</body>
+</html>

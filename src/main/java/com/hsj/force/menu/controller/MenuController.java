@@ -1,7 +1,11 @@
 package com.hsj.force.menu.controller;
 
+import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.CategoryInsertDTO;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.MenuDTO;
+import com.hsj.force.domain.dto.MenuInsertDTO;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +23,7 @@ public class MenuController {
 
     private final OpenService openService;
     private final MenuService menuService;
+    private final CommonService commonService;
 
     @GetMapping
     public String menuForm(HttpSession session, Model model) {
@@ -28,13 +33,33 @@ public class MenuController {
             return "redirect:/open";
         }
 
-        MenuDTO menuForm = menuService.selectMenuInfo(loginMember);
+        Map<String, Object> map = menuService.selectMenuInfo(loginMember);
 
-        model.addAttribute("header", menuForm.getCommonLayoutForm());
-        model.addAttribute("menuList", menuForm.getMenuList());
+        model.addAttribute("header", map.get("commonLayoutForm"));
+        model.addAttribute("menuList", map.get("menuList"));
 
-        return "menu/menuForm";
+        return "menu/menuList";
     }
+
+    @GetMapping("/insert")
+    public String menuInsertForm(HttpSession session, Model model) {
+
+        User loginMember = (User) session.getAttribute("loginMember");
+        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
+
+        model.addAttribute("header", commonLayoutDTO);
+        model.addAttribute("menu", new MenuInsertDTO());
+
+        return "menu/menuInsert";
+    }
+
+    @PostMapping("/insert")
+    public String insert
+
+
+
+
+
 
     @ResponseBody
     @GetMapping("/{categoryNo}")

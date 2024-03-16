@@ -72,6 +72,7 @@ section {
 
 .category-content {
     display: flex;
+    cursor:pointer;
 }
 
 .category-name {

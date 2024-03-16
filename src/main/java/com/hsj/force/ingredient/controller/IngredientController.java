@@ -20,7 +20,7 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @ResponseBody
-    @GetMapping
+    @GetMapping("/list")
     public List<Ingredient> selectIngredientList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return ingredientService.selectIngredientList(loginMember.getStoreNo());

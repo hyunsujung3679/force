@@ -9,6 +9,7 @@
 
     <section class="section">
         <form class="form" th:action th:object="${category}" method="post">
+            <input type="hidden" th:field="*{categoryNo}"/>
             <div class="div-wrap">
                 <div class="first-div">
                     <label th:text="|#{label.category.name} : |"></label>

@@ -24,16 +24,16 @@ public class CategoryService {
     private final CommonService commonService;
     private final CategoryMapper categoryMapper;
 
-    public CategoryListDTO selectCategoryListInfo(User loginMember) {
+    public Map<String, Object> selectCategoryListInfo(User loginMember) {
 
+        Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
         List<Category> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
 
-        CategoryListDTO categoryForm = new CategoryListDTO();
-        categoryForm.setCommonLayoutForm(commonLayoutForm);
-        categoryForm.setCategoryList(categoryList);
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("categoryList", categoryList);
 
-        return categoryForm;
+        return map;
     }
 
     public void insertCategory(User loginMember, CategoryInsertDTO categoryInsertDTO) {
@@ -60,31 +60,19 @@ public class CategoryService {
     }
 
 
-    public int updateCategory(User loginMember, Category category) {
+    public int updateCategory(User loginMember, CategoryUpdateDTO categoryUpdateDTO) {
+
+        Category category = new Category();
+        category.setCategoryNo(categoryUpdateDTO.getCategoryNo());
+        category.setCategoryName(categoryUpdateDTO.getCategoryName());
+        category.setUseYn(categoryUpdateDTO.getUseYn());
+        category.setPriority(Integer.parseInt(categoryUpdateDTO.getPriorityStr()));
         category.setStoreNo(loginMember.getStoreNo());
-        category.setInsertId(loginMember.getUserId());
         category.setModifyId(loginMember.getUserId());
 
         checkPriority(loginMember, category);
 
         return categoryMapper.updateCategory(category);
-    }
-
-    private void checkPriority(User loginMember, Category category) {
-        Integer priority = categoryMapper.selectPriority(category);
-        if(priority != null) {
-            int maxPriority = categoryMapper.selectMaxPriority(category);
-            CategoryListDTO categoryDTO = new CategoryListDTO();
-            categoryDTO.setMaxPriority(maxPriority + 1);
-            categoryDTO.setModifyId(loginMember.getUserId());
-            categoryDTO.setStoreNo(loginMember.getStoreNo());
-            categoryDTO.setPriority(category.getPriority());
-            categoryMapper.updatePriority(categoryDTO);
-        }
-    }
-
-    public List<Category> selectCategoryList(String storeNo) {
-        return categoryMapper.selectCategoryList(storeNo);
     }
 
     public Map<String, Object> selectCategoryUpdateInfo(User loginMember, String categoryNo) {
@@ -100,16 +88,20 @@ public class CategoryService {
         return map;
     }
 
-    public Map<String, Object> selectCategoryDetailInfo(User loginMember, String categoryNo) {
+    public List<Category> selectCategoryList(String storeNo) {
+        return categoryMapper.selectCategoryList(storeNo);
+    }
 
-        Map<String, Object> map = new HashMap<>();
-        CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        CategoryUpdateDTO categoryUpdateDTO = categoryMapper.selectCategory(loginMember.getStoreNo(), categoryNo);
-        categoryUpdateDTO.setPriorityStr(String.valueOf(categoryUpdateDTO.getPriority()));
-
-        map.put("commonLayoutForm", commonLayoutForm);
-        map.put("category", categoryUpdateDTO);
-
-        return map;
+    private void checkPriority(User loginMember, Category category) {
+        Integer priority = categoryMapper.selectPriority(category);
+        if(priority != null) {
+            int maxPriority = categoryMapper.selectMaxPriority(category);
+            CategoryListDTO categoryListDTO = new CategoryListDTO();
+            categoryListDTO.setMaxPriority(maxPriority + 1);
+            categoryListDTO.setModifyId(loginMember.getUserId());
+            categoryListDTO.setStoreNo(loginMember.getStoreNo());
+            categoryListDTO.setPriority(category.getPriority());
+            categoryMapper.updatePriority(categoryListDTO);
+        }
     }
 }

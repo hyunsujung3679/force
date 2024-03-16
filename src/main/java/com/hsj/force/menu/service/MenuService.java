@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,8 +58,9 @@ public class MenuService {
         return menuListByCategoryNo;
     }
 
-    public MenuDTO selectMenuInfo(User loginMember) {
+    public Map<String, Object> selectMenuInfo(User loginMember) {
 
+        Map<String, Object> map = new HashMap<>();
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
@@ -75,11 +77,10 @@ public class MenuService {
             menu.setStock(getStock(menu, menuIngredientList));
         }
 
-        MenuDTO menuForm = new MenuDTO();
-        menuForm.setCommonLayoutForm(commonLayoutForm);
-        menuForm.setMenuList(menuList);
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("menuList", menuList);
 
-        return menuForm;
+        return map;
     }
 
     private int getStock(MenuDTO menu, List<MenuIngredientDTO> menuIngredientList) {

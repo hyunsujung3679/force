@@ -5,7 +5,6 @@ import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryUpdateDTO;
-import com.hsj.force.domain.dto.CategoryListDTO;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.open.service.OpenService;
@@ -36,10 +35,10 @@ public class CategoryController {
             return "redirect:/open";
         }
 
-        CategoryListDTO category = categoryService.selectCategoryListInfo(loginMember);
+        Map<String, Object> map = categoryService.selectCategoryListInfo(loginMember);
 
-        model.addAttribute("header", category.getCommonLayoutForm());
-        model.addAttribute("categoryList", category.getCategoryList());
+        model.addAttribute("header", map.get("commonLayoutForm"));
+        model.addAttribute("categoryList", map.get("categoryList"));
 
         return "category/categoryList";
     }
@@ -55,7 +54,6 @@ public class CategoryController {
 
         return "category/categoryInsert";
     }
-
 
     @PostMapping("/insert")
     public String insertCategory(@ModelAttribute CategoryInsertDTO category,
@@ -98,18 +96,29 @@ public class CategoryController {
         return "category/categoryUpdate";
     }
 
+    @PostMapping("/{categoryNo}/update")
+    public String updateCategory(@ModelAttribute CategoryUpdateDTO category,
+                                 HttpSession session,
+                                 Model model) {
 
-
-    @PostMapping("/update")
-    @ResponseBody
-    public int updateCategory(HttpSession session, @RequestBody Category category) {
-
-        if(category.getPriority() < 1) {
-            return category.getPriority();
-        }
-
+        Map<String, String> errors = new HashMap<>();
         User loginMember = (User) session.getAttribute("loginMember");
-        return categoryService.updateCategory(loginMember, category);
+        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
+
+        if(!StringUtils.hasText(category.getCategoryName())) {
+            errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
+        }
+        if(!StringUtils.hasText(category.getPriorityStr())) {
+            errors.put("priority", messageSource.getMessage("message.input.priority", null, Locale.KOREA));
+        }
+        if(!errors.isEmpty()) {
+            model.addAttribute("header", commonLayoutDTO);
+            model.addAttribute("category", new CategoryUpdateDTO());
+            model.addAttribute("errors", errors);
+            return "category/categoryUpdate";
+        }
+        categoryService.updateCategory(loginMember, category);
+        return "redirect:/category";
     }
 
     @GetMapping("/list")

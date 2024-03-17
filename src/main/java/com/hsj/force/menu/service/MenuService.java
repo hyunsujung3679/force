@@ -1,13 +1,11 @@
 package com.hsj.force.menu.service;
 
+import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.Menu;
-import com.hsj.force.domain.MenuIngredient;
-import com.hsj.force.domain.MenuPrice;
-import com.hsj.force.domain.User;
+import com.hsj.force.domain.*;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
@@ -31,6 +29,7 @@ public class MenuService {
     private final CommonMapper commonMapper;
     private final MenuMapper menuMapper;
     private final IngredientMapper ingredientMapper;
+    private final CategoryMapper categoryMapper;
 
     public List<MenuDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
         List<MenuDTO> menuList = menuMapper.selectMenuList(storeNo);
@@ -171,6 +170,7 @@ public class MenuService {
         menuUpdateDTO.setCategoryNo(menuDTO.getCategoryNo());
         menuUpdateDTO.setSalePriceStr(String.valueOf(menuDTO.getSalePrice()));
         menuUpdateDTO.setImageSaveName(menuDTO.getImageSaveName());
+        menuUpdateDTO.setIngredientQuantityList(menuIngredientList);
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("menu", menuUpdateDTO);

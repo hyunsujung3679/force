@@ -10,7 +10,7 @@
 
 .div-wrap {
     background-color: white;
-    width: 25%;
+    width: 40%;
     margin: 2.5% auto 0;
     border-radius: 10px;
 }
@@ -23,7 +23,7 @@
 
 .first-div-input {
     margin-left: 1%;
-    width: 30%;
+    width: 60%;
 }
 
 .second-div {
@@ -34,7 +34,7 @@
 
 .second-div-select {
     margin-left: 1%;
-    width: 30%;
+    width: 57%;
 }
 
 .third-div {
@@ -45,7 +45,7 @@
 
 .third-div-select {
     margin-left: 1%;
-    width: 30%;
+    width: 57%;
 }
 
 .fourth-div {
@@ -56,12 +56,11 @@
 
 .fourth-div-input {
     margin-left: 1%;
-    width: 30%;
+    width: 55%;
 }
 
 .fifth-div-wrap {
     width:100%;
-    height: 100%;
 }
 
 .fifth-div {
@@ -90,7 +89,7 @@
     width: 5%;
     height: 5%;
     margin-left: 1%;
-    margin-top: 1%;
+    margin-top: 2%;
     cursor:pointer;
 }
 
@@ -98,17 +97,16 @@
     width: 5%;
     height: 5%;
     margin-left: 1%;
-    margin-top: 3%;
+    margin-top: 4%;
     cursor:pointer;
 }
 
-.sixth-div {
+.div-separate-right-img-div {
     display: flex;
     justify-content: center;
-    padding-top: 5%;
 }
 
-.sixth-div-file {
+.div-separate-right-img-div-file {
     margin-left: 1%;
     width: 60%;
 }
@@ -117,7 +115,7 @@
     width: 100%;
     height: 100%;
     text-align: center;
-    margin-top: 5%;
+    margin-top: 10%;
     padding-bottom: 5%;
 }
 
@@ -148,4 +146,22 @@
     margin-top: 5%;
     height: 10%;
     color: red;
+}
+
+.div-separate {
+    display: flex;
+}
+
+.div-separate-left {
+    width: 50%;
+}
+
+.div-separate-right {
+    width: 50%;
+    padding-top: 1%;
+    padding-right: 1%;
+}
+
+.div-separate-right-img {
+    border: 1px solid black;
 }

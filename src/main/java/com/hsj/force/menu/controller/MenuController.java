@@ -1,17 +1,17 @@
 package com.hsj.force.menu.controller;
 
+import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryInsertDTO;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.MenuDTO;
-import com.hsj.force.domain.dto.MenuInsertDTO;
+import com.hsj.force.domain.dto.*;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.*;
 
 @Controller
@@ -144,16 +145,21 @@ public class MenuController {
         User loginMember = (User) session.getAttribute("loginMember");
 
         Map<String, Object> map = menuService.selectMenuUpdateInfo(loginMember, menuNo);
+        MenuUpdateDTO menu = (MenuUpdateDTO) map.get("menu");
 
         model.addAttribute("header", map.get("commonLayoutForm"));
         model.addAttribute("menu", map.get("menu"));
         model.addAttribute("ingredientQuantityList", map.get("ingredientQuantityList"));
+        model.addAttribute("imageSaveName", menu.getImageSaveName());
 
         return "menu/menuUpdate";
     }
 
-
-
+    @ResponseBody
+    @GetMapping("/image/{fileName}")
+    public Resource downloadImage(@PathVariable String fileName) throws MalformedURLException {
+        return new UrlResource("file:" + fileDir + fileName);
+    }
 
     @ResponseBody
     @GetMapping("/{categoryNo}")

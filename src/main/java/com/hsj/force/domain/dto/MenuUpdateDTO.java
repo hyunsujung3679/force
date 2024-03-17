@@ -12,6 +12,8 @@ public class MenuUpdateDTO {
     private String categoryNo;
     private String saleStatusNo;
     private String salePriceStr;
+    private String ingredientNo;
+    private String quantityStr;
     private List<MenuIngredient> ingredientQuantityList;
     private String imageSaveName;
 

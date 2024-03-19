@@ -82,40 +82,5 @@
         <p th:text="#{message.select.modify.category}"></p>
     </div>
 
-    <form id="insert-menu" th:action="@{/menu/insert}" method="post"></form>
-    <div id="menu-add-modal" class="menu-modal">
-        <div class="content-wrap">
-            <div class="top-area">
-                <label th:text="|#{label.menu.name} : |"></label>
-                <input type="text" name="menu-name" class="top-area-input"/>
-            </div>
-            <div class="middle-area-1">
-                <label th:text="|#{label.category} : |"></label>
-                <select name="category" class="middle-area-1-select"></select>
-            </div>
-            <div class="middle-area-1">
-                <label th:text="|#{label.sale.status} : |"></label>
-                <select name="sale-status" class="middle-area-1-select"></select>
-            </div>
-            <div class="middle-area-2">
-                <label th:text="|#{label.price} : |"></label>
-                <input type="text" id="sale-price" name="sale-price" class="middle-area-2-input"/>
-            </div>
-            <div class="middle-area-3-wrap">
-                <div class="middle-area-3">
-                    <label th:text="|#{label.ingredient} : |"></label>
-                    <select name="ingredient" class="middle-area-1-select"></select>
-                    <input type="number" min="0.1" step="0.1" name="quantity" class="middle-area-3-input"/>
-                    <label class="label-number" th:text="#{label.number}"></label>
-                    <img class="menu-image-1" src="/images/menu/plus.png" alt="plus.png" onclick="addIngredient();"/>
-                </div>
-            </div>
-        </div>
-        <div class="field-error-1"></div>
-        <div class="bottom-area">
-            <button type="submit" class="bottom-button-1" th:text="#{button.next}" form="insert-menu"></button>
-        </div>
-    </div>
-
 </body>
 </html>

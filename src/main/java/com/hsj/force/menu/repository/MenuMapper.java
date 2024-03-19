@@ -5,6 +5,7 @@ import com.hsj.force.domain.MenuIngredient;
 import com.hsj.force.domain.MenuPrice;
 import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.MenuIngredientDTO;
+import com.hsj.force.domain.dto.MenuUpdateDTO;
 import com.hsj.force.domain.dto.OrderDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -32,4 +33,14 @@ public interface MenuMapper {
     int insertMenuPrice(MenuPrice menuPrice);
 
     List<MenuIngredient> selectMenuIngredientListByMenuNoV2(String menuNo, String storeNo);
+
+    int updateMenuV1(Menu menu);
+
+    int updateMenuV2(Menu menu);
+
+    int deleteMenuIngredient(MenuUpdateDTO menuUpdateDTO);
+
+    String selectMenuSeq(MenuPrice menuPrice);
+
+    int selectSalePrice(MenuUpdateDTO menuUpdateDTO);
 }

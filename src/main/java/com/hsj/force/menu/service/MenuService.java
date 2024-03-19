@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Transactional
 @Service
@@ -119,15 +116,31 @@ public class MenuService {
         menu.setModifyId(loginMember.getUserId());
         menuSaveResult = menuMapper.insertMenu(menu);
 
-        String[] ingredientArr = menuInsertDTO.getIngredientNo();
-        String[] quantityArr = menuInsertDTO.getQuantityStr();
+        String ingredientNo1 = menuInsertDTO.getIngredientNo1();
+        String ingredientNo2 = menuInsertDTO.getIngredientNo2();
+        String ingredientNo3 = menuInsertDTO.getIngredientNo3();
+        String ingredientNo4 = menuInsertDTO.getIngredientNo4();
+        String[] ingredientNoArr = new String[] {ingredientNo1, ingredientNo2, ingredientNo3, ingredientNo4};
+        ingredientNoArr = Arrays.stream(ingredientNoArr)
+                .filter(a -> !"".equals(a))
+                .toArray(String[]::new);
+
+        String quantity1 = menuInsertDTO.getQuantityStr1();
+        String quantity2 = menuInsertDTO.getQuantityStr2();
+        String quantity3 = menuInsertDTO.getQuantityStr3();
+        String quantity4 = menuInsertDTO.getQuantityStr4();
+        String[] quantityArr = new String[] {quantity1, quantity2, quantity3, quantity4};
+        quantityArr = Arrays.stream(quantityArr)
+                .filter(a -> !"".equals(a))
+                .toArray(String[]::new);
+
         MenuIngredient menuIngredient = null;
-        for(int i = 0; i < ingredientArr.length; i++) {
+        for(int i = 0; i < ingredientNoArr.length; i++) {
             for(int j = 0; j < quantityArr.length; j++) {
                 if(i == j) {
                     menuIngredient = new MenuIngredient();
                     menuIngredient.setMenuNo(nextMenuNo);
-                    menuIngredient.setIngredientNo(ingredientArr[i]);
+                    menuIngredient.setIngredientNo(ingredientNoArr[i]);
                     menuIngredient.setStoreNo(loginMember.getStoreNo());
                     menuIngredient.setQuantity(Double.parseDouble(quantityArr[i]));
                     menuIngredient.setInsertId(loginMember.getUserId());
@@ -147,7 +160,7 @@ public class MenuService {
         menuPriceSaveResult = menuMapper.insertMenuPrice(menuPrice);
 
         if(menuSaveResult > 0 &&
-          (ingredientArr.length == menuIngredientSaveResult) &&
+          (ingredientNoArr.length == menuIngredientSaveResult) &&
           menuPriceSaveResult > 0) {
             return 1;
         } else {
@@ -172,10 +185,122 @@ public class MenuService {
         menuUpdateDTO.setImageSaveName(menuDTO.getImageSaveName());
         menuUpdateDTO.setIngredientQuantityList(menuIngredientList);
 
+        MenuIngredient menuIngredient = null;
+        if(menuIngredientList.size() == 1) {
+            for(int i = 1; i < 4; i++) {
+                menuIngredient = new MenuIngredient();
+                menuIngredient.setIngredientNo("");
+                menuIngredient.setQuantity(0.0);
+                menuIngredientList.add(menuIngredient);
+            }
+        }
+
+        if(menuIngredientList.size() == 2) {
+            for(int i = 2; i < 4; i++) {
+                menuIngredient = new MenuIngredient();
+                menuIngredient.setIngredientNo("");
+                menuIngredient.setQuantity(0.0);
+                menuIngredientList.add(menuIngredient);
+            }
+        }
+
+        if(menuIngredientList.size() == 3) {
+            for(int i = 3; i < 4; i++) {
+                menuIngredient = new MenuIngredient();
+                menuIngredient.setIngredientNo("");
+                menuIngredient.setQuantity(0.0);
+                menuIngredientList.add(menuIngredient);
+            }
+        }
+
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("menu", menuUpdateDTO);
         map.put("ingredientQuantityList", menuIngredientList);
 
         return map;
+    }
+
+    public int updateMenu(User loginMember, MenuUpdateDTO menuUpdateDTO) {
+
+        menuUpdateDTO.setStoreNo(loginMember.getStoreNo());
+        int menuSaveResult = 0;
+        int menuIngredientSaveResult = 0;
+        int menuPriceSaveResult = 0;
+        int menuIngredientDeleteResult = 0;
+
+        Menu menu = new Menu();
+        menu.setMenuNo(menuUpdateDTO.getMenuNo());
+        menu.setMenuName(menuUpdateDTO.getMenuName());
+        menu.setSaleStatusNo(menuUpdateDTO.getSaleStatusNo());
+        menu.setCategoryNo(menuUpdateDTO.getCategoryNo());
+        menu.setModifyId(loginMember.getUserId());
+        if(menuUpdateDTO.getImageOriginName() != null) {
+            menu.setImageOriginName(menuUpdateDTO.getImageOriginName());
+            menu.setImageSaveName(menuUpdateDTO.getImageSaveName());
+            menu.setImageExt(menuUpdateDTO.getImageExt());
+            menu.setImagePath(menuUpdateDTO.getImagePath());
+            menuSaveResult = menuMapper.updateMenuV1(menu);
+        } else {
+            menuSaveResult = menuMapper.updateMenuV2(menu);
+        }
+
+        String ingredientNo1 = menuUpdateDTO.getIngredientNo1();
+        String ingredientNo2 = menuUpdateDTO.getIngredientNo2();
+        String ingredientNo3 = menuUpdateDTO.getIngredientNo3();
+        String ingredientNo4 = menuUpdateDTO.getIngredientNo4();
+        String[] ingredientNoArr = new String[] {ingredientNo1, ingredientNo2, ingredientNo3, ingredientNo4};
+        ingredientNoArr = Arrays.stream(ingredientNoArr)
+                .filter(a -> !"".equals(a))
+                .toArray(String[]::new);
+
+        String quantity1 = menuUpdateDTO.getQuantityStr1();
+        String quantity2 = menuUpdateDTO.getQuantityStr2();
+        String quantity3 = menuUpdateDTO.getQuantityStr3();
+        String quantity4 = menuUpdateDTO.getQuantityStr4();
+        String[] quantityArr = new String[] {quantity1, quantity2, quantity3, quantity4};
+        quantityArr = Arrays.stream(quantityArr)
+                .filter(a -> !"".equals(a))
+                .toArray(String[]::new);
+
+        menuIngredientDeleteResult = menuMapper.deleteMenuIngredient(menuUpdateDTO);
+        if(menuIngredientDeleteResult > 0) {
+            MenuIngredient menuIngredient = null;
+            for(int i = 0; i < ingredientNoArr.length; i++) {
+                for(int j = 0; j < quantityArr.length; j++) {
+                    if(i == j) {
+                        menuIngredient = new MenuIngredient();
+                        menuIngredient.setMenuNo(menuUpdateDTO.getMenuNo());
+                        menuIngredient.setIngredientNo(ingredientNoArr[i]);
+                        menuIngredient.setStoreNo(loginMember.getStoreNo());
+                        menuIngredient.setQuantity(Double.parseDouble(quantityArr[i]));
+                        menuIngredient.setInsertId(loginMember.getUserId());
+                        menuIngredient.setModifyId(loginMember.getUserId());
+                        menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
+                    }
+                }
+            }
+        }
+
+        int salePrice = menuMapper.selectSalePrice(menuUpdateDTO);
+        int nextSalePrice = Integer.parseInt(menuUpdateDTO.getSalePriceStr().replaceAll(",", ""));
+        if(salePrice != nextSalePrice) {
+            MenuPrice menuPrice = new MenuPrice();
+            menuPrice.setMenuNo(menuUpdateDTO.getMenuNo());
+            String nextMenuSeq = menuMapper.selectMenuSeq(menuPrice);
+            menuPrice.setMenuSeq(ComUtils.getNextSeq(nextMenuSeq));
+            menuPrice.setSalePrice(nextSalePrice);
+            menuPrice.setInsertId(loginMember.getUserId());
+            menuPrice.setModifyId(loginMember.getUserId());
+            menuPriceSaveResult = menuMapper.insertMenuPrice(menuPrice);
+        } else {
+            menuPriceSaveResult = 1;
+        }
+
+        if(menuSaveResult > 0 && (ingredientNoArr.length == menuIngredientSaveResult) && menuPriceSaveResult > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 }

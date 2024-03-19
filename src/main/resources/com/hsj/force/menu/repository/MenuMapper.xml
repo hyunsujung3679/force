@@ -199,4 +199,49 @@
           AND MI.STORE_NO = #{storeNo}
     </select>
 
+    <update id="updateMenuV1">
+        UPDATE TMENU M
+        SET M.MENU_NAME = #{menuName}
+          , M.CATEGORY_NO = #{categoryNo}
+          , M.SALE_STATUS_NO = #{saleStatusNo}
+          , M.IMAGE_SAVE_NAME = #{imageSaveName}
+          , M.IMAGE_ORIGIN_NAME = #{imageOriginName}
+          , M.IMAGE_EXT = #{imageExt}
+          , M.IMAGE_PATH = #{imagePath}
+          , M.MODIFY_ID = #{modifyId}
+          , M.MODIFY_DATE = NOW()
+        WHERE M.MENU_NO = #{menuNo}
+    </update>
+
+    <update id="updateMenuV2">
+        UPDATE TMENU M
+        SET M.MENU_NAME = #{menuName}
+          , M.CATEGORY_NO = #{categoryNo}
+          , M.SALE_STATUS_NO = #{saleStatusNo}
+          , M.MODIFY_ID = #{modifyId}
+          , M.MODIFY_DATE = NOW()
+        WHERE M.MENU_NO = #{menuNo}
+    </update>
+
+    <delete id="deleteMenuIngredient">
+        DELETE
+          FROM TMENUINGREDIENT MI
+         WHERE MI.STORE_NO = #{storeNo}
+        AND MI.MENU_NO = #{menuNo}
+    </delete>
+
+    <select id="selectMenuSeq" resultType="String">
+        SELECT MP.MENU_SEQ
+        FROM TMENUPRICE MP
+        WHERE MP.MENU_NO = #{menuNo}
+    </select>
+
+    <select id="selectSalePrice" resultType="int">
+        SELECT MP.SALE_PRICE
+        FROM TMENUPRICE MP
+        WHERE MP.MENU_NO = #{menuNo}
+        ORDER BY MP.MENU_SEQ DESC
+            LIMIT 1
+    </select>
+
 </mapper>

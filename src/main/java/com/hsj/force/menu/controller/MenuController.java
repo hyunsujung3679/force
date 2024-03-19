@@ -85,23 +85,21 @@ public class MenuController {
                 errors.put("salePriceStr", messageSource.getMessage("message.input.price.number", null, Locale.KOREA));
             }
         }
-
-        String[] ingredientNoArr = menu.getIngredientNo();
-        List<String> ingredientList = Arrays.asList(ingredientNoArr);
-        if(ingredientList.size() != ingredientList.stream().distinct().count()) {
+        String[] ingredientNoArr = new String[]{menu.getIngredientNo1(), menu.getIngredientNo2(), menu.getIngredientNo3(), menu.getIngredientNo4()};
+        List<String> ingredientNoList = Arrays.asList(ingredientNoArr);
+        int cnt = Collections.frequency(Arrays.asList(ingredientNoArr), "");
+        if(cnt == 4) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.ingredientNo", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo1()) && "".equals(menu.getQuantityStr1())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity1", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo2()) && "".equals(menu.getQuantityStr2())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity2", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo3()) && "".equals(menu.getQuantityStr3())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity3", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo4()) && "".equals(menu.getQuantityStr4())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity4", null, Locale.KOREA));
+        } else if(ingredientNoList.size() != ingredientNoList.stream().distinct().count()) {
             errors.put("ingredientNo", messageSource.getMessage("message.no.input.same.ingredient.no", null, Locale.KOREA));
-        } else {
-            String[] quantityStr = menu.getQuantityStr();
-            if(quantityStr.length == 0) {
-                errors.put("quantity", messageSource.getMessage("message.input.quantity", null, Locale.KOREA));
-            } else {
-                for(String quantity : quantityStr) {
-                    if(!StringUtils.hasText(quantity)) {
-                        errors.put("quantity", messageSource.getMessage("message.input.quantity", null, Locale.KOREA));
-                        break;
-                    }
-                }
-            }
         }
 
         if (file.isEmpty()) {
@@ -139,8 +137,8 @@ public class MenuController {
 
     @GetMapping("/{menuNo}/update")
     public String menuUpdateForm(@PathVariable String menuNo,
-                                     HttpSession session,
-                                     Model model) {
+                                 HttpSession session,
+                                 Model model) {
 
         User loginMember = (User) session.getAttribute("loginMember");
 
@@ -153,6 +151,89 @@ public class MenuController {
         model.addAttribute("imageSaveName", menu.getImageSaveName());
 
         return "menu/menuUpdate";
+    }
+
+    @PostMapping("/{menuNo}/update")
+    public String updateMenu(@PathVariable String menuNo,
+                             @ModelAttribute MenuUpdateDTO menu,
+                             @RequestParam MultipartFile file,
+                             HttpSession session,
+                             Model model) throws IOException {
+
+        Map<String, String> errors = new HashMap<>();
+        User loginMember = (User) session.getAttribute("loginMember");
+        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
+
+        if(!StringUtils.hasText(menu.getMenuName())) {
+            errors.put("menuName", messageSource.getMessage("message.input.menu.name", null, Locale.KOREA));
+        }
+        if(!StringUtils.hasText(menu.getSalePriceStr())) {
+            errors.put("salePrice", messageSource.getMessage("message.input.sale.price", null, Locale.KOREA));
+        } else {
+            try {
+                Integer.parseInt(menu.getSalePriceStr().replaceAll(",", ""));
+            } catch (NumberFormatException e) {
+                errors.put("salePriceStr", messageSource.getMessage("message.input.price.number", null, Locale.KOREA));
+            }
+        }
+        String[] ingredientNoArr = new String[]{menu.getIngredientNo1(), menu.getIngredientNo2(), menu.getIngredientNo3(), menu.getIngredientNo4()};
+        List<String> ingredientNoList = new ArrayList<>(Arrays.asList(ingredientNoArr));
+        ingredientNoList.removeAll(Arrays.asList("", null));
+
+//        for(int i = 0; i < ingredientNoList.size(); i++) {
+//            if("".equals(ingredientNoList.get(i))) {
+//                ingredientNoList.remove(i);
+//            }
+//        }
+
+        int cnt = Collections.frequency(Arrays.asList(ingredientNoArr), "");
+        if(cnt == 4) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.ingredientNo", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo1()) && "".equals(menu.getQuantityStr1())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity1", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo2()) && "".equals(menu.getQuantityStr2())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity2", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo3()) && "".equals(menu.getQuantityStr3())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity3", null, Locale.KOREA));
+        } else if(!"".equals(menu.getIngredientNo4()) && "".equals(menu.getQuantityStr4())) {
+            errors.put("ingredientNo", messageSource.getMessage("message.input.quantity4", null, Locale.KOREA));
+        } else if(ingredientNoList.size() != ingredientNoList.stream().distinct().count()) {
+            errors.put("ingredientNo", messageSource.getMessage("message.no.input.same.ingredient.no", null, Locale.KOREA));
+        }
+
+        if(!errors.isEmpty()) {
+            model.addAttribute("header", commonLayoutDTO);
+            model.addAttribute("menu", new MenuInsertDTO());
+            model.addAttribute("errors", errors);
+            return "menu/menuUpdate";
+        }
+
+        String fullPath = "";
+        if(!file.isEmpty()) {
+            String imageOriginName = file.getOriginalFilename();
+            String imageExt = imageOriginName.substring(imageOriginName.lastIndexOf("."));
+            String imageSaveName = UUID.randomUUID().toString().replace("-", "") + imageExt;
+            fullPath = fileDir + imageSaveName;
+
+            menu.setImageOriginName(imageOriginName);
+            menu.setImageExt(imageExt);
+            menu.setImageSaveName(imageSaveName);
+            menu.setImagePath(fileDir);
+        }
+
+        int result = menuService.updateMenu(loginMember, menu);
+        if(result > 0) {
+            if(!file.isEmpty()) {
+                File mkdir = new File(fileDir);
+                if(!mkdir.exists()) {
+                    mkdir.mkdirs();
+                }
+                file.transferTo(new File(fullPath));
+            }
+            return "redirect:/menu";
+        } else {
+            return "menu/menuUpdate";
+        }
     }
 
     @ResponseBody

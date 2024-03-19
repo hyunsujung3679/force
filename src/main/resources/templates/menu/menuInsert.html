@@ -4,6 +4,9 @@
 <head>
     <link rel="stylesheet" type="text/css" th:href="@{/css/menu/menuInsert.css}">
     <script th:inline="javascript">
+
+        const inputIngredientMsg = [[#{message.input.ingredientNo}]];
+
         $(function() {
             $.ajax({
                 url: "/category/list",
@@ -41,12 +44,21 @@
                 url: "/ingredient/list",
                 type: "get",
                 success: function (data) {
-                    $("select[name=ingredientNo]").html("");
+                    $("select[name=ingredientNo1]").html("");
+                    $("select[name=ingredientNo2]").html("");
+                    $("select[name=ingredientNo3]").html("");
+                    $("select[name=ingredientNo4]").html("");
+
                     let html = "";
+                    html += '<option value="">' + inputIngredientMsg + '</option>';
                     for (let index in data) {
                         html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
                     }
-                    $("select[name=ingredientNo]").append(html);
+                    $("select[name=ingredientNo1]").append(html);
+                    $("select[name=ingredientNo2]").append(html);
+                    $("select[name=ingredientNo3]").append(html);
+                    $("select[name=ingredientNo4]").append(html);
+
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -66,56 +78,12 @@
             })
         })
 
-        function addIngredient() {
-
-            const ingredientNoLength = $("select[name=ingredientNo]").length;
-            if(ingredientNoLength > 3) {
-                return;
-            }
-
-            const numberLabel = [[#{label.number}]];
-            const ingredientLabel = [[#{label.ingredient}]];
-
-            let html = "";
-
-            html += '<div class="fifth-div"">'
-            html += '<label>' + ingredientLabel + ' : </label>'
-            html += '<select class="fifth-div-select" name="ingredientNo" ></select>'
-            html += '<input type="number" min="0.1" step="0.1" name="quantityStr" class="fifth-div-input"/>'
-            html += '<label class="fifth-div-label">' + numberLabel + '</label>'
-            html += '<img class="fifth-div-img-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>'
-            html += '</div>'
-
-            $(".fifth-div-wrap").append(html);
-
-            $.ajax({
-                url: "/ingredient/list",
-                type: "get",
-                success: function (data) {
-                    $("select[name=ingredientNo]").html("");
-                    let html = "";
-                    for (let index in data) {
-                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
-                    }
-                    $("select[name=ingredientNo]").append(html);
-                },
-                error: function (xhr) {
-                    console.log(xhr);
-                }
-            });
-        }
-
-        function removeIngredient(img) {
-            img.parentNode.remove();
-        }
-
-
     </script>
 </head>
 <body>
 
     <section class="section">
-        <form class="form" th:action th:object="${menu}" method="post" enctype="multipart/form-data">>
+        <form class="form" th:action th:object="${menu}" method="post" enctype="multipart/form-data">
             <div class="div-wrap">
                 <div class="first-div">
                     <label th:text="|#{label.menu.name} : |"></label>
@@ -136,19 +104,31 @@
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
                 <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
-                <div class="fifth-div-wrap">
-                    <div class="fifth-div">
-                        <label th:text="|#{label.ingredient} : |"></label>
-                        <select class="fifth-div-select" th:field="*{ingredientNo}"></select>
-                        <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr}"/>
-                        <label class="fifth-div-label" th:text="#{label.number}"></label>
-                        <img class="fifth-div-img" src="/images/menu/plus.png" alt="plus.png" onclick="addIngredient();"/>
-                    </div>
+                <div class="fifth-div">
+                    <label th:text="|#{label.ingredient} : |"></label>
+                    <select class="fifth-div-select" th:field="*{ingredientNo1}"></select>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr1}"/>
+                    <label class="fifth-div-label" th:text="#{label.number}"></label>
+                </div>
+                <div class="fifth-div">
+                    <label th:text="|#{label.ingredient} : |"></label>
+                    <select class="fifth-div-select" th:field="*{ingredientNo2}"></select>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr2}"/>
+                    <label class="fifth-div-label" th:text="#{label.number}"></label>
+                </div>
+                <div class="fifth-div">
+                    <label th:text="|#{label.ingredient} : |"></label>
+                    <select class="fifth-div-select" th:field="*{ingredientNo3}"></select>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr3}"/>
+                    <label class="fifth-div-label" th:text="#{label.number}"></label>
+                </div>
+                <div class="fifth-div">
+                    <label th:text="|#{label.ingredient} : |"></label>
+                    <select class="fifth-div-select" th:field="*{ingredientNo4}"></select>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr4}"/>
+                    <label class="fifth-div-label" th:text="#{label.number}"></label>
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('ingredientNo')}" th:text="${errors['ingredientNo']}"></div>
-                <div class="field-error" th:if="${errors?.containsKey('quantity')}" th:text="${errors['quantity']}"></div>
-                <div class="field-error" th:if="${errors?.containsKey('quantityMinus')}" th:text="${errors['quantityMinus']}"></div>
-                <div class="field-error" th:if="${errors?.containsKey('quantityStr')}" th:text="${errors['quantityStr']}"></div>
                 <div class="sixth-div">
                     <label th:text="|#{label.image} : |"></label>
                     <input type="file" class="sixth-div-file" name="file"/>

@@ -8,6 +8,7 @@
         const categoryNo = [[${menu.categoryNo}]];
         const saleStatusNo = [[${menu.saleStatusNo}]];
         const ingredientQuantity = [[${ingredientQuantityList}]];
+        const inputIngredientMsg = [[#{message.input.ingredientNo}]];
 
         $(function() {
 
@@ -56,18 +57,59 @@
                 url: "/ingredient/list",
                 type: "get",
                 success: function (data) {
-                    $("select[name=ingredientNo]").html("");
-                    let html = "";
+
+                    $("select[name=ingredientNo1]").html("");
+                    $("select[name=ingredientNo2]").html("");
+                    $("select[name=ingredientNo3]").html("");
+                    $("select[name=ingredientNo4]").html("");
+
+                    let html1 = "";
+                    let html2 = "";
+                    let html3 = "";
+                    let html4 = "";
+
+                    html1 += '<option value="">' + inputIngredientMsg + '</option>';
+                    html2 += '<option value="">' + inputIngredientMsg + '</option>';
+                    html3 += '<option value="">' + inputIngredientMsg + '</option>';
+                    html4 += '<option value="">' + inputIngredientMsg + '</option>';
+
+                    const ingredientNo1 = ingredientQuantity[0].ingredientNo;
+                    const ingredientNo2 = ingredientQuantity[1].ingredientNo;
+                    const ingredientNo3 = ingredientQuantity[2].ingredientNo;
+                    const ingredientNo4 = ingredientQuantity[3].ingredientNo;
+
                     for (let index in data) {
-                        for(let i = 0; i < ingredientQuantity.length; i++) {
-                            if(ingredientQuantity[i].ingredientNo === data[index].ingredientNo) {
-                                html += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
-                            } else {
-                                html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
-                            }
+
+                        if(ingredientNo1 === data[index].ingredientNo) {
+                            html1 += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                        } else {
+                            html1 += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
                         }
+
+                        if(ingredientNo2 === data[index].ingredientNo) {
+                            html2 += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                        } else {
+                            html2 += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        }
+
+                        if(ingredientNo3 === data[index].ingredientNo) {
+                            html3 += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                        } else {
+                            html3 += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        }
+
+                        if(ingredientNo4 === data[index].ingredientNo) {
+                            html4 += '<option value=' + data[index].ingredientNo + ' selected="selected">' + data[index].ingredientName + '</option>'
+                        } else {
+                            html4 += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
+                        }
+
                     }
-                    $("select[name=ingredientNo]").append(html);
+
+                    $("select[name=ingredientNo1]").append(html1);
+                    $("select[name=ingredientNo2]").append(html2);
+                    $("select[name=ingredientNo3]").append(html3);
+                    $("select[name=ingredientNo4]").append(html4);
                 },
                 error: function (xhr) {
                     console.log(xhr);
@@ -86,49 +128,6 @@
                 }
             })
         })
-
-        function addIngredient() {
-
-            const ingredientNoLength = $("select[name=ingredientNo]").length;
-            if(ingredientNoLength > 3) {
-                return;
-            }
-
-            const numberLabel = [[#{label.number}]];
-            const ingredientLabel = [[#{label.ingredient}]];
-
-            let html = "";
-
-            html += '<div class="fifth-div"">'
-            html += '<label>' + ingredientLabel + ' : </label>'
-            html += '<select class="fifth-div-select" name="ingredientNo" ></select>'
-            html += '<input type="number" min="0.1" step="0.1" name="quantityStr" class="fifth-div-input"/>'
-            html += '<label class="fifth-div-label">' + numberLabel + '</label>'
-            html += '<img class="fifth-div-img-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);"/>'
-            html += '</div>'
-
-            $(".fifth-div-wrap").append(html);
-
-            $.ajax({
-                url: "/ingredient/list",
-                type: "get",
-                success: function (data) {
-                    $("select[name=ingredientNo]").html("");
-                    let html = "";
-                    for (let index in data) {
-                        html += '<option value=' + data[index].ingredientNo + '>' + data[index].ingredientName + '</option>'
-                    }
-                    $("select[name=ingredientNo]").append(html);
-                },
-                error: function (xhr) {
-                    console.log(xhr);
-                }
-            });
-        }
-
-        function removeIngredient(img) {
-            img.parentNode.remove();
-        }
 
     </script>
 </head>
@@ -158,20 +157,31 @@
                         </div>
                         <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
                         <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
-                        <div class="fifth-div-wrap">
-                            <div class="fifth-div" th:each="ingredientQuantity, ingredientQuantityStat : ${ingredientQuantityList}" >
-                                <label th:text="|#{label.ingredient} : |"></label>
-                                <select class="fifth-div-select" th:field="*{ingredientNo}" th:value="${ingredientQuantity.ingredientNo}"></select>
-                                <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr}" th:value="${ingredientQuantity.quantity}"/>
-                                <label class="fifth-div-label" th:text="#{label.number}"></label>
-                                <img class="fifth-div-img" src="/images/menu/plus.png" alt="plus.png" onclick="addIngredient();" th:if="${ingredientQuantityStat.index} < 1"/>
-                                <img class="fifth-div-img-2" src="/images/menu/minus.png" alt="minus.png" onclick="removeIngredient(this);" th:if="${ingredientQuantityStat.index} >= 1" />
-                            </div>
+                        <div class="fifth-div">
+                            <label th:text="|#{label.ingredient} : |"></label>
+                            <select class="fifth-div-select" name="ingredientNo1" th:value="${ingredientQuantityList[0].ingredientNo}"></select>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr1" th:value="${ingredientQuantityList[0].quantity == 0.0 ? null : ingredientQuantityList[0].quantity}"/>
+                            <label class="fifth-div-label" th:text="#{label.number}"></label>
+                        </div>
+                        <div class="fifth-div">
+                            <label th:text="|#{label.ingredient} : |"></label>
+                            <select class="fifth-div-select" name="ingredientNo2" th:value="${ingredientQuantityList[1].ingredientNo}"></select>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr2" th:value="${ingredientQuantityList[1].quantity == 0.0 ? null : ingredientQuantityList[1].quantity}"/>
+                            <label class="fifth-div-label" th:text="#{label.number}"></label>
+                        </div>
+                        <div class="fifth-div">
+                            <label th:text="|#{label.ingredient} : |"></label>
+                            <select class="fifth-div-select" name="ingredientNo3" th:value="${ingredientQuantityList[2].ingredientNo}"></select>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr3" th:value="${ingredientQuantityList[2].quantity == 0.0 ? null : ingredientQuantityList[2].quantity}"/>
+                            <label class="fifth-div-label" th:text="#{label.number}"></label>
+                        </div>
+                        <div class="fifth-div">
+                            <label th:text="|#{label.ingredient} : |"></label>
+                            <select class="fifth-div-select" name="ingredientNo4" th:value="${ingredientQuantityList[3].ingredientNo}"></select>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr4" th:value="${ingredientQuantityList[3].quantity == 0.0 ? null : ingredientQuantityList[3].quantity}"/>
+                            <label class="fifth-div-label" th:text="#{label.number}"></label>
                         </div>
                         <div class="field-error" th:if="${errors?.containsKey('ingredientNo')}" th:text="${errors['ingredientNo']}"></div>
-                        <div class="field-error" th:if="${errors?.containsKey('quantity')}" th:text="${errors['quantity']}"></div>
-                        <div class="field-error" th:if="${errors?.containsKey('quantityMinus')}" th:text="${errors['quantityMinus']}"></div>
-                        <div class="field-error" th:if="${errors?.containsKey('quantityStr')}" th:text="${errors['quantityStr']}"></div>
                     </div>
                     <div class="div-separate-right">
                         <img class="div-separate-right-img" th:src="|/menu/image/${imageSaveName}|" width="100%" height="100%"/>

@@ -87,4 +87,13 @@
         ORDER BY I.INGREDIENT_NO ASC
     </select>
 
+    <select id="selectIngredientListV2" resultType="com.hsj.force.domain.dto.IngredientListDTO">
+        SELECT I.INGREDIENT_NO
+             , I.INGREDIENT_NAME
+             , I.QUANTITY
+        FROM TINGREDIENT I
+        WHERE I.STORE_NO = #{storeNo}
+        ORDER BY I.INGREDIENT_NO ASC
+    </select>
+
 </mapper>

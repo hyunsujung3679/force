@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ingredient/ingredientList.css}">
+<script th:inline="javascript">
+    function ingredientUpdateForm(div) {
+        const ingredientNo = div.children[0].value;
+        location.href = "/ingredient/" + ingredientNo + "/update"
+    }
+</script>
+</head>
+<body>
+
+    <section>
+        <div class="ingredient-box">
+            <div class="ingredient-title">
+                <div class="ingredient-title-no" th:text="#{label.no}"></div>
+                <div class="ingredient-title-name"  th:text="#{label.ingredient.name}"></div>
+                <div class="ingredient-title-quantity"  th:text="#{label.stock}"></div>
+            </div>
+            <div class="ingredient-content" th:each="ingredient : ${ingredientList}" ondblclick="ingredientUpdateForm(this);">
+                <input type="hidden" name="ingredient-no" th:value="${ingredient.ingredientNo}">
+                <div class="ingredient-no" th:text="${ingredient.no}"></div>
+                <div class="ingredient-name" th:text="${ingredient.ingredientName}"></div>
+                <div class="ingredient-quantity" th:text="${#numbers.formatDecimal(ingredient.quantity, 0, 0)}"></div>
+            </div>
+        </div>
+
+        <div class="ingredient-button-wrap">
+            <button type="button" class="ingredient-button-1" th:onclick="|location.href='@{ingredient/insert}'|" th:text="#{button.insert}"></button>
+        </div>
+    </section>
+
+</body>
+</html>

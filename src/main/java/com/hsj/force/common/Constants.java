@@ -9,4 +9,5 @@ public class Constants {
     public static final String ORDER_NO_PREFIX = "O";
     public static final String CATEGORY_NO_PREFIX = "C";
     public static final String MENU_NO_PREFIX = "M";
+    public static final String INGREDIENT_NO_PREFIX = "I";
 }

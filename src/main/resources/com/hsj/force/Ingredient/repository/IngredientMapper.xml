@@ -21,7 +21,6 @@
         , STORE_NO
         , IN_DE_QUANTITY
         , IN_DE_REASON_NO
-        , EXPIRATION_DATE
         , INSERT_ID
         , INSERT_DATE
         , MODIFY_ID
@@ -34,7 +33,6 @@
         , #{storeNo}
         , #{inDeQuantity}
         , #{inDeReasonNo}
-        , #{expirationDate}
         , #{insertId}
         , NOW()
         , #{modifyId}
@@ -94,6 +92,55 @@
         FROM TINGREDIENT I
         WHERE I.STORE_NO = #{storeNo}
         ORDER BY I.INGREDIENT_NO ASC
+    </select>
+
+    <select id="selectIngredientNo" resultType="String">
+        SELECT I.INGREDIENT_NO
+        FROM TINGREDIENT I
+        WHERE I.STORE_NO = #{storeNo}
+        ORDER BY I.INGREDIENT_NO DESC
+        LIMIT 1;
+    </select>
+
+    <insert id="insertIngredient">
+        INSERT
+          INTO TINGREDIENT
+        (
+          INGREDIENT_NO
+        , STORE_NO
+        , INGREDIENT_NAME
+        , QUANTITY
+        , INSERT_ID
+        , INSERT_DATE
+        , MODIFY_ID
+        , MODIFY_DATE
+        )
+        VALUES
+        (
+          #{ingredientNo}
+        , #{storeNo}
+        , #{ingredientName}
+        , #{quantity}
+        , #{insertId}
+        , NOW()
+        , #{modifyId}
+        , NOW()
+        )
+    </insert>
+
+    <select id="selectIngredient" resultType="com.hsj.force.domain.dto.IngredientUpdateDTO">
+        SELECT I.INGREDIENT_NO
+             , I.INGREDIENT_NAME
+        FROM TINGREDIENT I
+        WHERE I.STORE_NO = #{storeNo}
+          AND I.INGREDIENT_NO = #{ingredientNo}
+    </select>
+
+    <select id="selectInDeReasonList" resultType="InDeReason">
+        SELECT IDR.IN_DE_REASON_NO
+             , IDR.IN_DE_REASON
+        FROM TINDEREASON IDR
+
     </select>
 
 </mapper>

@@ -3,17 +3,18 @@ package com.hsj.force.ingredient.controller;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.User;
+import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.IngredientInsertDTO;
 import com.hsj.force.ingredient.service.IngredientService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class IngredientController {
 
+    private final MessageSource messageSource;
     private final IngredientService ingredientService;
     private final CommonService commonService;
     private final OpenService openService;
@@ -52,6 +54,54 @@ public class IngredientController {
         model.addAttribute("ingredient", new IngredientInsertDTO());
 
         return "ingredient/ingredientInsert";
+    }
+
+    @PostMapping("/insert")
+    public String insertIngredient(@ModelAttribute IngredientInsertDTO ingredient,
+                                   HttpSession session,
+                                   Model model) {
+
+        Map<String, String> errors = new HashMap<>();
+        User loginMember = (User) session.getAttribute("loginMember");
+        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
+
+        if(!StringUtils.hasText(ingredient.getIngredientName())) {
+            errors.put("ingredientName", messageSource.getMessage("message.input.ingredient.name", null, Locale.KOREA));
+        }
+        if(!StringUtils.hasText(ingredient.getQuantityStr())) {
+            errors.put("quantityStr", messageSource.getMessage("message.input.quantityStr", null, Locale.KOREA));
+        } else {
+            try {
+                Integer.parseInt(ingredient.getQuantityStr().replaceAll(",", ""));
+            } catch (NumberFormatException e) {
+                errors.put("quantityStr", messageSource.getMessage("message.rewrite", null, Locale.KOREA));
+            }
+        }
+        if(!errors.isEmpty()) {
+            model.addAttribute("header", commonLayoutDTO);
+            model.addAttribute("category", new CategoryInsertDTO());
+            model.addAttribute("errors", errors);
+            return "ingredient/ingredientInsert";
+        }
+
+        ingredientService.insertIngredient(loginMember, ingredient);
+        return "redirect:/ingredient";
+    }
+
+    @GetMapping("/{ingredientNo}/update")
+    public String categoryUpdateForm(@PathVariable String ingredientNo,
+                                     HttpSession session,
+                                     Model model) {
+
+        User loginMember = (User) session.getAttribute("loginMember");
+
+        Map<String, Object> map = ingredientService.selectIngredientUpdateInfo(loginMember, ingredientNo);
+
+        model.addAttribute("header", map.get("commonLayoutForm"));
+        model.addAttribute("ingredient", map.get("ingredient"));
+        model.addAttribute("inDeReasonList", map.get("inDeReasonList"));
+
+        return "ingredient/ingredientUpdate";
     }
 
     @ResponseBody

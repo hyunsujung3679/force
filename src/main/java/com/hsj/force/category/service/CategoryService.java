@@ -44,13 +44,7 @@ public class CategoryService {
         category.setPriority(Integer.parseInt(categoryInsertDTO.getPriorityStr()));
         category.setUseYn(categoryInsertDTO.getUseYn());
         String categoryNo = categoryMapper.selectCategoryNo(category.getStoreNo());
-        String nextCategoryNo = "";
-        if(categoryNo == null) {
-            nextCategoryNo = "C001";
-        } else {
-            nextCategoryNo = ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX);
-        }
-        category.setCategoryNo(nextCategoryNo);
+        category.setCategoryNo(ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX));
         category.setInsertId(loginMember.getUserId());
         category.setModifyId(loginMember.getUserId());
 

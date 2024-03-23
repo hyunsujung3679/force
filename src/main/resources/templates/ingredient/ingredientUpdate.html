@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html th:replace="fragment/commonBody :: commonLayout(~{::link}, ~{::script}, ~{::section})"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/ingredient/ingredientUpdate.css}">
+    <script th:inline="javascript"></script>
+</head>
+<body>
+
+    <section class="section">
+        <form class="form" th:action th:object="${ingredient}" method="post">
+            <div class="div-wrap">
+                <div class="first-div">
+                    <label th:text="|#{label.ingredient.name} : |"></label>
+                    <input type="text" class="first-div-input" th:field="*{ingredientName}"/>
+                </div>
+                <div class="field-error" th:if="${errors?.containsKey('ingredientName')}" th:text="${errors['ingredientName']}"></div>
+                <div class="second-div">
+                    <label th:text="|#{label.quantity} : |"></label>
+                    <input type="text" class="second-div-input" th:field="*{inDeQuantity}"/>
+                </div>
+                <div class="field-error" th:if="${errors?.containsKey('inDeQuantity')}" th:text="${errors['inDeQuantity']}"></div>
+                <div class="third-div">
+                    <label th:text="|#{label.ingredient} : |"></label>
+                    <select class="third-div-select" th:field="*{inDeReasonNo}">
+                        <option value="" th:text="#{message.input.in.de.reason}"></option>
+                        <option th:each="inDeReason : ${inDeReasonList}" th:value="${inDeReason.inDeReason}"
+                                th:text="${inDeReason.inDeReason}"></option>
+                    </select>
+                </div>
+                <div class="button-wrap">
+                    <button type="submit" class="save-button" th:text="#{button.save}"></button>
+                    <button type="button" class="back-button" th:onclick="|location.href='@{/ingredient}'|" th:text="#{button.back}"></button>
+                </div>
+            </div>
+        </form>
+    </section>
+
+</body>
+</html>

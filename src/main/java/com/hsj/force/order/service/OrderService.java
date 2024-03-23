@@ -164,7 +164,6 @@ public class OrderService {
             ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
             ingredientHis.setInDeQuantity(-(menuIngredientDTO.getNeedQuantity()));
             ingredientHis.setInDeReasonNo("ID001");
-            ingredientHis.setExpirationDate("");
             ingredientHis.setInsertId(loginMember.getUserId());
             ingredientHis.setModifyId(loginMember.getUserId());
             ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
@@ -233,7 +232,6 @@ public class OrderService {
             ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
             ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
             ingredientHis.setInDeReasonNo("ID002");
-            ingredientHis.setExpirationDate("");
             ingredientHis.setInsertId(loginMember.getUserId());
             ingredientHis.setModifyId(loginMember.getUserId());
             ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
@@ -278,7 +276,6 @@ public class OrderService {
                 ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientMapper.selectIngredientSeq(ingredientHis)));
                 ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
                 ingredientHis.setInDeReasonNo("ID002");
-                ingredientHis.setExpirationDate("");
                 ingredientHis.setInsertId(loginMember.getUserId());
                 ingredientHis.setModifyId(loginMember.getUserId());
                 ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);

@@ -1,12 +1,14 @@
 package com.hsj.force.ingredient.service;
 
+import com.hsj.force.common.ComUtils;
+import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
+import com.hsj.force.common.service.CommonService;
+import com.hsj.force.domain.InDeReason;
 import com.hsj.force.domain.Ingredient;
+import com.hsj.force.domain.IngredientHis;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.IngredientListDTO;
-import com.hsj.force.domain.dto.MenuDTO;
-import com.hsj.force.domain.dto.MenuIngredientDTO;
+import com.hsj.force.domain.dto.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class IngredientService {
 
+    private final CommonService commonService;
     private final IngredientMapper ingredientMapper;
     private final CommonMapper commonMapper;
 
@@ -45,6 +48,55 @@ public class IngredientService {
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("ingredientList", ingredientList);
+
+        return map;
+    }
+
+    public int insertIngredient(User loginMember, IngredientInsertDTO ingredientInsertDTO) {
+
+        int ingredientSaveResult = 0;
+        int ingredientHisSaveResult = 0;
+
+        Ingredient ingredient = new Ingredient();
+        String ingredientNo = ingredientMapper.selectIngredientNo(loginMember.getStoreNo());
+        String nextIngredientNo = ComUtils.getNextNo(ingredientNo, Constants.INGREDIENT_NO_PREFIX);
+        ingredient.setIngredientNo(nextIngredientNo);
+        ingredient.setStoreNo(loginMember.getStoreNo());
+        ingredient.setIngredientName(ingredientInsertDTO.getIngredientName());
+        double quantity = Double.parseDouble(ingredientInsertDTO.getQuantityStr().replaceAll(",", ""));
+        ingredient.setQuantity(quantity);
+        ingredient.setInsertId(loginMember.getUserId());
+        ingredient.setModifyId(loginMember.getUserId());
+        ingredientSaveResult = ingredientMapper.insertIngredient(ingredient);
+
+        IngredientHis ingredientHis = new IngredientHis();
+        ingredientHis.setIngredientNo(nextIngredientNo);
+        ingredientHis.setStoreNo(loginMember.getStoreNo());
+        String ingredientSeq = ingredientMapper.selectIngredientSeq(ingredientHis);
+        ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
+        ingredientHis.setInDeQuantity(quantity);
+        ingredientHis.setInDeReasonNo("ID003");
+        ingredientHis.setInsertId(loginMember.getUserId());
+        ingredientHis.setModifyId(loginMember.getUserId());
+        ingredientHisSaveResult = ingredientMapper.insertIngredientHis(ingredientHis);
+
+        if(ingredientSaveResult > 0 && ingredientHisSaveResult > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public Map<String, Object> selectIngredientUpdateInfo(User loginMember, String ingredientNo) {
+
+        Map<String, Object> map = new HashMap<>();
+        CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
+        IngredientUpdateDTO ingredientUpdateDTO = ingredientMapper.selectIngredient(loginMember.getStoreNo(), ingredientNo);
+        List<InDeReason> inDeReasonList = ingredientMapper.selectInDeReasonList();
+
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("ingredient", ingredientUpdateDTO);
+        map.put("inDeReasonList", inDeReasonList);
 
         return map;
     }

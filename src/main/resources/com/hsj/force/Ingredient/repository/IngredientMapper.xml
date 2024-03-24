@@ -140,7 +140,13 @@
         SELECT IDR.IN_DE_REASON_NO
              , IDR.IN_DE_REASON
         FROM TINDEREASON IDR
+    </select>
 
+    <select id="selectQuantity" resultType="double">
+        SELECT I.QUANTITY
+        FROM TINGREDIENT I
+        WHERE I.STORE_NO = #{storeNo}
+          AND I.INGREDIENT_NO = #{ingredientNo}
     </select>
 
 </mapper>

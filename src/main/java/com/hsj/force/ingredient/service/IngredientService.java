@@ -100,4 +100,37 @@ public class IngredientService {
 
         return map;
     }
+
+    public int updateIngredient(User loginMember, IngredientUpdateDTO ingredientUpdateDTO) {
+
+        int ingredientUpdateResult = 0;
+        int ingredientHisSaveResult = 0;
+
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredientNo(ingredientUpdateDTO.getIngredientNo());
+        ingredient.setStoreNo(loginMember.getStoreNo());
+        double quantity = ingredientMapper.selectQuantity(ingredient);
+        ingredient.setQuantity(quantity + Double.parseDouble(ingredientUpdateDTO.getInDeQuantity()));
+        ingredient.setModifyId(loginMember.getUserId());
+
+        ingredientUpdateResult = ingredientMapper.updateIngredient(ingredient);
+
+        IngredientHis ingredientHis = new IngredientHis();
+        ingredientHis.setIngredientNo(ingredientUpdateDTO.getIngredientNo());
+        ingredientHis.setStoreNo(loginMember.getStoreNo());
+        String ingredientSeq = ingredientMapper.selectIngredientSeq(ingredientHis);
+        ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
+        ingredientHis.setInDeQuantity(Double.parseDouble(ingredientUpdateDTO.getInDeQuantity()));
+        ingredientHis.setInDeReasonNo(ingredientUpdateDTO.getInDeReasonNo());
+        ingredientHis.setInsertId(loginMember.getUserId());
+        ingredientHis.setModifyId(loginMember.getUserId());
+        ingredientHisSaveResult = ingredientMapper.insertIngredientHis(ingredientHis);
+
+        if(ingredientUpdateResult > 0 && ingredientHisSaveResult > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
 }

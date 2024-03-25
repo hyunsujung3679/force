@@ -23,9 +23,9 @@
             <p class="content" th:text="|#{header.salesMan} : ${header.salesMan}|"></p>
             <p class="content" th:text="|#{header.currentDate} : ${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
         </div>
-        <form th:action method="post">
-            <button type="submit" class="button-1" th:text="#{button.close}"></button>
-        </form>
+
+            <button type="button" class="button-1" th:text="#{button.close}" th:onclick="|location.href='@{/close}'|"></button>
+
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="button-2" th:text="#{button.logout}"></button>
         </form>
@@ -38,9 +38,6 @@
                 <button type="button" class="side-bar-button" th:text="#{button.category}" th:onclick="|location.href='@{/category}'|"></button>
                 <button type="button" class="side-bar-button" th:text="#{button.menu}" th:onclick="|location.href='@{/menu}'|"></button>
                 <button type="button" class="side-bar-button" th:text="#{button.ingredient}" th:onclick="|location.href='@{/ingredient}'|"></button>
-                <button type="button" class="side-bar-button" th:text="#{button.sales}"></button>
-                <button type="button" class="side-bar-button" th:text="#{button.stock}"></button>
-                <button type="button" class="side-bar-button" th:text="#{button.inquiry}"></button>
             </div>
         </div>
         <div th:replace="${content}"></div>

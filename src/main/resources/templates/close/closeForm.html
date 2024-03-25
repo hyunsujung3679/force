@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/close/close.css}">
+    <script th:inline="javascript"></script>
+</head>
+<body>
+
+    <div class="close-first-div">
+        <div class="close-first-div-left">
+            <div class="first-content">
+                <div>
+                    <p class="first-content-first-div-p">마감정산</p>
+                </div>
+                <div class="first-content-second-div">
+                    <p class="first-content-second-div-p">게시시간 2023-12-31 09:00:00 일요일</p>
+                </div>
+            </div>
+            <div class="second-content">
+                <div>
+                    <span>총 판매액 : </span>
+                    <span>200,000</span>
+                </div>
+                <div class="second-content-div-1">
+                    <span>매출건수 : </span>
+                    <span>5</span>
+                </div>
+            </div>
+            <div class="second-content">
+                <div>
+                    <span>총 주문취소액 : </span>
+                    <span>90,000</span>
+                </div>
+                <div class="second-content-div-2">
+                    <span>주문취소건수 : </span>
+                    <span>1</span>
+                </div>
+            </div>
+            <div class="second-content">
+                <div>
+                    <span>총 할인액 : </span>
+                    <span>50,000</span>
+                </div>
+                <div class="second-content-div-3">
+                    <span>실매출건수 : </span>
+                    <span>4</span>
+                </div>
+            </div>
+            <div class="second-content">
+                <div>
+                    <span>총 매출액 </span>
+                    <span>90,000</span>
+                </div>
+            </div>
+            <div class="line-1"></div>
+        </div>
+        <div class="close-first-div-right">
+            <div class="third-content">
+                <div>
+                    <p class="third-content-first-div-p">마감 현금시재</p>
+                </div>
+            </div>
+            <div class="fourth-content-wrap">
+                <div class="fourth-content">
+                    <span>십만원권</span>
+                    <div class="fourth-content-div-1">
+                        <input class="fourth-content-input">
+                        <span>장</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>오만원권</span>
+                    <div class="fourth-content-div-1">
+                        <input class="fourth-content-input">
+                        <span>장</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>만원권</span>
+                    <div class="fourth-content-div-2">
+                        <input class="fourth-content-input">
+                        <span>장</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>오천원권</span>
+                    <div class="fourth-content-div-1">
+                        <input class="fourth-content-input">
+                        <span>장</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>천원권</span>
+                    <div class="fourth-content-div-2">
+                        <input class="fourth-content-input">
+                        <span>장</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>오백원</span>
+                    <div class="fourth-content-div-2">
+                        <input class="fourth-content-input">
+                        <span>개</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>백원</span>
+                    <div class="fourth-content-div-3">
+                        <input class="fourth-content-input">
+                        <span>개</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>오십원</span>
+                    <div class="fourth-content-div-2">
+                        <input class="fourth-content-input">
+                        <span>개</span>
+                    </div>
+                </div>
+                <div class="fourth-content">
+                    <span>십원</span>
+                    <div class="fourth-content-div-3">
+                        <input class="fourth-content-input">
+                        <span>개</span>
+                    </div>
+                </div>
+            </div>
+            <div class="line-2"></div>
+            <div class="button-wrap">
+                <button type="submit" class="submit-button">마감</button>
+                <button type="button" class="submit-button">뒤로</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

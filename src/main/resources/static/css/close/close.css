@@ -1,0 +1,146 @@
+html {
+    height: 100%;
+}
+
+body {
+    height:100%;
+    overflow:hidden;
+    background-color: #A3B1E7;
+}
+
+.close-first-div {
+    display: flex;
+    margin: 4% auto 0;
+    width: 70%;
+    height: 80%;
+    background-color: white;
+}
+
+.close-first-div-left {
+    width: 50%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.close-first-div-right {
+    width: 50%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+.first-content {
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: bold;
+    margin-top: 3%;
+}
+
+.first-content-second-div {
+    background: grey;
+    color: white;
+    width: 60%;
+    height: 100%;
+    margin-top: 2%;
+}
+
+.first-content-first-div-p {
+    font-size: 130%;
+}
+
+.first-content-second-div-p {
+    text-align: center;
+}
+
+.second-content {
+    display: flex;
+    margin-left: 10%;
+    margin-top: 10%;
+    font-weight: bold;
+}
+
+.second-content-div-1 {
+    margin-left: 25%;
+}
+
+.second-content-div-2 {
+    margin-left: 20%;
+}
+
+.second-content-div-3 {
+    margin-left: 26.5%;
+}
+
+.third-content {
+    display: flex;
+    margin-left: 10%;
+    font-weight: bold;
+    margin-top: 3%;
+}
+
+.third-content-first-div-p {
+    font-size: 130%;
+}
+
+.fourth-content-wrap {
+    margin-top: 10%;
+}
+
+.fourth-content {
+    display: flex;
+    margin-left:10%;
+    margin-top: 1%;
+    font-weight: bold;
+}
+
+.fourth-content-div-1 {
+    margin-left: 40%
+}
+
+.fourth-content-div-2 {
+    margin-left: 43.5%
+}
+
+.fourth-content-div-3 {
+    margin-left: 47%
+}
+
+.fourth-content-input {
+    width: 10%;
+}
+
+.line-1 {
+     margin-left: 10%;
+     margin-top: 8%;
+     width: 80%;
+     height: 1px;
+     background-color: #A7A7A7;
+ }
+
+.line-2 {
+    margin-left: 10%;
+    margin-top: 5%;
+    width: 80%;
+    height: 1px;
+    background-color: #A7A7A7;
+}
+
+.fourth-content-span {
+    margin-left: 39%;
+}
+
+.button-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top:5%;
+}
+
+.submit-button {
+    border-radius: 10px;
+    cursor:pointer;
+    background-color: #5DA4EF;
+    color: white;
+    width: 20%;
+    font-size: 150%;
+    border-color: white;
+    font-weight: bold;
+}

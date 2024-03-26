@@ -44,7 +44,7 @@ public class OpenController {
     }
 
     @PostMapping
-    public String insertOpen(@ModelAttribute OpenSaveDTO open, HttpSession session) {
+    public String insertOpenClose(@ModelAttribute OpenSaveDTO open, HttpSession session) {
         User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);
         try {
             open.setOpenMoney(Integer.parseInt(open.getOpenMoneyStr().replaceAll(",", "")));

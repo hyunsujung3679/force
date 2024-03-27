@@ -2,8 +2,6 @@ package com.hsj.force.domain;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 public class Order {
 

@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -17,7 +18,6 @@ import java.util.*;
 public class OrderController {
 
     private final OpenService openService;
-
     private final OrderService orderService;
 
     @GetMapping("/{tableNo}")

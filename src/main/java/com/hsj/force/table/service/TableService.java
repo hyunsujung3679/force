@@ -1,8 +1,8 @@
 package com.hsj.force.table.service;
 
 import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.Table;
+import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.OrderDTO;
 import com.hsj.force.domain.dto.TableDTO;
@@ -10,9 +10,15 @@ import com.hsj.force.domain.dto.TableTotalPriceDTO;
 import com.hsj.force.table.repository.TableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.*;
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class TableService {

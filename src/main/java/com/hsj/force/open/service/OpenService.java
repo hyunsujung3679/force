@@ -1,13 +1,15 @@
 package com.hsj.force.open.service;
 
 import com.hsj.force.common.ComUtils;
-import com.hsj.force.domain.dto.OpenDTO;
-import com.hsj.force.domain.dto.OpenSaveDTO;
+import com.hsj.force.domain.dto.OpenCloseInsertDTO;
 import com.hsj.force.open.repository.OpenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import static com.hsj.force.common.Constants.*;
+import org.springframework.transaction.annotation.Transactional;
 
+import static com.hsj.force.common.Constants.OPEN_CLOSE_NO_PREFIX;
+
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class OpenService {
@@ -18,15 +20,15 @@ public class OpenService {
         return openMapper.selectIsOpen(storeNo);
     }
 
-    public OpenDTO selectOpenInfo(String storeNo) {
+    public OpenCloseInsertDTO selectOpenInfo(String storeNo) {
 
-        OpenDTO open = openMapper.selectOpenInfo(storeNo);
+        OpenCloseInsertDTO open = openMapper.selectOpenInfo(storeNo);
         if(open != null) {
             open.setCloser(open.getCloserId() + " - " + open.getCloserName());
             open.setCloseDate(ComUtils.stringTolocalDateTime(open.getModifyDate()));
             open.setCloseTime(ComUtils.stringTolocalDateTime(open.getModifyDate()));
         } else {
-            open = new OpenDTO();
+            open = new OpenCloseInsertDTO();
         }
 
         int procedure = 1;
@@ -40,9 +42,9 @@ public class OpenService {
         return open;
     }
 
-    public int insertOpen(OpenSaveDTO openSave) {
-        openSave.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(openSave.getStoreNo()), OPEN_CLOSE_NO_PREFIX));
-        openSave.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq(openSave.getStoreNo())));
-        return openMapper.insertOpen(openSave);
+    public int insertOpen(OpenCloseInsertDTO open) {
+        open.setOpenCloseNo(ComUtils.getNextNo(openMapper.selectOpenCloseNo(open.getStoreNo()), OPEN_CLOSE_NO_PREFIX));
+        open.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq(open.getStoreNo())));
+        return openMapper.insertOpen(open);
     }
 }

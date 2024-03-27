@@ -4,7 +4,10 @@ import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.domain.*;
+import com.hsj.force.domain.Category;
+import com.hsj.force.domain.Ingredient;
+import com.hsj.force.domain.IngredientHis;
+import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
@@ -12,12 +15,12 @@ import com.hsj.force.order.repository.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class OrderService {

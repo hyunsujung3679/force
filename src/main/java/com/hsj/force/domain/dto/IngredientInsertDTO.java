@@ -6,5 +6,5 @@ import lombok.Data;
 public class IngredientInsertDTO {
 
     private String ingredientName;
-    private String quantityStr;
+    private Double quantity;
 }

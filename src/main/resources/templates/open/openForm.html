@@ -2,11 +2,28 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
     <link rel="stylesheet" type="text/css" th:href="@{/css/open/open.css}">
-    <script th:inline="javascript" th:src="@{/js/open/open.js}"></script>
+    <script th:inline="javascript">
+
+        $(function() {
+            const openMoney = document.querySelector('#openMoney');
+
+            openMoney.addEventListener('keyup', function(e) {
+                let value = e.target.value;
+                value = Number(value.replaceAll(',', ''));
+                if(isNaN(value)) {         //NaN인지 판별
+                    openMoney.value = 0;
+                }else {                   //NaN이 아닌 경우
+                    const formatValue = value.toLocaleString('ko-KR');
+                    openMoney.value = formatValue;
+                }
+            })
+        })
+
+    </script>
 </head>
 <body>
     <form id="logout" th:action="@{/logout}" method="post"></form>
-    <form id="open" th:action th:object="${openSaveDTO}" method="post">
+    <form id="open" th:action th:object="${open}" method="post">
         <div class="box">
             <div class="title-box">
                 <div class="title" th:text="#{title.open}"></div>
@@ -15,11 +32,11 @@
             <ul class="sub-content">
                 <li>
                     <label th:text="|#{label.close.date} : |"></label>
-                    <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeDate, 'YYYY-MM-dd (E)')}" disabled>
+                    <input type="text" class="input-box" th:field="*{closeDate}" disabled>
                 </li>
                 <li>
                     <label th:text="|#{label.close_time} : |"></label>
-                    <input type="text" class="input-box" th:value="${#temporals.format(openSaveDTO.closeTime, 'YYYY-MM-dd HH:mm')}" disabled>
+                    <input type="text" class="input-box" th:field="*{closeTime}" disabled>
                 </li>
                 <li>
                     <label th:text="|#{label.closer} : |"></label>
@@ -30,16 +47,16 @@
             <ul class="sub-content">
                 <li>
                     <label th:text="|#{label.system.date} : |"></label>
-                    <input type="text" class="input-box-2" th:value="${#temporals.format(openSaveDTO.currentDate, 'YYYY-MM-dd (E)')}" disabled>
+                    <input type="text" class="input-box-2" th:field="*{currentDate}" disabled>
                 </li>
                 <li>
                     <label th:text="|#{label.open.date} : |"></label>
-                    <input type="text" class="input-box-3" th:value="${#temporals.format(openSaveDTO.currentTime, 'YYYY-MM-dd HH:mm')}" disabled>
-                    <input type="text" class="input-box-4" th:value="|${openSaveDTO.procedure}#{label.procedure}|" disabled>
+                    <input type="text" class="input-box-3" th:field="*{currentTime}" disabled>
+                    <input type="text" class="input-box-4" th:value="|${open.procedure}#{label.procedure}|" disabled>
                 </li>
                 <li>
                     <label th:text="|#{label.open.money} : |"></label>
-                    <input type="text" th:field="*{openMoneyStr}" class="input-box-2">
+                    <input type="text" th:field="*{openMoney}" class="input-box-2">
                 </li>
                 <li>
                     <label th:text="|#{label.opener} : |"></label>

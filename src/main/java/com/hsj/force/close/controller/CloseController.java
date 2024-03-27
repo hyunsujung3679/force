@@ -4,7 +4,6 @@ import com.hsj.force.close.service.CloseService;
 import com.hsj.force.common.Constants;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CloseDTO;
-import com.hsj.force.domain.dto.OpenSaveDTO;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/close")

@@ -2,7 +2,6 @@ package com.hsj.force.table.controller;
 
 import com.hsj.force.domain.Table;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.OrderDTO;
 import com.hsj.force.domain.dto.TableDTO;
 import com.hsj.force.open.service.OpenService;
 import com.hsj.force.table.service.TableService;
@@ -10,11 +9,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 @Controller
 @RequestMapping("/table")
 @RequiredArgsConstructor

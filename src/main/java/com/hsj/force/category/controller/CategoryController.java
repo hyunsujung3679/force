@@ -4,8 +4,8 @@ import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
+import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +15,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/category")
@@ -67,7 +71,7 @@ public class CategoryController {
         if(!StringUtils.hasText(category.getCategoryName())) {
             errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(category.getPriorityStr())) {
+        if(category.getPriority() == null) {
             errors.put("priority", messageSource.getMessage("message.input.priority", null, Locale.KOREA));
         }
         if(!errors.isEmpty()) {
@@ -108,7 +112,7 @@ public class CategoryController {
         if(!StringUtils.hasText(category.getCategoryName())) {
             errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(category.getPriorityStr())) {
+        if(category.getPriority() == null) {
             errors.put("priority", messageSource.getMessage("message.input.priority", null, Locale.KOREA));
         }
         if(!errors.isEmpty()) {

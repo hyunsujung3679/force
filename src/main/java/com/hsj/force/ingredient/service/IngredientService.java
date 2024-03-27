@@ -8,16 +8,21 @@ import com.hsj.force.domain.InDeReason;
 import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.IngredientHis;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.IngredientInsertDTO;
+import com.hsj.force.domain.dto.IngredientListDTO;
+import com.hsj.force.domain.dto.IngredientUpdateDTO;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class IngredientService {
@@ -63,7 +68,7 @@ public class IngredientService {
         ingredient.setIngredientNo(nextIngredientNo);
         ingredient.setStoreNo(loginMember.getStoreNo());
         ingredient.setIngredientName(ingredientInsertDTO.getIngredientName());
-        double quantity = Double.parseDouble(ingredientInsertDTO.getQuantityStr().replaceAll(",", ""));
+        double quantity = ingredientInsertDTO.getQuantity();
         ingredient.setQuantity(quantity);
         ingredient.setInsertId(loginMember.getUserId());
         ingredient.setModifyId(loginMember.getUserId());
@@ -110,7 +115,7 @@ public class IngredientService {
         ingredient.setIngredientNo(ingredientUpdateDTO.getIngredientNo());
         ingredient.setStoreNo(loginMember.getStoreNo());
         double quantity = ingredientMapper.selectQuantity(ingredient);
-        ingredient.setQuantity(quantity + Double.parseDouble(ingredientUpdateDTO.getInDeQuantity()));
+        ingredient.setQuantity(quantity + ingredientUpdateDTO.getInDeQuantity());
         ingredient.setModifyId(loginMember.getUserId());
 
         ingredientUpdateResult = ingredientMapper.updateIngredient(ingredient);
@@ -120,7 +125,7 @@ public class IngredientService {
         ingredientHis.setStoreNo(loginMember.getStoreNo());
         String ingredientSeq = ingredientMapper.selectIngredientSeq(ingredientHis);
         ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-        ingredientHis.setInDeQuantity(Double.parseDouble(ingredientUpdateDTO.getInDeQuantity()));
+        ingredientHis.setInDeQuantity(ingredientUpdateDTO.getInDeQuantity());
         ingredientHis.setInDeReasonNo(ingredientUpdateDTO.getInDeReasonNo());
         ingredientHis.setInsertId(loginMember.getUserId());
         ingredientHis.setModifyId(loginMember.getUserId());

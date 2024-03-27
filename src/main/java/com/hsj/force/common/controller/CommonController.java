@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
 @RequestMapping("/common")
@@ -17,8 +17,8 @@ public class CommonController {
 
     private final CommonService commonService;
 
-    @ResponseBody
     @GetMapping("/sale-status")
+    @ResponseBody
     public List<SaleStatus> selectSaleStatusList() {
         return commonService.selectSaleStatusList();
     }

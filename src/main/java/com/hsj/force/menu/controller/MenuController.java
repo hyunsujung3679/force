@@ -1,9 +1,11 @@
 package com.hsj.force.menu.controller;
 
-import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.MenuDTO;
+import com.hsj.force.domain.dto.MenuInsertDTO;
+import com.hsj.force.domain.dto.MenuUpdateDTO;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -180,12 +182,6 @@ public class MenuController {
         List<String> ingredientNoList = new ArrayList<>(Arrays.asList(ingredientNoArr));
         ingredientNoList.removeAll(Arrays.asList("", null));
 
-//        for(int i = 0; i < ingredientNoList.size(); i++) {
-//            if("".equals(ingredientNoList.get(i))) {
-//                ingredientNoList.remove(i);
-//            }
-//        }
-
         int cnt = Collections.frequency(Arrays.asList(ingredientNoArr), "");
         if(cnt == 4) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.ingredientNo", null, Locale.KOREA));
@@ -236,14 +232,14 @@ public class MenuController {
         }
     }
 
-    @ResponseBody
     @GetMapping("/image/{fileName}")
+    @ResponseBody
     public Resource downloadImage(@PathVariable String fileName) throws MalformedURLException {
         return new UrlResource("file:" + fileDir + fileName);
     }
 
-    @ResponseBody
     @GetMapping("/{categoryNo}")
+    @ResponseBody
     public List<MenuDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
         User loginMember = (User) session.getAttribute("loginMember");
         return menuService.selectMenuListByCategoryNo(loginMember.getStoreNo(), categoryNo);

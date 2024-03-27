@@ -17,9 +17,9 @@
                 <div class="field-error" th:if="${errors?.containsKey('ingredientName')}" th:text="${errors['ingredientName']}"></div>
                 <div class="second-div">
                     <label th:text="|#{label.quantity} : |"></label>
-                    <input type="text" class="second-div-input" th:field="*{quantityStr}"/>
+                    <input type="number" class="second-div-input" th:field="*{quantity}"/>
                 </div>
-                <div class="field-error" th:if="${errors?.containsKey('quantityStr')}" th:text="${errors['quantityStr']}"></div>
+                <div class="field-error" th:if="${errors?.containsKey('quantity')}" th:text="${errors['quantity']}"></div>
                 <div class="button-wrap">
                     <button type="submit" class="save-button" th:text="#{button.save}"></button>
                     <button type="button" class="back-button" th:onclick="|location.href='@{/ingredient}'|" th:text="#{button.back}"></button>

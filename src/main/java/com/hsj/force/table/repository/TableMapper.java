@@ -2,7 +2,6 @@ package com.hsj.force.table.repository;
 
 import com.hsj.force.domain.Table;
 import com.hsj.force.domain.dto.OrderDTO;
-import com.hsj.force.domain.dto.TableDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

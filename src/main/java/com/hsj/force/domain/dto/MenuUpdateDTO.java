@@ -2,7 +2,8 @@ package com.hsj.force.domain.dto;
 
 import com.hsj.force.domain.MenuIngredient;
 import lombok.Data;
-import java.util.*;
+
+import java.util.List;
 
 @Data
 public class MenuUpdateDTO {

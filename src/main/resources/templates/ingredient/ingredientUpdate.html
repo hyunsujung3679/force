@@ -18,7 +18,7 @@
                 <div class="field-error" th:if="${errors?.containsKey('ingredientName')}" th:text="${errors['ingredientName']}"></div>
                 <div class="second-div">
                     <label th:text="|#{label.in.de.stock} : |"></label>
-                    <input type="text" class="second-div-input" th:field="*{inDeQuantity}"/>
+                    <input type="number" class="second-div-input" th:field="*{inDeQuantity}"/>
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('inDeQuantity')}" th:text="${errors['inDeQuantity']}"></div>
                 <div class="third-div">

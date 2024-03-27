@@ -148,7 +148,6 @@ section {
 .menu-button-1 {
     background-color: #5DA4EF;
     font-weight: bold;
-    font-family: fantasy;
     color: white;
     cursor:pointer;
     border-color: grey;
@@ -160,7 +159,6 @@ section {
 .menu-button-2 {
     background-color: #5DA4EF;
     font-weight: bold;
-    font-family: fantasy;
     color: white;
     cursor:pointer;
     border-color: grey;

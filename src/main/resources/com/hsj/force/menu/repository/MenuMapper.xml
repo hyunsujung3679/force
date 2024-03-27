@@ -48,7 +48,7 @@
          LIMIT 1
     </select>
 
-    <select id="selectMenuListByMenuForm" resultType="com.hsj.force.domain.dto.MenuDTO">
+    <select id="selectMenuListByMenuForm" resultType="com.hsj.force.domain.dto.MenuListDTO">
         SELECT A.MENU_NO
              , A.MENU_NAME
              , A.SALE_STATUS

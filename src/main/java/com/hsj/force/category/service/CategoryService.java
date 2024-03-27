@@ -6,17 +6,19 @@ import com.hsj.force.common.Constants;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CategoryListDTO;
+import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
@@ -41,7 +43,7 @@ public class CategoryService {
         Category category = new Category();
         category.setStoreNo(loginMember.getStoreNo());
         category.setCategoryName(categoryInsertDTO.getCategoryName());
-        category.setPriority(Integer.parseInt(categoryInsertDTO.getPriorityStr()));
+        category.setPriority(categoryInsertDTO.getPriority());
         category.setUseYn(categoryInsertDTO.getUseYn());
         String categoryNo = categoryMapper.selectCategoryNo(category.getStoreNo());
         category.setCategoryNo(ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX));
@@ -60,7 +62,7 @@ public class CategoryService {
         category.setCategoryNo(categoryUpdateDTO.getCategoryNo());
         category.setCategoryName(categoryUpdateDTO.getCategoryName());
         category.setUseYn(categoryUpdateDTO.getUseYn());
-        category.setPriority(Integer.parseInt(categoryUpdateDTO.getPriorityStr()));
+        category.setPriority(categoryUpdateDTO.getPriority());
         category.setStoreNo(loginMember.getStoreNo());
         category.setModifyId(loginMember.getUserId());
 
@@ -74,7 +76,6 @@ public class CategoryService {
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
         CategoryUpdateDTO categoryUpdateDTO = categoryMapper.selectCategory(loginMember.getStoreNo(), categoryNo);
-        categoryUpdateDTO.setPriorityStr(String.valueOf(categoryUpdateDTO.getPriority()));
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("category", categoryUpdateDTO);

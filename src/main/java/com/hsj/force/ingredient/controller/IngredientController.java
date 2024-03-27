@@ -3,7 +3,9 @@ package com.hsj.force.ingredient.controller;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.IngredientInsertDTO;
+import com.hsj.force.domain.dto.IngredientUpdateDTO;
 import com.hsj.force.ingredient.service.IngredientService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +16,10 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/ingredient")
@@ -66,15 +71,10 @@ public class IngredientController {
         if(!StringUtils.hasText(ingredient.getIngredientName())) {
             errors.put("ingredientName", messageSource.getMessage("message.input.ingredient.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(ingredient.getQuantityStr())) {
-            errors.put("quantityStr", messageSource.getMessage("message.input.quantityStr", null, Locale.KOREA));
-        } else {
-            try {
-                Double.parseDouble(ingredient.getQuantityStr().replaceAll(",", ""));
-            } catch (NumberFormatException e) {
-                errors.put("quantityStr", messageSource.getMessage("message.rewrite", null, Locale.KOREA));
-            }
+        if(ingredient.getQuantity() == null) {
+            errors.put("quantity", messageSource.getMessage("message.input.quantity", null, Locale.KOREA));
         }
+
         if(!errors.isEmpty()) {
             model.addAttribute("header", commonLayoutDTO);
             model.addAttribute("ingredient", new IngredientInsertDTO());
@@ -114,14 +114,8 @@ public class IngredientController {
         if(!StringUtils.hasText(ingredient.getIngredientName())) {
             errors.put("ingredientName", messageSource.getMessage("message.input.ingredient.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(ingredient.getInDeQuantity())) {
+        if(ingredient.getInDeQuantity() == null) {
             errors.put("inDeQuantity", messageSource.getMessage("message.input.in.de.quantity", null, Locale.KOREA));
-        } else {
-            try {
-                Double.parseDouble(ingredient.getInDeQuantity().replaceAll(",", ""));
-            } catch (NumberFormatException e) {
-                errors.put("inDeQuantity", messageSource.getMessage("message.rewrite", null, Locale.KOREA));
-            }
         }
         if(!StringUtils.hasText(ingredient.getInDeReasonNo())) {
             errors.put("inDeReasonNo", messageSource.getMessage("message.input.in.de.reason", null, Locale.KOREA));
@@ -137,8 +131,8 @@ public class IngredientController {
         return "redirect:/ingredient";
     }
 
-    @ResponseBody
     @GetMapping("/list")
+    @ResponseBody
     public List<Ingredient> selectIngredientList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return ingredientService.selectIngredientList(loginMember.getStoreNo());

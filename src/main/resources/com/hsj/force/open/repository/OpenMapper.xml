@@ -10,7 +10,7 @@
            AND STORE_NO = #{storeNo}
     </select>
 
-   <select id="selectOpenInfo" resultType="com.hsj.force.domain.dto.OpenDTO">
+   <select id="selectOpenInfo" resultType="com.hsj.force.domain.dto.OpenCloseInsertDTO">
        SELECT B.USER_ID AS CLOSER_ID
             , B.USER_NAME AS CLOSER_NAME
             , A.MODIFY_DATE

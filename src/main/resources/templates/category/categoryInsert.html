@@ -24,7 +24,7 @@
                 </div>
                 <div class="third-div">
                     <label th:text="|#{label.priority} : |"></label>
-                    <input type="number" min="1" class="third-div-input" th:field="*{priorityStr}"/>
+                    <input type="number" min="1" class="third-div-input" th:field="*{priority}"/>
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('priority')}" th:text="${errors['priority']}"></div>
                 <div class="button-wrap">

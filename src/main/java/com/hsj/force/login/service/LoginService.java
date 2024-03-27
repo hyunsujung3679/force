@@ -5,7 +5,9 @@ import com.hsj.force.domain.dto.UserDTO;
 import com.hsj.force.login.repository.LoginMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class LoginService {

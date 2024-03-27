@@ -41,7 +41,6 @@ body {
 .main-title {
     font-weight: bold;
     font-size: 100%;
-    font-family: fantasy;
 }
 
 .header-content {
@@ -52,7 +51,6 @@ body {
 }
 
 .content {
-    font-family: fantasy;
     color: white;
 }
 
@@ -60,7 +58,6 @@ body {
     background-color: #757575;
     font-weight: bold;
     font-size: 100%;
-    font-family: fantasy;
     color: white;
     cursor:pointer;
     border-color: #ABA8A8;
@@ -70,7 +67,6 @@ body {
     background-color: #757575;
     font-weight: bold;
     font-size: 100%;
-    font-family: fantasy;
     color: white;
     cursor:pointer;
     border-color: #ABA8A8;
@@ -101,7 +97,6 @@ body {
     background-color: #F2EDFF;
     font-weight: bold;
     font-size: 140%;
-    font-family: fantasy;
     cursor:pointer;
     border-color: white;
     margin-top:15%;

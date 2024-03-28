@@ -35,7 +35,7 @@ public class OrderService {
     public OrderDTO selectOrderInfo(User loginMember, String tableNo) {
 
         List<Category> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
-        List<MenuDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
+        List<MenuListDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
         List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
         List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(loginMember.getStoreNo());
 
@@ -71,7 +71,7 @@ public class OrderService {
         orderTotal.setTotalSalePrice(totalSalePrice);
 
         boolean isEnoughStock;
-        for(MenuDTO menu : menuList) {
+        for(MenuListDTO menu : menuList) {
             isEnoughStock = true;
             for(MenuIngredientDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {

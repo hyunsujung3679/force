@@ -3,7 +3,7 @@ package com.hsj.force.close.controller;
 import com.hsj.force.close.service.CloseService;
 import com.hsj.force.common.Constants;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CloseDTO;
+import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class CloseController {
             return "redirect:/open";
         }
 
-        CloseDTO close = closeService.selectCloseInfo(loginMember);
+        OpenCloseUpdateDTO close = closeService.selectCloseInfo(loginMember);
 
         model.addAttribute("close", close);
 
@@ -38,34 +38,34 @@ public class CloseController {
     }
 
     @PostMapping
-    public String updateOpenClose(@ModelAttribute CloseDTO close, HttpSession session) {
+    public String updateOpenClose(@ModelAttribute OpenCloseUpdateDTO close, HttpSession session) {
 
-        if("".equals(close.getOneHunThousStr())) {
-            close.setOneHunThousStr("0");
+        if(close.getOneHunThous() == null) {
+            close.setOneHunThous(0);
         }
-        if("".equals(close.getFiftyThousStr())) {
-            close.setFiftyThousStr("0");
+        if(close.getFiftyThous() == null) {
+            close.setFiftyThous(0);
         }
-        if("".equals(close.getTenThousStr())) {
-            close.setTenThousStr("0");
+        if(close.getTenThous() == null) {
+            close.setTenThous(0);
         }
-        if("".equals(close.getFiveThousStr())) {
-            close.setFiveThousStr("0");
+        if(close.getFiveThous() == null) {
+            close.setFiveThous(0);
         }
-        if("".equals(close.getOneThousStr())) {
-            close.setOneThousStr("0");
+        if(close.getOneThous() == null) {
+            close.setOneThous(0);
         }
-        if("".equals(close.getFiveHunStr())) {
-            close.setFiveHunStr("0");
+        if(close.getFiveHun() == null) {
+            close.setFiveHun(0);
         }
-        if("".equals(close.getOneHunStr())) {
-            close.setOneHunStr("0");
+        if(close.getOneHun() == null) {
+            close.setOneHun(0);
         }
-        if("".equals(close.getFiftyStr())) {
-            close.setFiftyStr("0");
+        if(close.getFifty() == null) {
+            close.setFifty(0);
         }
-        if("".equals(close.getTenStr())) {
-            close.setTenStr("0");
+        if(close.getTen() == null) {
+            close.setTen(0);
         }
 
         User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);

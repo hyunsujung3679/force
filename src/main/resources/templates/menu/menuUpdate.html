@@ -116,7 +116,7 @@
                 }
             });
 
-            const salePrice = document.querySelector('#salePriceStr');
+            const salePrice = document.querySelector('#salePrice');
             salePrice.addEventListener('keyup', function(e) {
                 let value = e.target.value;
                 value = Number(value.replaceAll(',', ''));
@@ -153,32 +153,31 @@
                         </div>
                         <div class="fourth-div">
                             <label th:text="|#{label.sale.price-2} : |"></label>
-                            <input type="text" class="fourth-div-input" th:field="*{salePriceStr}"/>
+                            <input type="text" class="fourth-div-input" th:field="*{salePrice}"/>
                         </div>
-                        <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
                         <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
                         <div class="fifth-div">
                             <label th:text="|#{label.ingredient} : |"></label>
                             <select class="fifth-div-select" name="ingredientNo1" th:value="${ingredientQuantityList[0].ingredientNo}"></select>
-                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr1" th:value="${ingredientQuantityList[0].quantity == 0.0 ? null : ingredientQuantityList[0].quantity}"/>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantity1" th:value="${ingredientQuantityList[0].quantity == 0.0 ? null : ingredientQuantityList[0].quantity}"/>
                             <label class="fifth-div-label" th:text="#{label.number}"></label>
                         </div>
                         <div class="fifth-div">
                             <label th:text="|#{label.ingredient} : |"></label>
                             <select class="fifth-div-select" name="ingredientNo2" th:value="${ingredientQuantityList[1].ingredientNo}"></select>
-                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr2" th:value="${ingredientQuantityList[1].quantity == 0.0 ? null : ingredientQuantityList[1].quantity}"/>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantity2" th:value="${ingredientQuantityList[1].quantity == 0.0 ? null : ingredientQuantityList[1].quantity}"/>
                             <label class="fifth-div-label" th:text="#{label.number}"></label>
                         </div>
                         <div class="fifth-div">
                             <label th:text="|#{label.ingredient} : |"></label>
                             <select class="fifth-div-select" name="ingredientNo3" th:value="${ingredientQuantityList[2].ingredientNo}"></select>
-                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr3" th:value="${ingredientQuantityList[2].quantity == 0.0 ? null : ingredientQuantityList[2].quantity}"/>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantity3" th:value="${ingredientQuantityList[2].quantity == 0.0 ? null : ingredientQuantityList[2].quantity}"/>
                             <label class="fifth-div-label" th:text="#{label.number}"></label>
                         </div>
                         <div class="fifth-div">
                             <label th:text="|#{label.ingredient} : |"></label>
                             <select class="fifth-div-select" name="ingredientNo4" th:value="${ingredientQuantityList[3].ingredientNo}"></select>
-                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantityStr4" th:value="${ingredientQuantityList[3].quantity == 0.0 ? null : ingredientQuantityList[3].quantity}"/>
+                            <input type="number" min="0.1" step="0.1" class="fifth-div-input" name="quantity4" th:value="${ingredientQuantityList[3].quantity == 0.0 ? null : ingredientQuantityList[3].quantity}"/>
                             <label class="fifth-div-label" th:text="#{label.number}"></label>
                         </div>
                         <div class="field-error" th:if="${errors?.containsKey('ingredientNo')}" th:text="${errors['ingredientNo']}"></div>

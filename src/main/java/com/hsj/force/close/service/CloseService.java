@@ -2,7 +2,7 @@ package com.hsj.force.close.service;
 
 import com.hsj.force.close.repository.CloseMapper;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CloseDTO;
+import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,14 +16,14 @@ public class CloseService {
 
     private final CloseMapper closeMapper;
 
-    public CloseDTO selectCloseInfo(User loginMember) {
+    public OpenCloseUpdateDTO selectCloseInfo(User loginMember) {
 
-        CloseDTO close = new CloseDTO();
+        OpenCloseUpdateDTO close = new OpenCloseUpdateDTO();
 
-        CloseDTO sumInfo = closeMapper.selectSumInfo(loginMember.getStoreNo());
-        CloseDTO cancelInfo = closeMapper.selectCancelInfo(loginMember.getStoreNo());
+        OpenCloseUpdateDTO sumInfo = closeMapper.selectSumInfo(loginMember.getStoreNo());
+        OpenCloseUpdateDTO cancelInfo = closeMapper.selectCancelInfo(loginMember.getStoreNo());
         Integer discountPrice = closeMapper.selectDiscountPrice(loginMember.getStoreNo());
-        CloseDTO realOrderInfo = closeMapper.selectRealOrderInfo(loginMember.getStoreNo());
+        OpenCloseUpdateDTO realOrderInfo = closeMapper.selectRealOrderInfo(loginMember.getStoreNo());
 
         close.setSumSalePrice(sumInfo.getSumSalePrice() == null ? 0 : sumInfo.getSumSalePrice());
         close.setSumOrderCnt(sumInfo.getSumOrderCnt());
@@ -37,17 +37,17 @@ public class CloseService {
         return close;
     }
 
-    public int updateOpenClose(CloseDTO close) {
+    public int updateOpenClose(OpenCloseUpdateDTO close) {
 
-        int oneHunThous = Integer.parseInt(close.getOneHunThousStr()) * 100000;
-        int fiftyThous = Integer.parseInt(close.getFiftyThousStr()) * 50000;
-        int tenThous = Integer.parseInt(close.getTenThousStr()) * 10000;
-        int fiveThous = Integer.parseInt(close.getFiveThousStr()) * 5000;
-        int oneThous = Integer.parseInt(close.getOneThousStr()) * 1000;
-        int fiveHun = Integer.parseInt(close.getFiveHunStr()) * 500;
-        int oneHun = Integer.parseInt(close.getOneHunStr()) * 100;
-        int fifty = Integer.parseInt(close.getFiftyStr()) * 50;
-        int ten = Integer.parseInt(close.getTenStr()) * 10;
+        int oneHunThous = close.getOneHunThous() * 100000;
+        int fiftyThous = close.getFiftyThous() * 50000;
+        int tenThous = close.getTenThous() * 10000;
+        int fiveThous = close.getFiveThous() * 5000;
+        int oneThous = close.getOneThous() * 1000;
+        int fiveHun = close.getFiveHun() * 500;
+        int oneHun = close.getOneHun() * 100;
+        int fifty = close.getFifty() * 50;
+        int ten = close.getTen() * 10;
         int closeMoney = oneHunThous + fiftyThous + tenThous + fiveThous + oneThous + fiveHun + oneHun + fifty + ten;
         close.setCloseMoney(closeMoney);
 

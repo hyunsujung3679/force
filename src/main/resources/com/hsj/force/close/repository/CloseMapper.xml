@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.close.repository.CloseMapper">
 
-    <select id="selectSumInfo" resultType="com.hsj.force.domain.dto.CloseDTO">
+    <select id="selectSumInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
         SELECT SUM(O.SALE_PRICE) AS SUM_SALE_PRICE
              , COUNT(*) AS SUM_ORDER_CNT
         FROM TORDER O
@@ -13,7 +13,7 @@
           AND O.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectCancelInfo" resultType="com.hsj.force.domain.dto.CloseDTO">
+    <select id="selectCancelInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
         SELECT SUM(O.TOTAL_SALE_PRICE) AS SUM_CANCEL_PRICE
              , COUNT(*) AS SUM_CANCEL_CNT
         FROM TORDER O
@@ -34,7 +34,7 @@
           AND O.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectRealOrderInfo" resultType="com.hsj.force.domain.dto.CloseDTO">
+    <select id="selectRealOrderInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
         SELECT COUNT(*) AS REAL_ORDER_CNT
              , SUM(O.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
         FROM TORDER O
@@ -47,15 +47,15 @@
 
     <update id="updateOpenClose">
         UPDATE TOPENCLOSE
-        SET ONE_HUN_THOUS= #{oneHunThousStr}
-          , FIFTY_THOUS = #{fiftyThousStr}
-          , TEN_THOUS = #{tenThousStr}
-          , FIVE_THOUS = #{fiveThousStr}
-          , ONE_THOUS = #{oneThousStr}
-          , FIVE_HUN = #{fiveHunStr}
-          , ONE_HUN = #{oneHunStr}
-          , FIFTY = #{fiftyStr}
-          , TEN = #{tenStr}
+        SET ONE_HUN_THOUS= #{oneHunThous}
+          , FIFTY_THOUS = #{fiftyThous}
+          , TEN_THOUS = #{tenThous}
+          , FIVE_THOUS = #{fiveThous}
+          , ONE_THOUS = #{oneThous}
+          , FIVE_HUN = #{fiveHun}
+          , ONE_HUN = #{oneHun}
+          , FIFTY = #{fifty}
+          , TEN = #{ten}
           , CLOSE_MONEY = #{closeMoney}
           , MODIFY_ID = #{modifyId}
           , MODIFY_DATE = NOW()

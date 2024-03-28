@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface MenuMapper {
 
-    List<MenuDTO> selectMenuList(String storeNo);
+    List<MenuListDTO> selectMenuList(String storeNo);
 
     MenuDTO selectMenu(String menuNo, String storeNo);
 

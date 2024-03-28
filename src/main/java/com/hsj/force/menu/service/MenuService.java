@@ -1,6 +1,5 @@
 package com.hsj.force.menu.service;
 
-import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
@@ -29,18 +28,18 @@ public class MenuService {
     private final MenuMapper menuMapper;
     private final IngredientMapper ingredientMapper;
 
-    public List<MenuDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
-        List<MenuDTO> menuList = menuMapper.selectMenuList(storeNo);
+    public List<MenuListDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
+        List<MenuListDTO> menuList = menuMapper.selectMenuList(storeNo);
         List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
-        List<MenuDTO> menuListByCategoryNo = new ArrayList<>();
-        for(MenuDTO menu : menuList) {
+        List<MenuListDTO> menuListByCategoryNo = new ArrayList<>();
+        for(MenuListDTO menu : menuList) {
             if(categoryNo.equals(menu.getCategoryNo())) {
                 menuListByCategoryNo.add(menu);
             }
         }
 
         boolean isEnoughStock;
-        for(MenuDTO menu : menuListByCategoryNo) {
+        for(MenuListDTO menu : menuListByCategoryNo) {
             isEnoughStock = true;
             for(MenuIngredientDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
@@ -126,14 +125,28 @@ public class MenuService {
                 .filter(a -> !"".equals(a))
                 .toArray(String[]::new);
 
-        String quantity1 = menuInsertDTO.getQuantityStr1();
-        String quantity2 = menuInsertDTO.getQuantityStr2();
-        String quantity3 = menuInsertDTO.getQuantityStr3();
-        String quantity4 = menuInsertDTO.getQuantityStr4();
-        String[] quantityArr = new String[] {quantity1, quantity2, quantity3, quantity4};
+        double quantity1 = 0;
+        double quantity2 = 0;
+        double quantity3 = 0;
+        double quantity4 = 0;
+
+        if(menuInsertDTO.getQuantity1() != null) {
+            quantity1 = menuInsertDTO.getQuantity1();
+        }
+        if(menuInsertDTO.getQuantity2() != null) {
+            quantity2 = menuInsertDTO.getQuantity2();
+        }
+        if(menuInsertDTO.getQuantity3() != null) {
+            quantity3 = menuInsertDTO.getQuantity3();
+        }
+        if(menuInsertDTO.getQuantity4() != null) {
+            quantity4 = menuInsertDTO.getQuantity4();
+        }
+
+        double[] quantityArr = new double[] {quantity1, quantity2, quantity3, quantity4};
         quantityArr = Arrays.stream(quantityArr)
-                .filter(a -> !"".equals(a))
-                .toArray(String[]::new);
+                .filter(a -> a != 0)
+                .toArray();
 
         MenuIngredient menuIngredient = null;
         for(int i = 0; i < ingredientNoArr.length; i++) {
@@ -143,7 +156,7 @@ public class MenuService {
                     menuIngredient.setMenuNo(nextMenuNo);
                     menuIngredient.setIngredientNo(ingredientNoArr[i]);
                     menuIngredient.setStoreNo(loginMember.getStoreNo());
-                    menuIngredient.setQuantity(Double.parseDouble(quantityArr[i]));
+                    menuIngredient.setQuantity(quantityArr[i]);
                     menuIngredient.setInsertId(loginMember.getUserId());
                     menuIngredient.setModifyId(loginMember.getUserId());
                     menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
@@ -151,11 +164,10 @@ public class MenuService {
             }
         }
 
-        int salePrice = Integer.parseInt(menuInsertDTO.getSalePriceStr().replaceAll(",", ""));
         MenuPrice menuPrice = new MenuPrice();
         menuPrice.setMenuNo(nextMenuNo);
         menuPrice.setMenuSeq("001");
-        menuPrice.setSalePrice(salePrice);
+        menuPrice.setSalePrice(menuInsertDTO.getSalePrice());
         menuPrice.setInsertId(loginMember.getUserId());
         menuPrice.setModifyId(loginMember.getUserId());
         menuPriceSaveResult = menuMapper.insertMenuPrice(menuPrice);
@@ -182,11 +194,21 @@ public class MenuService {
         menuUpdateDTO.setMenuName(menuDTO.getMenuName());
         menuUpdateDTO.setSaleStatusNo(menuDTO.getSaleStatusNo());
         menuUpdateDTO.setCategoryNo(menuDTO.getCategoryNo());
-        menuUpdateDTO.setSalePriceStr(String.valueOf(menuDTO.getSalePrice()));
+        menuUpdateDTO.setSalePrice(menuDTO.getSalePrice());
         menuUpdateDTO.setImageSaveName(menuDTO.getImageSaveName());
         menuUpdateDTO.setIngredientQuantityList(menuIngredientList);
 
         MenuIngredient menuIngredient = null;
+
+        if(menuIngredientList.size() == 0) {
+            for(int i = 0; i < 4; i++) {
+                menuIngredient = new MenuIngredient();
+                menuIngredient.setIngredientNo("");
+                menuIngredient.setQuantity(0.0);
+                menuIngredientList.add(menuIngredient);
+            }
+        }
+
         if(menuIngredientList.size() == 1) {
             for(int i = 1; i < 4; i++) {
                 menuIngredient = new MenuIngredient();
@@ -254,14 +276,28 @@ public class MenuService {
                 .filter(a -> !"".equals(a))
                 .toArray(String[]::new);
 
-        String quantity1 = menuUpdateDTO.getQuantityStr1();
-        String quantity2 = menuUpdateDTO.getQuantityStr2();
-        String quantity3 = menuUpdateDTO.getQuantityStr3();
-        String quantity4 = menuUpdateDTO.getQuantityStr4();
-        String[] quantityArr = new String[] {quantity1, quantity2, quantity3, quantity4};
+        double quantity1 = 0;
+        double quantity2 = 0;
+        double quantity3 = 0;
+        double quantity4 = 0;
+
+        if(menuUpdateDTO.getQuantity1() != null) {
+            quantity1 = menuUpdateDTO.getQuantity1();
+        }
+        if(menuUpdateDTO.getQuantity2() != null) {
+            quantity2 = menuUpdateDTO.getQuantity2();
+        }
+        if(menuUpdateDTO.getQuantity3() != null) {
+            quantity3 = menuUpdateDTO.getQuantity3();
+        }
+        if(menuUpdateDTO.getQuantity4() != null) {
+            quantity4 = menuUpdateDTO.getQuantity4();
+        }
+
+        double[] quantityArr = new double[] {quantity1, quantity2, quantity3, quantity4};
         quantityArr = Arrays.stream(quantityArr)
-                .filter(a -> !"".equals(a))
-                .toArray(String[]::new);
+                .filter(a -> a != 0)
+                .toArray();
 
         menuIngredientDeleteResult = menuMapper.deleteMenuIngredient(menuUpdateDTO);
         if(menuIngredientDeleteResult > 0) {
@@ -273,7 +309,7 @@ public class MenuService {
                         menuIngredient.setMenuNo(menuUpdateDTO.getMenuNo());
                         menuIngredient.setIngredientNo(ingredientNoArr[i]);
                         menuIngredient.setStoreNo(loginMember.getStoreNo());
-                        menuIngredient.setQuantity(Double.parseDouble(quantityArr[i]));
+                        menuIngredient.setQuantity(quantityArr[i]);
                         menuIngredient.setInsertId(loginMember.getUserId());
                         menuIngredient.setModifyId(loginMember.getUserId());
                         menuIngredientSaveResult += menuMapper.insertMenuIngredient(menuIngredient);
@@ -283,7 +319,7 @@ public class MenuService {
         }
 
         int salePrice = menuMapper.selectSalePrice(menuUpdateDTO);
-        int nextSalePrice = Integer.parseInt(menuUpdateDTO.getSalePriceStr().replaceAll(",", ""));
+        int nextSalePrice = menuUpdateDTO.getSalePrice();
         if(salePrice != nextSalePrice) {
             MenuPrice menuPrice = new MenuPrice();
             menuPrice.setMenuNo(menuUpdateDTO.getMenuNo());

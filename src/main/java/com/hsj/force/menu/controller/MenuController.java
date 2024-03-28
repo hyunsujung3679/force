@@ -3,8 +3,8 @@ package com.hsj.force.menu.controller;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.MenuDTO;
 import com.hsj.force.domain.dto.MenuInsertDTO;
+import com.hsj.force.domain.dto.MenuListDTO;
 import com.hsj.force.domain.dto.MenuUpdateDTO;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;
@@ -78,27 +78,24 @@ public class MenuController {
         if(!StringUtils.hasText(menu.getMenuName())) {
             errors.put("menuName", messageSource.getMessage("message.input.menu.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(menu.getSalePriceStr())) {
+        if(menu.getSalePrice() == null) {
             errors.put("salePrice", messageSource.getMessage("message.input.sale.price", null, Locale.KOREA));
-        } else {
-            try {
-                Integer.parseInt(menu.getSalePriceStr().replaceAll(",", ""));
-            } catch (NumberFormatException e) {
-                errors.put("salePriceStr", messageSource.getMessage("message.input.price.number", null, Locale.KOREA));
-            }
         }
-        String[] ingredientNoArr = new String[]{menu.getIngredientNo1(), menu.getIngredientNo2(), menu.getIngredientNo3(), menu.getIngredientNo4()};
-        List<String> ingredientNoList = Arrays.asList(ingredientNoArr);
-        int cnt = Collections.frequency(Arrays.asList(ingredientNoArr), "");
-        if(cnt == 4) {
-            errors.put("ingredientNo", messageSource.getMessage("message.input.ingredientNo", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo1()) && "".equals(menu.getQuantityStr1())) {
+
+        List<String> ingredientNoList = new ArrayList<>();
+        ingredientNoList.add(menu.getIngredientNo1());
+        ingredientNoList.add(menu.getIngredientNo2());
+        ingredientNoList.add(menu.getIngredientNo3());
+        ingredientNoList.add(menu.getIngredientNo4());
+        ingredientNoList.removeAll(List.of(""));
+
+        if(!"".equals(menu.getIngredientNo1()) && menu.getQuantity1() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity1", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo2()) && "".equals(menu.getQuantityStr2())) {
+        } else if(!"".equals(menu.getIngredientNo2()) && menu.getQuantity2() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity2", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo3()) && "".equals(menu.getQuantityStr3())) {
+        } else if(!"".equals(menu.getIngredientNo3()) && menu.getQuantity3() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity3", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo4()) && "".equals(menu.getQuantityStr4())) {
+        } else if(!"".equals(menu.getIngredientNo4()) && menu.getQuantity4() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity4", null, Locale.KOREA));
         } else if(ingredientNoList.size() != ingredientNoList.stream().distinct().count()) {
             errors.put("ingredientNo", messageSource.getMessage("message.no.input.same.ingredient.no", null, Locale.KOREA));
@@ -169,29 +166,24 @@ public class MenuController {
         if(!StringUtils.hasText(menu.getMenuName())) {
             errors.put("menuName", messageSource.getMessage("message.input.menu.name", null, Locale.KOREA));
         }
-        if(!StringUtils.hasText(menu.getSalePriceStr())) {
+        if(menu.getSalePrice() == null) {
             errors.put("salePrice", messageSource.getMessage("message.input.sale.price", null, Locale.KOREA));
-        } else {
-            try {
-                Integer.parseInt(menu.getSalePriceStr().replaceAll(",", ""));
-            } catch (NumberFormatException e) {
-                errors.put("salePriceStr", messageSource.getMessage("message.input.price.number", null, Locale.KOREA));
-            }
         }
-        String[] ingredientNoArr = new String[]{menu.getIngredientNo1(), menu.getIngredientNo2(), menu.getIngredientNo3(), menu.getIngredientNo4()};
-        List<String> ingredientNoList = new ArrayList<>(Arrays.asList(ingredientNoArr));
-        ingredientNoList.removeAll(Arrays.asList("", null));
 
-        int cnt = Collections.frequency(Arrays.asList(ingredientNoArr), "");
-        if(cnt == 4) {
-            errors.put("ingredientNo", messageSource.getMessage("message.input.ingredientNo", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo1()) && "".equals(menu.getQuantityStr1())) {
+        List<String> ingredientNoList = new ArrayList<>();
+        ingredientNoList.add(menu.getIngredientNo1());
+        ingredientNoList.add(menu.getIngredientNo2());
+        ingredientNoList.add(menu.getIngredientNo3());
+        ingredientNoList.add(menu.getIngredientNo4());
+        ingredientNoList.removeAll(List.of(""));
+
+        if(!"".equals(menu.getIngredientNo1()) && menu.getQuantity1() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity1", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo2()) && "".equals(menu.getQuantityStr2())) {
+        } else if(!"".equals(menu.getIngredientNo2()) && menu.getQuantity2() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity2", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo3()) && "".equals(menu.getQuantityStr3())) {
+        } else if(!"".equals(menu.getIngredientNo3()) && menu.getQuantity3() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity3", null, Locale.KOREA));
-        } else if(!"".equals(menu.getIngredientNo4()) && "".equals(menu.getQuantityStr4())) {
+        } else if(!"".equals(menu.getIngredientNo4()) && menu.getQuantity4() == null) {
             errors.put("ingredientNo", messageSource.getMessage("message.input.quantity4", null, Locale.KOREA));
         } else if(ingredientNoList.size() != ingredientNoList.stream().distinct().count()) {
             errors.put("ingredientNo", messageSource.getMessage("message.no.input.same.ingredient.no", null, Locale.KOREA));
@@ -240,7 +232,7 @@ public class MenuController {
 
     @GetMapping("/{categoryNo}")
     @ResponseBody
-    public List<MenuDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
+    public List<MenuListDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
         User loginMember = (User) session.getAttribute("loginMember");
         return menuService.selectMenuListByCategoryNo(loginMember.getStoreNo(), categoryNo);
     }

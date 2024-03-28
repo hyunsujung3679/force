@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class CloseDTO {
+public class OpenCloseUpdateDTO {
 
     private Integer sumSalePrice;
     private int sumOrderCnt;
@@ -16,15 +16,15 @@ public class CloseDTO {
     private Integer totalSalePrice;
     private LocalDateTime currentDate;
 
-    private String oneHunThousStr;
-    private String fiftyThousStr;
-    private String tenThousStr;
-    private String fiveThousStr;
-    private String oneThousStr;
-    private String fiveHunStr;
-    private String oneHunStr;
-    private String fiftyStr;
-    private String tenStr;
+    private Integer oneHunThous;
+    private Integer fiftyThous;
+    private Integer tenThous;
+    private Integer fiveThous;
+    private Integer oneThous;
+    private Integer fiveHun;
+    private Integer oneHun;
+    private Integer fifty;
+    private Integer ten;
     private int closeMoney;
 
     private String storeNo;

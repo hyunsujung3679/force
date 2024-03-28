@@ -65,7 +65,7 @@
                 }
             });
 
-            const salePrice = document.querySelector('#salePriceStr');
+            const salePrice = document.querySelector('#salePrice');
             salePrice.addEventListener('keyup', function(e) {
                 let value = e.target.value;
                 value = Number(value.replaceAll(',', ''));
@@ -100,32 +100,31 @@
                 </div>
                 <div class="fourth-div">
                     <label th:text="|#{label.sale.price-2} : |"></label>
-                    <input type="text" class="fourth-div-input" th:field="*{salePriceStr}"/>
+                    <input type="text" class="fourth-div-input" th:field="*{salePrice}"/>
                 </div>
-                <div class="field-error" th:if="${errors?.containsKey('salePriceStr')}" th:text="${errors['salePriceStr']}"></div>
                 <div class="field-error" th:if="${errors?.containsKey('salePrice')}" th:text="${errors['salePrice']}"></div>
                 <div class="fifth-div">
                     <label th:text="|#{label.ingredient} : |"></label>
                     <select class="fifth-div-select" th:field="*{ingredientNo1}"></select>
-                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr1}"/>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantity1}"/>
                     <label class="fifth-div-label" th:text="#{label.number}"></label>
                 </div>
                 <div class="fifth-div">
                     <label th:text="|#{label.ingredient} : |"></label>
                     <select class="fifth-div-select" th:field="*{ingredientNo2}"></select>
-                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr2}"/>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantity2}"/>
                     <label class="fifth-div-label" th:text="#{label.number}"></label>
                 </div>
                 <div class="fifth-div">
                     <label th:text="|#{label.ingredient} : |"></label>
                     <select class="fifth-div-select" th:field="*{ingredientNo3}"></select>
-                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr3}"/>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantity3}"/>
                     <label class="fifth-div-label" th:text="#{label.number}"></label>
                 </div>
                 <div class="fifth-div">
                     <label th:text="|#{label.ingredient} : |"></label>
                     <select class="fifth-div-select" th:field="*{ingredientNo4}"></select>
-                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantityStr4}"/>
+                    <input type="number" min="0.1" step="0.1" class="fifth-div-input" th:field="*{quantity4}"/>
                     <label class="fifth-div-label" th:text="#{label.number}"></label>
                 </div>
                 <div class="field-error" th:if="${errors?.containsKey('ingredientNo')}" th:text="${errors['ingredientNo']}"></div>

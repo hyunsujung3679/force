@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.table.repository.TableMapper">
 
-    <select id="selectTableList" resultType="Table">
+    <select id="selectTableList" resultType="com.hsj.force.domain.dto.TableListDTO">
         SELECT T.TABLE_NO
              , T.TABLE_NAME
           FROM TTABLE T
@@ -11,7 +11,7 @@
          ORDER BY T.TABLE_NO ASC
     </select>
 
-    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
+    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderListDTO">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
              , O.STORE_NO
@@ -30,7 +30,7 @@
            AND O.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectTableExistOrderList" resultType="table">
+    <select id="selectTableExistOrderList" resultType="com.hsj.force.domain.dto.TableListDTO">
         SELECT DISTINCT(T.TABLE_NO)
              , T.TABLE_NAME
           FROM TTABLE T
@@ -41,7 +41,7 @@
          ORDER BY T.TABLE_NO ASC
     </select>
 
-    <select id="selectTableNotExistOrderList" resultType="table">
+    <select id="selectTableNotExistOrderList" resultType="com.hsj.force.domain.dto.TableListDTO">
         SELECT T.TABLE_NO
              , T.TABLE_NAME
           FROM TTABLE T

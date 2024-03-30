@@ -30,6 +30,28 @@
          WHERE RN = 1
     </select>
 
+    <select id="selectMenuListV2" resultType="com.hsj.force.domain.dto.MenuListDTO">
+        SELECT A.MENU_NO
+             , A.MENU_NAME
+             , A.CATEGORY_NO
+             , A.SALE_PRICE
+        FROM (SELECT RANK() OVER(PARTITION BY MP.MENU_NO ORDER BY MP.MENU_SEQ DESC, M.MENU_NO ASC) AS RN
+                     , M.MENU_NO
+                   , M.MENU_NAME
+                   , M.CATEGORY_NO
+                   , MP.SALE_PRICE
+              FROM TMENU M
+                 , TCATEGORY C
+                 , TMENUPRICE MP
+              WHERE M.CATEGORY_NO = C.CATEGORY_NO
+                AND M.MENU_NO = MP.MENU_NO
+                AND M.SALE_STATUS_NO = 'SS001'
+                AND C.STORE_NO = #{storeNo}
+                AND C.CATEGORY_NO = #{categoryNo}
+            AND C.USE_YN = '1') A
+        WHERE RN = 1
+    </select>
+
     <select id="selectMenu" resultType="com.hsj.force.domain.dto.MenuDTO">
         SELECT M.MENU_NO
              , M.MENU_NAME
@@ -72,7 +94,7 @@
         WHERE RN = 1
     </select>
 
-    <select id="selectMenuIngredientList" resultType="com.hsj.force.domain.dto.MenuIngredientDTO">
+    <select id="selectMenuIngredientList" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
         SELECT MI.MENU_NO
              , MI.INGREDIENT_NO
              , MI.QUANTITY AS NEED_QUANTITY
@@ -84,7 +106,7 @@
            AND MI.STORE_NO = #{storeNo}
     </select>
 
-    <select id="selectMenuIngredientListByMenuNo" resultType="com.hsj.force.domain.dto.MenuIngredientDTO">
+    <select id="selectMenuIngredientListByMenuNo" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
         SELECT MI.MENU_NO
              , MI.INGREDIENT_NO
              , MI.QUANTITY AS NEED_QUANTITY
@@ -191,7 +213,7 @@
         )
     </insert>
 
-    <select id="selectMenuIngredientListByMenuNoV2" resultType="MenuIngredient">
+    <select id="selectMenuIngredientListByMenuNoV2" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
         SELECT MI.INGREDIENT_NO
              , MI.QUANTITY
         FROM TMENUINGREDIENT MI

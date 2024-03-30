@@ -136,7 +136,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const menuNo = $(".order-color").children().eq(1).val();
             const quantity = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, menuNo : menuNo, quantityStr : quantity, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, menuNo : menuNo, quantity : quantity, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/change/quantity",
@@ -160,7 +160,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const menuNo = $(".order-color").children().eq(1).val();
             const salePrice = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, menuNo : menuNo, salePriceStr : salePrice, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, menuNo : menuNo, salePrice : salePrice, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/change/salePrice",
@@ -286,9 +286,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
         function fullPer() {
             const orderNo = $("input[name=order-no]").eq(0).val();
-            const percentStr = $("input[name=inputValue]").val();
+            const percent = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, percentStr : percentStr, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, percent : percent, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/discount/full/per",
@@ -311,9 +311,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
         function fullPrice() {
             const orderNo = $("input[name=order-no]").eq(0).val();
-            const discountPriceStr = $("input[name=inputValue]").val();
+            const discountPrice = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, discountPriceStr : discountPriceStr, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, discountPrice : discountPrice, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/discount/full/price",
@@ -360,9 +360,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
         function selPer() {
             const orderNo = $("input[name=order-no]").eq(0).val();
             const menuNo = $(".order-color").children().eq(1).val();
-            const percentStr = $("input[name=inputValue]").val();
+            const percent = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, menuNo : menuNo, percentStr : percentStr, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, menuNo : menuNo, percent : percent, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/discount/sel/per",
@@ -386,9 +386,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
         function selPrice() {
             const orderNo = $("input[name=order-no]").eq(0).val();
             const menuNo = $(".order-color").children().eq(1).val();
-            const discountPriceStr = $("input[name=inputValue]").val();
+            const discountPrice = $("input[name=inputValue]").val();
             const tableNo = $(".table-no").val();
-            const parameter = {orderNo : orderNo, menuNo : menuNo, discountPriceStr : discountPriceStr, tableNo : tableNo};
+            const parameter = {orderNo : orderNo, menuNo : menuNo, discountPrice : discountPrice, tableNo : tableNo};
 
             $.ajax({
                 url: "/order/discount/sel/price",
@@ -486,7 +486,6 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <section>
         <form class="form" action="/order/complete" method="post">
             <input type="hidden" class="table-no" name="tableNo" th:value="${tableNo}">
-
             <div class="main">
                 <div class="left-main">
                     <div class="top-left-main">

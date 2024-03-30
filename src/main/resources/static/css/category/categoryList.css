@@ -14,26 +14,6 @@ section {
     height: 100%;
 }
 
-@media (max-width: 2000px) {
-    html { font-size: 125%; }
-}
-
-@media (max-width: 1600px) {
-    html { font-size: 100%; }
-}
-
-@media (max-width: 1200px) {
-    html { font-size: 75%; }
-}
-
-@media (max-width: 800px) {
-    html { font-size: 50%; }
-}
-
-@media (max-width: 400px) {
-    html { font-size: 25%; }
-}
-
 .category-box {
     width: 40%;
     height: 60%;

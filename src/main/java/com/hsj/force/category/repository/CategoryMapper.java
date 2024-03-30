@@ -9,9 +9,9 @@ import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
-    List<Category> selectCategoryList(String storeNo);
+    List<CategoryListDTO> selectCategoryList(String storeNo);
 
-    List<Category> selectCategoryListByOrderForm(String storeNo);
+    List<CategoryListDTO> selectCategoryListByOrderForm(String storeNo);
 
     String selectCategoryNo(String storeNo);
 
@@ -21,7 +21,7 @@ public interface CategoryMapper {
 
     int selectMaxPriority(Category category);
 
-    int updatePriority(CategoryListDTO category);
+    int updatePriority(CategoryUpdateDTO category);
 
     int updateCategory(Category category);
 

@@ -10,5 +10,7 @@ public class CategoryUpdateDTO {
     private String categoryName;
     private String useYn;
     private Integer priority;
+    private int maxPriority;
+    private String modifyId;
 
 }

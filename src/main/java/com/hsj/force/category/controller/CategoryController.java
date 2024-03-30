@@ -2,9 +2,9 @@ package com.hsj.force.category.controller;
 
 import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
+import com.hsj.force.domain.dto.CategoryListDTO;
 import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.open.service.OpenService;
@@ -127,7 +127,7 @@ public class CategoryController {
 
     @GetMapping("/list")
     @ResponseBody
-    public List<Category> selectCategoryList(HttpSession session) {
+    public List<CategoryListDTO> selectCategoryList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return categoryService.selectCategoryList(loginMember.getStoreNo());
     }

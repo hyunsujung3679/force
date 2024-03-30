@@ -1,6 +1,7 @@
 package com.hsj.force.domain;
 
 import lombok.Data;
+import org.springframework.format.annotation.NumberFormat;
 
 @Data
 public class Order {
@@ -10,7 +11,7 @@ public class Order {
     private String storeNo;
     private String tableNo;
     private String menuNo;
-    private int salePrice;
+    private Integer salePrice;
     private int quantity;
     private int totalSalePrice;
     private String fullPriceYn;

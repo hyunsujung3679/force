@@ -1,6 +1,5 @@
 package com.hsj.force.domain.dto;
 
-import com.hsj.force.domain.MenuIngredient;
 import lombok.Data;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -23,7 +22,7 @@ public class MenuUpdateDTO {
     private Integer quantity2;
     private Integer quantity3;
     private Integer quantity4;
-    private List<MenuIngredient> ingredientQuantityList;
+    private List<MenuIngredientListDTO> ingredientQuantityList;
     private String imageOriginName;
     private String imageSaveName;
     private String imageExt;

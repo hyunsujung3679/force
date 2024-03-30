@@ -4,9 +4,9 @@ import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.domain.Category;
 import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.IngredientHis;
+import com.hsj.force.domain.Order;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Transactional
 @Service
@@ -32,18 +34,22 @@ public class OrderService {
     private final IngredientMapper ingredientMapper;
     private final MessageSource messageSource;
 
-    public OrderDTO selectOrderInfo(User loginMember, String tableNo) {
+    public Map<String, Object> selectOrderInfo(User loginMember, String tableNo) {
 
-        List<Category> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("storeNo", loginMember.getStoreNo());
+        paramMap.put("tableNo", tableNo);
+
+        List<CategoryListDTO> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
         List<MenuListDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
-        List<OrderDTO> orderList = orderMapper.selectOrderList(loginMember.getStoreNo(), tableNo);
-        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(loginMember.getStoreNo());
+        List<OrderListDTO> orderList = orderMapper.selectOrderList(paramMap);
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(loginMember.getStoreNo());
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
         int totalSalePrice = 0;
         for(int i = 0; i < orderList.size(); i++) {
-            OrderDTO order = orderList.get(i);
+            OrderListDTO order = orderList.get(i);
             order.setNo(String.valueOf(i + 1));
 
             if("1".equals(order.getFullPriceYn())) {
@@ -65,15 +71,15 @@ public class OrderService {
             totalSalePrice += order.getTotalSalePrice();
         }
 
-        OrderTotalDTO orderTotal = new OrderTotalDTO();
-        orderTotal.setTotalQuantity(totalQuantity);
-        orderTotal.setTotalDiscountPrice(totalDiscountPrice);
-        orderTotal.setTotalSalePrice(totalSalePrice);
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setTotalQuantity(totalQuantity);
+        orderDTO.setTotalDiscountPrice(totalDiscountPrice);
+        orderDTO.setTotalSalePrice(totalSalePrice);
 
         boolean isEnoughStock;
         for(MenuListDTO menu : menuList) {
             isEnoughStock = true;
-            for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+            for(MenuIngredientListDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
                     if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
                         isEnoughStock = false;
@@ -91,24 +97,28 @@ public class OrderService {
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setCategoryList(categoryList);
-        orderDTO.setMenuList(menuList);
-        orderDTO.setOrderList(orderList);
-        orderDTO.setCommonLayoutForm(commonLayoutForm);
-        orderDTO.setOrderTotal(orderTotal);
+        Map<String, Object> map = new HashMap<>();
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("categoryList", categoryList);
+        map.put("menuList", menuList);
+        map.put("orderList", orderList);
+        map.put("orderTotal", orderDTO);
 
-        return orderDTO;
+        return map;
     }
 
-    public int saveOrder(User loginMember, OrderDTO order) {
+    public int saveOrder(User loginMember, OrderSaveDTO orderSaveDTO) {
 
         int orderSaveResult = 0;
         int ingredientHisSaveResult = 0;
         int ingredientSaveResult = 0;
         String lastOrderNo = "";
 
+        Order order = new Order();
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+        order.setTableNo(orderSaveDTO.getTableNo());
         order.setStoreNo(loginMember.getStoreNo());
+
         String orderNo = orderMapper.selectOrderNo(order);
         if(orderNo == null) {
             lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
@@ -117,12 +127,13 @@ public class OrderService {
             List<String> orderStatusNoList = orderMapper.selectOrderStatusNoList(orderNo);
             boolean isOld = orderStatusNoList.stream().anyMatch(value -> value.equals("OS001"));
              if(!isOld) {
-                lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
-                order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
+                 lastOrderNo = orderMapper.selectLastOrderNo(order.getStoreNo());
+                 order.setOrderNo(ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX));
             } else {
-                order.setOrderNo(orderNo);
+                 order.setOrderNo(orderNo);
             }
         }
+
         order.setInsertId(loginMember.getUserId());
         order.setModifyId(loginMember.getUserId());
 
@@ -152,8 +163,8 @@ public class OrderService {
 
         IngredientHis ingredientHis = null;
         Ingredient ingredient = null;
-        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNo(order);
-        for(MenuIngredientDTO menuIngredientDTO : menuIngredientList) {
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNo(order);
+        for(MenuIngredientListDTO menuIngredientDTO : menuIngredientList) {
             ingredient = new Ingredient();
             ingredient.setIngredientNo(menuIngredientDTO.getIngredientNo());
             ingredient.setStoreNo(loginMember.getStoreNo());
@@ -179,11 +190,15 @@ public class OrderService {
         }
     }
 
-    public List<OrderDTO> selectOrderList(String storeNo, String tableNo) {
-        List<OrderDTO> orderList = orderMapper.selectOrderList(storeNo, tableNo);
+    public List<OrderListDTO> selectOrderList(String storeNo, String tableNo) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("storeNo", storeNo);
+        paramMap.put("tableNo", tableNo);
+
+        List<OrderListDTO> orderList = orderMapper.selectOrderList(paramMap);
 
         for(int i = 0; i < orderList.size(); i++) {
-            OrderDTO order = orderList.get(i);
+            OrderListDTO order = orderList.get(i);
             order.setNo(String.valueOf(i + 1));
 
             if("1".equals(order.getFullPriceYn())) {
@@ -204,7 +219,7 @@ public class OrderService {
     }
 
     public int completeOrder(User loginMember, String tableNo) {
-        OrderDTO order = new OrderDTO();
+        Order order = new Order();
         order.setStoreNo(loginMember.getStoreNo());
         order.setTableNo(tableNo);
         order.setOrderStatusNo("OS003");
@@ -212,16 +227,16 @@ public class OrderService {
         return orderMapper.updateOrderStatusV1(order);
     }
 
-    public int cancelSelection(User loginMember, OrderDTO order) {
+    public int cancelSelection(User loginMember, OrderSaveDTO orderSaveDTO) {
 
         Ingredient ingredient = null;
         IngredientHis ingredientHis = null;
         int ingredientSaveResult = 0;
         int ingredientHisSaveResult = 0;
 
-        List<MenuIngredientDTO> menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), order.getOrderNo(), order.getMenuNo());
+        List<MenuIngredientListDTO> menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), orderSaveDTO.getOrderNo(), orderSaveDTO.getMenuNo());
 
-        for(MenuIngredientDTO menuIngredient : menuIngredientDTOList) {
+        for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
             ingredient = new Ingredient();
             ingredient.setIngredientNo(menuIngredient.getIngredientNo());
             ingredient.setStoreNo(loginMember.getStoreNo());
@@ -240,32 +255,36 @@ public class OrderService {
             ingredientHisSaveResult += ingredientMapper.insertIngredientHis(ingredientHis);
         }
 
+        Order order = new Order();
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
         order.setOrderStatusNo("OS002");
         order.setModifyId(loginMember.getUserId());
-        int ordrSaveResult = orderMapper.updateOrderStatusV2(order);
+        int orderSaveResult = orderMapper.updateOrderStatusV2(order);
 
-        if((ingredientSaveResult == menuIngredientDTOList.size()) && (ingredientHisSaveResult == menuIngredientDTOList.size()) && ordrSaveResult == 1) {
+        if((ingredientSaveResult == menuIngredientDTOList.size()) && (ingredientHisSaveResult == menuIngredientDTOList.size()) && orderSaveResult == 1) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    public int cancelWhole(User loginMember, OrderDTO order) {
+    public int cancelWhole(User loginMember, OrderSaveDTO orderSaveDTO) {
 
         Ingredient ingredient = null;
         IngredientHis ingredientHis = null;
         int ingredientSaveResult = 0;
         int ingredientHisSaveResult = 0;
-        List<MenuIngredientDTO> menuIngredientDTOList = null;
+        List<MenuIngredientListDTO> menuIngredientDTOList = null;
 
-        List<String> menuNoList = orderMapper.selectMenuNoList(loginMember.getStoreNo(), order.getOrderNo());
+        List<String> menuNoList = orderMapper.selectMenuNoList(loginMember.getStoreNo(), orderSaveDTO.getOrderNo());
         for(String menuNo : menuNoList) {
-            menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), order.getOrderNo(), menuNo);
+            menuIngredientDTOList = ingredientMapper.selectMenuIngredientList(loginMember.getStoreNo(), orderSaveDTO.getOrderNo(), menuNo);
             ingredientSaveResult = 0;
             ingredientHisSaveResult = 0;
-            for(MenuIngredientDTO menuIngredient : menuIngredientDTOList) {
+            for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
                 ingredient = new Ingredient();
                 ingredient.setIngredientNo(menuIngredient.getIngredientNo());
                 ingredient.setStoreNo(loginMember.getStoreNo());
@@ -289,12 +308,14 @@ public class OrderService {
             }
 
         }
-
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
         order.setOrderStatusNo("OS002");
         order.setModifyId(loginMember.getUserId());
-        int ordrSaveResult = orderMapper.updateOrderStatusV3(order);
-        if(ordrSaveResult > 0) {
+        int orderSaveResult = orderMapper.updateOrderStatusV3(order);
+        if(orderSaveResult > 0) {
             return 1;
         } else {
             return 0;
@@ -302,40 +323,57 @@ public class OrderService {
 
     }
 
-    public int changeQuantity(User loginMember, OrderDTO order) {
-        order.setStoreNo(loginMember.getStoreNo());
-        order.setQuantity(Integer.parseInt(order.getQuantityStr().replaceAll(",", "")));
+    public int changeQuantity(User loginMember, OrderSaveDTO orderSaveDTO) {
 
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        Order order = new Order();
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
+        order.setQuantity(Integer.parseInt(orderSaveDTO.getQuantity().replaceAll(",", "")));
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setModifyId(loginMember.getUserId());
+
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         if("1".equals(orderInfo.getServiceYn())) {
             order.setDiscountPrice(orderInfo.getSalePrice() * order.getQuantity());
             order.setTotalSalePrice(0);
         } else {
             order.setTotalSalePrice(orderInfo.getSalePrice() * order.getQuantity());
         }
-        order.setModifyId(loginMember.getUserId());
+
         return orderMapper.updateQuantity(order);
     }
 
-    public int changeSalePrice(User loginMember, OrderDTO order) {
-        order.setStoreNo(loginMember.getStoreNo());
-        order.setSalePrice(Integer.parseInt(order.getSalePriceStr().replaceAll(",", "")));
+    public int changeSalePrice(User loginMember, OrderSaveDTO orderSaveDTO) {
 
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        Order order = new Order();
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
+        order.setSalePrice(Integer.valueOf(orderSaveDTO.getSalePrice().replaceAll(",", "")));
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setModifyId(loginMember.getUserId());
+
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         if("1".equals(orderInfo.getServiceYn())) {
             order.setDiscountPrice(order.getSalePrice() * orderInfo.getQuantity());
             order.setTotalSalePrice(0);
         } else {
             order.setTotalSalePrice(order.getSalePrice() * orderInfo.getQuantity());
         }
-        order.setModifyId(loginMember.getUserId());
+
         return orderMapper.updateSalePrice(order);
     }
 
-    public int service(User loginMember, OrderDTO order) {
+    public int service(User loginMember, OrderSaveDTO orderSaveDTO) {
+        Order order = new Order();
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
+        order.setModifyId(loginMember.getUserId());
 
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         if(orderInfo == null ) return 0;
         if("0".equals(orderInfo.getServiceYn())) {
             order.setTotalSalePrice(0);
@@ -346,27 +384,26 @@ public class OrderService {
             order.setServiceYn("0");
             order.setDiscountPrice(0);
         }
-        order.setModifyId(loginMember.getUserId());
+
         return orderMapper.updateService(order);
     }
 
-    public int discountFullPer(User loginMember, OrderDTO order) {
+    public int discountFullPer(User loginMember, OrderSaveDTO orderSaveDTO) {
         int count = 0;
-        int percent = 0;
-        try {
-            percent = Integer.parseInt(order.getPercentStr().replaceAll(",", ""));
-        } catch (NumberFormatException e) {
-            return 1;
-        }
+        int percent = Integer.parseInt(orderSaveDTO.getPercent().replaceAll(",", ""));
+
         if(percent > 100) {
             percent = 100;
         } else if(percent == 0) {
             return 1;
         }
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
 
-        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
-        for(OrderDTO orderInfo : orderInfoList) {
+        List<Order> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(Order orderInfo : orderInfoList) {
             orderInfo.setOrderNo(order.getOrderNo());
             orderInfo.setStoreNo(order.getStoreNo());
             orderInfo.setTableNo(order.getTableNo());
@@ -384,19 +421,19 @@ public class OrderService {
         }
     }
 
-    public int discountFullPrice(User loginMember, OrderDTO order) {
+    public int discountFullPrice(User loginMember, OrderSaveDTO orderSaveDTO) {
         int count = 0;
-        int discountSalePrice = 0;
-        try {
-            discountSalePrice = Integer.parseInt(order.getDiscountPriceStr().replaceAll(",", ""));
-        } catch (NumberFormatException e) {
-            return 1;
-        }
+        int discountSalePrice = Integer.parseInt(orderSaveDTO.getDiscountPrice().replaceAll(",", ""));
+
         if(discountSalePrice == 0) return 1;
+
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
 
-        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
-        for(OrderDTO orderInfo : orderInfoList) {
+        List<Order> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(Order orderInfo : orderInfoList) {
             orderInfo.setOrderNo(order.getOrderNo());
             orderInfo.setStoreNo(order.getStoreNo());
             orderInfo.setTableNo(order.getTableNo());
@@ -417,12 +454,16 @@ public class OrderService {
         }
     }
 
-    public int discountFullCancel(User loginMember, OrderDTO order) {
+    public int discountFullCancel(User loginMember, OrderSaveDTO orderSaveDTO) {
         int count = 0;
+
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
 
-        List<OrderDTO> orderInfoList = orderMapper.selectOrderInfoList(order);
-        for(OrderDTO orderInfo : orderInfoList) {
+        List<Order> orderInfoList = orderMapper.selectOrderInfoList(order);
+        for(Order orderInfo : orderInfoList) {
             if("1".equals(orderInfo.getFullPerYn()) || "1".equals(orderInfo.getFullPriceYn())) {
                 orderInfo.setOrderNo(order.getOrderNo());
                 orderInfo.setStoreNo(order.getStoreNo());
@@ -435,20 +476,22 @@ public class OrderService {
         return count;
     }
 
-    public int discountSelPer(User loginMember, OrderDTO order) {
-        int percent = 0;
-        try {
-            percent = Integer.parseInt(order.getPercentStr().replaceAll(",", ""));
-        } catch (NumberFormatException e) {
-            return 1;
-        }
+    public int discountSelPer(User loginMember, OrderSaveDTO orderSaveDTO) {
+        int percent = Integer.parseInt(orderSaveDTO.getPercent().replaceAll(",", ""));
+
         if(percent > 100) {
             percent = 100;
         } else if(percent == 0) {
             return 1;
         }
+
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
         order.setStoreNo(loginMember.getStoreNo());
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         if(orderInfo == null)  return 0;
         orderInfo.setOrderNo(order.getOrderNo());
         orderInfo.setMenuNo(order.getMenuNo());
@@ -461,17 +504,18 @@ public class OrderService {
         return orderMapper.updateDiscountSelPer(orderInfo);
     }
 
-    public int discountSelPrice(User loginMember, OrderDTO order) {
-        int discountSalePrice = 0;
-        try {
-            discountSalePrice = Integer.parseInt(order.getDiscountPriceStr().replaceAll(",", ""));
-        } catch (NumberFormatException e) {
-            return 1;
-        }
-        if(discountSalePrice == 0) return 1;
-        order.setStoreNo(loginMember.getStoreNo());
+    public int discountSelPrice(User loginMember, OrderSaveDTO orderSaveDTO) {
+        int discountSalePrice = Integer.parseInt(orderSaveDTO.getDiscountPrice().replaceAll(",", ""));
 
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        if(discountSalePrice == 0) return 1;
+
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         orderInfo.setOrderNo(order.getOrderNo());
         orderInfo.setMenuNo(order.getMenuNo());
         orderInfo.setStoreNo(order.getStoreNo());
@@ -486,11 +530,16 @@ public class OrderService {
         return orderMapper.updateDiscountSelPrice(orderInfo);
     }
 
-    public int discountSelCancel(User loginMember, OrderDTO order) {
+    public int discountSelCancel(User loginMember, OrderSaveDTO orderSaveDTO) {
         int count = 0;
-        order.setStoreNo(loginMember.getStoreNo());
 
-        OrderDTO orderInfo = orderMapper.selectOrderInfo(order);
+        Order order = new Order();
+        order.setTableNo(orderSaveDTO.getTableNo());
+        order.setOrderNo(orderSaveDTO.getOrderNo());
+        order.setStoreNo(loginMember.getStoreNo());
+        order.setMenuNo(orderSaveDTO.getMenuNo());
+
+        Order orderInfo = orderMapper.selectOrderInfo(order);
         if("1".equals(orderInfo.getSelPerYn()) || "1".equals(orderInfo.getSelPriceYn())) {
             orderInfo.setOrderNo(order.getOrderNo());
             orderInfo.setMenuNo(order.getMenuNo());
@@ -505,10 +554,10 @@ public class OrderService {
 
     public boolean checkStock(String storeNo, String menuNo) {
 
-        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         boolean isEnoughStock = true;
-        for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+        for(MenuIngredientListDTO menuIngredient : menuIngredientList) {
             if(menuNo.equals(menuIngredient.getMenuNo())) {
                 if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
                     isEnoughStock = false;

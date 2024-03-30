@@ -12,7 +12,7 @@
            AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
-    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderDTO">
+    <select id="selectOrderList" resultType="com.hsj.force.domain.dto.OrderListDTO">
         SELECT O.ORDER_NO
              , O.ORDER_SEQ
              , M.MENU_NO
@@ -176,7 +176,7 @@
            AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
-    <select id="selectOrderInfo" resultType="com.hsj.force.domain.dto.OrderDTO">
+    <select id="selectOrderInfo" resultType="Order">
         SELECT O.FULL_PRICE_YN
              , O.FULL_PER_YN
              , O.SEL_PRICE_YN
@@ -211,7 +211,7 @@
            AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
-    <select id="selectOrderInfoList" resultType="com.hsj.force.domain.dto.OrderDTO">
+    <select id="selectOrderInfoList" resultType="Order">
         SELECT O.MENU_NO
              , O.FULL_PRICE_YN
              , O.FULL_PER_YN

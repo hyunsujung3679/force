@@ -29,19 +29,17 @@ public class MenuService {
     private final IngredientMapper ingredientMapper;
 
     public List<MenuListDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
-        List<MenuListDTO> menuList = menuMapper.selectMenuList(storeNo);
-        List<MenuIngredientDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
-        List<MenuListDTO> menuListByCategoryNo = new ArrayList<>();
-        for(MenuListDTO menu : menuList) {
-            if(categoryNo.equals(menu.getCategoryNo())) {
-                menuListByCategoryNo.add(menu);
-            }
-        }
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("storeNo", storeNo);
+        paramMap.put("categoryNo", categoryNo);
+
+        List<MenuListDTO> menuList = menuMapper.selectMenuListV2(paramMap);
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         boolean isEnoughStock;
-        for(MenuListDTO menu : menuListByCategoryNo) {
+        for(MenuListDTO menu : menuList) {
             isEnoughStock = true;
-            for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+            for(MenuIngredientListDTO menuIngredient : menuIngredientList) {
                 if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
                     if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
                         isEnoughStock = false;
@@ -52,7 +50,7 @@ public class MenuService {
             menu.setEnoughStock(isEnoughStock);
         }
 
-        return menuListByCategoryNo;
+        return menuList;
     }
 
     public Map<String, Object> selectMenuInfo(User loginMember) {
@@ -66,7 +64,7 @@ public class MenuService {
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
         List<MenuListDTO> menuList = menuMapper.selectMenuListByMenuForm(loginMember.getStoreNo());
-        List<MenuIngredientDTO> menuIngredientList = ingredientMapper.selectMenuIngredientListByMenuForm(loginMember.getStoreNo());
+        List<MenuIngredientListDTO> menuIngredientList = ingredientMapper.selectMenuIngredientListByMenuForm(loginMember.getStoreNo());
 
         for(int i = 0; i < menuList.size(); i++) {
             MenuListDTO menu = menuList.get(i);
@@ -80,9 +78,9 @@ public class MenuService {
         return map;
     }
 
-    private int getStock(MenuListDTO menu, List<MenuIngredientDTO> menuIngredientList) {
+    private int getStock(MenuListDTO menu, List<MenuIngredientListDTO> menuIngredientList) {
         int stock = 0;
-        for(MenuIngredientDTO menuIngredient : menuIngredientList) {
+        for(MenuIngredientListDTO menuIngredient : menuIngredientList) {
             if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
                 if(stock == 0) {
                     stock = (int) (menuIngredient.getIngredientQuantity() / menuIngredient.getNeedQuantity());
@@ -187,7 +185,7 @@ public class MenuService {
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
         MenuDTO menuDTO = menuMapper.selectMenu(menuNo, loginMember.getStoreNo());
-        List<MenuIngredient> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNoV2(menuNo, loginMember.getStoreNo());
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNoV2(menuNo, loginMember.getStoreNo());
 
         MenuUpdateDTO menuUpdateDTO = new MenuUpdateDTO();
         menuUpdateDTO.setMenuNo(menuDTO.getMenuNo());
@@ -198,11 +196,11 @@ public class MenuService {
         menuUpdateDTO.setImageSaveName(menuDTO.getImageSaveName());
         menuUpdateDTO.setIngredientQuantityList(menuIngredientList);
 
-        MenuIngredient menuIngredient = null;
+        MenuIngredientListDTO menuIngredient = null;
 
         if(menuIngredientList.size() == 0) {
             for(int i = 0; i < 4; i++) {
-                menuIngredient = new MenuIngredient();
+                menuIngredient = new MenuIngredientListDTO();
                 menuIngredient.setIngredientNo("");
                 menuIngredient.setQuantity(0.0);
                 menuIngredientList.add(menuIngredient);
@@ -211,7 +209,7 @@ public class MenuService {
 
         if(menuIngredientList.size() == 1) {
             for(int i = 1; i < 4; i++) {
-                menuIngredient = new MenuIngredient();
+                menuIngredient = new MenuIngredientListDTO();
                 menuIngredient.setIngredientNo("");
                 menuIngredient.setQuantity(0.0);
                 menuIngredientList.add(menuIngredient);
@@ -220,7 +218,7 @@ public class MenuService {
 
         if(menuIngredientList.size() == 2) {
             for(int i = 2; i < 4; i++) {
-                menuIngredient = new MenuIngredient();
+                menuIngredient = new MenuIngredientListDTO();
                 menuIngredient.setIngredientNo("");
                 menuIngredient.setQuantity(0.0);
                 menuIngredientList.add(menuIngredient);
@@ -229,7 +227,7 @@ public class MenuService {
 
         if(menuIngredientList.size() == 3) {
             for(int i = 3; i < 4; i++) {
-                menuIngredient = new MenuIngredient();
+                menuIngredient = new MenuIngredientListDTO();
                 menuIngredient.setIngredientNo("");
                 menuIngredient.setQuantity(0.0);
                 menuIngredientList.add(menuIngredient);

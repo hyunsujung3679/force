@@ -1,7 +1,37 @@
-html {
-    height: 100%;
-    width: 100%;
-    font-size: 100%;
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1800px) {
+    html { font-size: 112.5%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1400px) {
+    html { font-size: 87.5%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 1000px) {
+    html { font-size: 62.5%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 600px) {
+    html { font-size: 37.5%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
 }
 
 body {
@@ -9,26 +39,6 @@ body {
     width: 100%;
     overflow:hidden;
     background-color: #A3B1E7;
-}
-
-@media (max-width: 2000px) {
-    html { font-size: 125%; }
-}
-
-@media (max-width: 1600px) {
-    html { font-size: 100%; }
-}
-
-@media (max-width: 1200px) {
-    html { font-size: 75%; }
-}
-
-@media (max-width: 800px) {
-    html { font-size: 50%; }
-}
-
-@media (max-width: 400px) {
-    html { font-size: 25%; }
 }
 
 form {
@@ -95,19 +105,6 @@ form {
 .login-save-wrap {
     display: flex;
     justify-content: center;
-}
-
-.login-id-find {
-    display: block;
-    text-decoration: none;
-    text-align: center;
-}
-
-.login-password-find {
-    display: block;
-    text-decoration: none;
-    text-align: center;
-    margin-top:5%;
 }
 
 .login-button-wrap {

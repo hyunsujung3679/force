@@ -30,7 +30,7 @@ public class CategoryService {
 
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        List<Category> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
+        List<CategoryListDTO> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("categoryList", categoryList);
@@ -83,7 +83,7 @@ public class CategoryService {
         return map;
     }
 
-    public List<Category> selectCategoryList(String storeNo) {
+    public List<CategoryListDTO> selectCategoryList(String storeNo) {
         return categoryMapper.selectCategoryList(storeNo);
     }
 
@@ -91,12 +91,12 @@ public class CategoryService {
         Integer priority = categoryMapper.selectPriority(category);
         if(priority != null) {
             int maxPriority = categoryMapper.selectMaxPriority(category);
-            CategoryListDTO categoryListDTO = new CategoryListDTO();
-            categoryListDTO.setMaxPriority(maxPriority + 1);
-            categoryListDTO.setModifyId(loginMember.getUserId());
-            categoryListDTO.setStoreNo(loginMember.getStoreNo());
-            categoryListDTO.setPriority(category.getPriority());
-            categoryMapper.updatePriority(categoryListDTO);
+            CategoryUpdateDTO categoryUpdateDTO = new CategoryUpdateDTO();
+            categoryUpdateDTO.setMaxPriority(maxPriority + 1);
+            categoryUpdateDTO.setModifyId(loginMember.getUserId());
+            categoryUpdateDTO.setStoreNo(loginMember.getStoreNo());
+            categoryUpdateDTO.setPriority(category.getPriority());
+            categoryMapper.updatePriority(categoryUpdateDTO);
         }
     }
 }

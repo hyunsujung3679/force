@@ -13,6 +13,42 @@ form {
     width: 100%;
 }
 
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1800px) {
+    html { font-size: 112.5%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1400px) {
+    html { font-size: 87.5%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 1000px) {
+    html { font-size: 62.5%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 600px) {
+    html { font-size: 37.5%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
+}
+
 .close-first-div {
     display: flex;
     margin: 4% auto 0;

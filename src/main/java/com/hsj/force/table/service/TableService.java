@@ -1,12 +1,8 @@
 package com.hsj.force.table.service;
 
 import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.domain.Table;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.OrderDTO;
-import com.hsj.force.domain.dto.TableDTO;
-import com.hsj.force.domain.dto.TableTotalPriceDTO;
+import com.hsj.force.domain.dto.*;
 import com.hsj.force.table.repository.TableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,17 +23,17 @@ public class TableService {
 
     private final CommonMapper commonMapper;
 
-    public TableDTO selectTableInfo(User loginMember) {
+    public Map<String, Object> selectTableInfo(User loginMember) {
 
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
-        List<Table> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
-        List<OrderDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
-        Map<String, List<OrderDTO>> tableOfOrderMap = new HashMap<>();
-        List<OrderDTO> tempOrderList = null;
+        List<TableListDTO> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
+        List<OrderListDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
+        Map<String, List<OrderListDTO>> tableOfOrderMap = new HashMap<>();
+        List<OrderListDTO> tempOrderList = null;
 
-        for(Table table : tableList) {
+        for(TableListDTO table : tableList) {
             tempOrderList = new ArrayList<>();
-            for(OrderDTO order : orderList) {
+            for(OrderListDTO order : orderList) {
                 if(table.getTableNo().equals(order.getTableNo())) {
                     tempOrderList.add(order);
                 }
@@ -51,38 +47,35 @@ public class TableService {
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        TableDTO tableForm = new TableDTO();
-        tableForm.setTableList(tableList);
-        tableForm.setCommonLayoutForm(commonLayoutForm);
-        tableForm.setTableTotalPriceList(getTableTotalPriceList(tableList, orderList));
-        tableForm.setTableOfOrderMap(tableOfOrderMap);
+        Map<String, Object> map = new HashMap<>();
+        map.put("commonLayoutForm", commonLayoutForm);
+        map.put("tableList", tableList);
+        map.put("tableTotalPriceList", getTableTotalPriceList(tableList, orderList));
+        map.put("tableOfOrderMap", tableOfOrderMap);
 
-        return tableForm;
+        return map;
     }
 
-    private List<TableTotalPriceDTO> getTableTotalPriceList(List<Table> tableList, List<OrderDTO> orderList) {
-        List<TableTotalPriceDTO> tableTotalPriceList = new ArrayList<>();
-        TableTotalPriceDTO tableTotalPriceForm = null;
-        for(Table table : tableList) {
-            tableTotalPriceForm = new TableTotalPriceDTO();
-            tableTotalPriceForm.setTableNo(table.getTableNo());
+    private List<TableListDTO> getTableTotalPriceList(List<TableListDTO> tableList, List<OrderListDTO> orderList) {
+
+        for(TableListDTO table : tableList) {
             int totalPrice = 0;
-            for(OrderDTO order : orderList) {
+            for(OrderListDTO order : orderList) {
                 if(table.getTableNo().equals(order.getTableNo())) {
                     totalPrice += order.getTotalSalePrice();
                 }
             }
-            tableTotalPriceForm.setTableTotalPrice(totalPrice);
-            tableTotalPriceList.add(tableTotalPriceForm);
+            table.setTableTotalPrice(totalPrice);
         }
-        return tableTotalPriceList;
+
+        return tableList;
     }
 
-    public List<Table> selectTableExistOrderList(String storeNo) {
+    public List<TableListDTO> selectTableExistOrderList(String storeNo) {
         return tableMapper.selectTableExistOrderList(storeNo);
     }
 
-    public List<Table> selectTableNotExistOrderList(String storeNo) {
+    public List<TableListDTO> selectTableNotExistOrderList(String storeNo) {
         return tableMapper.selectTableNotExistOrderList(storeNo);
     }
 

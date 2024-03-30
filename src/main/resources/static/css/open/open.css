@@ -1,34 +1,51 @@
-body {
-    height:100%;
-    overflow:hidden;
-    background-color: #A3B1E7;
-}
-
-.box {
-    margin: 0 auto;
-    width: 33%;
-    background-color: white;
-    border-radius: 10px;
-}
-
 @media (max-width: 2000px) {
     html { font-size: 125%; }
+}
+
+@media (max-width: 1800px) {
+    html { font-size: 112.5%; }
 }
 
 @media (max-width: 1600px) {
     html { font-size: 100%; }
 }
 
+@media (max-width: 1400px) {
+    html { font-size: 87.5%; }
+}
+
 @media (max-width: 1200px) {
     html { font-size: 75%; }
+}
+
+@media (max-width: 1000px) {
+    html { font-size: 62.5%; }
 }
 
 @media (max-width: 800px) {
     html { font-size: 50%; }
 }
 
+@media (max-width: 600px) {
+    html { font-size: 37.5%; }
+}
+
 @media (max-width: 400px) {
     html { font-size: 25%; }
+}
+
+body {
+    height:100%;
+    overflow:hidden;
+    background-color: #A3B1E7;
+}
+
+
+.box {
+    margin: 0 auto;
+    width: 33%;
+    background-color: white;
+    border-radius: 10px;
 }
 
 .title-box {

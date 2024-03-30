@@ -5,7 +5,7 @@ import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.IngredientHis;
 import com.hsj.force.domain.dto.IngredientListDTO;
 import com.hsj.force.domain.dto.IngredientUpdateDTO;
-import com.hsj.force.domain.dto.MenuIngredientDTO;
+import com.hsj.force.domain.dto.MenuIngredientListDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,11 +18,11 @@ public interface IngredientMapper {
 
     int updateIngredient(Ingredient ingredient);
 
-    List<MenuIngredientDTO> selectMenuIngredientList(String storeNo, String orderNo, String menuNo);
+    List<MenuIngredientListDTO> selectMenuIngredientList(String storeNo, String orderNo, String menuNo);
 
-    List<MenuIngredientDTO> selectMenuIngredientListByMenuForm(String storeNo);
+    List<MenuIngredientListDTO> selectMenuIngredientListByMenuForm(String storeNo);
 
-    List<Ingredient> selectIngredientList(String storeNo);
+    List<IngredientListDTO> selectIngredientList(String storeNo);
 
     List<IngredientListDTO> selectIngredientListV2(String storeNo);
 

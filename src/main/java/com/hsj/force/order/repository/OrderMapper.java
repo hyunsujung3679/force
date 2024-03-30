@@ -1,50 +1,52 @@
 package com.hsj.force.order.repository;
 
-import com.hsj.force.domain.dto.OrderDTO;
+import com.hsj.force.domain.Order;
+import com.hsj.force.domain.dto.OrderListDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
 
-    Integer selectQuantity(OrderDTO order);
+    Integer selectQuantity(Order order);
 
-    List<OrderDTO> selectOrderList(String storeNo, String tableNo);
+    List<OrderListDTO> selectOrderList(Map<String, Object> paramMap);
 
-    String selectOrderNo(OrderDTO order);
+    String selectOrderNo(Order order);
 
     String selectOrderSeq(String orderNo);
 
-    int insertOrder(OrderDTO order);
+    int insertOrder(Order order);
 
-    int updateOrder(OrderDTO order);
+    int updateOrder(Order order);
 
-    int updateOrderStatusV1(OrderDTO order);
+    int updateOrderStatusV1(Order order);
 
-    int updateOrderStatusV2(OrderDTO order);
+    int updateOrderStatusV2(Order order);
 
-    int updateOrderStatusV3(OrderDTO order);
+    int updateOrderStatusV3(Order order);
 
-    int updateQuantity(OrderDTO order);
+    int updateQuantity(Order order);
 
-    int updateSalePrice(OrderDTO order);
+    int updateSalePrice(Order order);
 
-    int updateService(OrderDTO order);
+    int updateService(Order order);
 
-    OrderDTO selectOrderInfo(OrderDTO order);
+    Order selectOrderInfo(Order order);
 
-    List<OrderDTO> selectOrderInfoList(OrderDTO order);
+    List<Order> selectOrderInfoList(Order order);
 
-    int updateDiscountFullPer(OrderDTO orderInfo);
+    int updateDiscountFullPer(Order orderInfo);
 
-    int updateDiscountFullPrice(OrderDTO orderInfo);
+    int updateDiscountFullPrice(Order orderInfo);
 
-    int updateDiscountCancel(OrderDTO orderInfo);
+    int updateDiscountCancel(Order orderInfo);
 
-    int updateDiscountSelPer(OrderDTO orderInfo);
+    int updateDiscountSelPer(Order orderInfo);
 
-    int updateDiscountSelPrice(OrderDTO orderInfo);
+    int updateDiscountSelPrice(Order orderInfo);
 
     List<String> selectOrderStatusNoList(String orderNo);
 

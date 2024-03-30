@@ -31,7 +31,7 @@ public class IngredientService {
     private final IngredientMapper ingredientMapper;
     private final CommonMapper commonMapper;
 
-    public List<Ingredient> selectIngredientList(String storeNo) {
+    public List<IngredientListDTO> selectIngredientList(String storeNo) {
         return ingredientMapper.selectIngredientList(storeNo);
     }
 

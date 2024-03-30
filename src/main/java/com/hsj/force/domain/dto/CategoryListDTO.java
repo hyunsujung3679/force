@@ -1,16 +1,15 @@
 package com.hsj.force.domain.dto;
 
-import com.hsj.force.domain.Category;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class CategoryListDTO extends Category {
+public class CategoryListDTO {
 
     private CommonLayoutDTO commonLayoutForm;
-    private List<Category> categoryList;
-    private int maxPriority;
+    private String categoryNo;
+    private String storeNo;
+    private String categoryName;
+    private String useYn;
+    private int priority;
+
 }

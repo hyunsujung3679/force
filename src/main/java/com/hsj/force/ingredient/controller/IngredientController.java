@@ -1,10 +1,10 @@
 package com.hsj.force.ingredient.controller;
 
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.IngredientInsertDTO;
+import com.hsj.force.domain.dto.IngredientListDTO;
 import com.hsj.force.domain.dto.IngredientUpdateDTO;
 import com.hsj.force.ingredient.service.IngredientService;
 import com.hsj.force.open.service.OpenService;
@@ -133,7 +133,7 @@ public class IngredientController {
 
     @GetMapping("/list")
     @ResponseBody
-    public List<Ingredient> selectIngredientList(HttpSession session) {
+    public List<IngredientListDTO> selectIngredientList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return ingredientService.selectIngredientList(loginMember.getStoreNo());
     }

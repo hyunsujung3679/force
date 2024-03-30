@@ -1,8 +1,8 @@
 package com.hsj.force.table.controller;
 
-import com.hsj.force.domain.Table;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.TableDTO;
+import com.hsj.force.domain.dto.TableListDTO;
 import com.hsj.force.open.service.OpenService;
 import com.hsj.force.table.service.TableService;
 import jakarta.servlet.http.HttpSession;
@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/table")
 @RequiredArgsConstructor
@@ -29,25 +31,25 @@ public class TableController {
             return "redirect:/open";
         }
 
-        TableDTO tableForm = tableService.selectTableInfo(loginMember);
-        model.addAttribute("header", tableForm.getCommonLayoutForm());
-        model.addAttribute("tableList", tableForm.getTableList());
-        model.addAttribute("tableTotalPriceList", tableForm.getTableTotalPriceList());
-        model.addAttribute("tableOfOrderMap", tableForm.getTableOfOrderMap());
+        Map<String, Object> map = tableService.selectTableInfo(loginMember);
+        model.addAttribute("header", map.get("commonLayoutForm"));
+        model.addAttribute("tableList", map.get("tableList"));
+        model.addAttribute("tableTotalPriceList", map.get("tableTotalPriceList"));
+        model.addAttribute("tableOfOrderMap", map.get("tableOfOrderMap"));
 
         return "table/" + loginMember.getStoreNo() + "/tableForm";
     }
 
     @GetMapping("/exist/order/list")
     @ResponseBody
-    public List<Table> selectTableExistOrderList(HttpSession session) {
+    public List<TableListDTO> selectTableExistOrderList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return tableService.selectTableExistOrderList(loginMember.getStoreNo());
     }
 
     @GetMapping("/not/exist/order/list")
     @ResponseBody
-    public List<Table> selectTableNotExistOrderList(HttpSession session) {
+    public List<TableListDTO> selectTableNotExistOrderList(HttpSession session) {
         User loginMember = (User) session.getAttribute("loginMember");
         return tableService.selectTableNotExistOrderList(loginMember.getStoreNo());
     }

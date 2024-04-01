@@ -1,5 +1,6 @@
 package com.hsj.force.domain.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -22,7 +23,8 @@ public class OpenCloseInsertDTO {
     private String opener;
 
     @NumberFormat(pattern = "###,###")
-    private int openMoney;
+    @NotEmpty(message = "아이디를 입력해주세요")
+    private String openMoney;
     @DateTimeFormat(pattern = "yyyy-MM-dd (E)")
     private LocalDateTime closeDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")

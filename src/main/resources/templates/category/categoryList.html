@@ -15,12 +15,14 @@
     <section>
         <div class="category-box">
             <div class="category-title">
+                <div class="category-title-no" th:text="#{label.no}"></div>
                 <div class="category-title-name" th:text="#{label.category.name}"></div>
                 <div class="category-title-use" th:text="#{label.use.yn}"></div>
                 <div class="category-title-rank" th:text="#{label.priority}"></div>
             </div>
             <div class="category-content" th:each="category : ${categoryList}" ondblclick="categoryUpdateForm(this);" >
                 <input type="hidden" th:value="${category.categoryNo}">
+                <div class="category-no" th:text="${category.no}"></div>
                 <div class="category-name" th:text="${category.categoryName}"></div>
                 <div class="category-use" th:text="${category.useYn} == 1 ? 'Y' : 'N'"></div>
                 <div class="category-rank" th:text="${category.priority}"></div>

@@ -1,0 +1,71 @@
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1800px) {
+    html { font-size: 112.5%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1400px) {
+    html { font-size: 87.5%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 1000px) {
+    html { font-size: 62.5%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 600px) {
+    html { font-size: 37.5%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height:100%;
+    width: 100%;
+    overflow:hidden;
+    background-color: #A3B1E7;
+}
+
+.whole-div {
+    border-color: #848484;
+    background-color: white;
+    width: 40%;
+    height: 60%;
+    border-radius: 10px;
+    margin: 5% auto 0;
+}
+
+.whole-div-div {
+    padding-top: 5%;
+    padding-left: 5%;
+}
+
+.whole-div-div-p-1 {
+    font-weight: bold;
+}
+
+.error-image {
+    width: 30%;
+    margin-left: 35%;
+    cursor: pointer;
+}

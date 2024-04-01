@@ -6,6 +6,7 @@ import lombok.Data;
 public class CategoryListDTO {
 
     private CommonLayoutDTO commonLayoutForm;
+    private int no;
     private String categoryNo;
     private String storeNo;
     private String categoryName;

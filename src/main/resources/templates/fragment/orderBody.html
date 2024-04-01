@@ -13,19 +13,15 @@
 </head>
 <body>
     <div class="header">
-        <div class="header-title">
-            <p class="main-title" th:text="#{title.force}"></p>
-        </div>
+        <img class="header-title-image" src="/images/fragment/title.png" alt="title.png" th:onclick="|location.href='@{/table}'|"/>
         <div class="header-content">
             <p class="content" th:text="|#{header.storeName} : ${header.storeName}|"></p>
             <p class="content" th:text="|#{header.businessDate} : ${#temporals.format(header.businessDate, 'YYYY-MM-dd (E)')}|"></p>
             <p class="content" th:text="|#{header.salesMan} : ${header.salesMan}|"></p>
             <p class="content" th:text="|#{header.currentDate} : ${#temporals.format(header.currentDate, 'YYYY-MM-dd HH:mm')}|"></p>
         </div>
-        <form th:action method="post">
-            <button type="submit" class="button-1" th:text="#{button.close}"></button>
-        </form>
-        <form th:action="@{/logout}" method="post">
+        <button type="button" class="button-1" th:text="#{button.close}" th:onclick="|location.href='@{/close}'|"></button>
+        <form class="header-form" th:action="@{/logout}" method="post">
             <button type="submit" class="button-2" th:text="#{button.logout}"></button>
         </form>
     </div>

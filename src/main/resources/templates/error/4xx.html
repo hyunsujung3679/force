@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error/error.css}">
+    <script th:inline="javascript"></script>
+</head>
+<body>
+    <div class="whole-div">
+        <div class="whole-div-div">
+            <img class="error-image" src="/images/login/title.png" alt="title.png" th:onclick="|location.href='@{/table}'|"/>
+            <p class="whole-div-div-p-1" th:text="#{label.error4xx.msg1}"></p>
+            <p class="whole-div-div-p-1" th:text="#{label.error4xx.msg2}"></p>
+            <br>
+            <p class="whole-div-div-p-2" th:text="#{label.error4xx.msg3}"></p>
+            <p class="whole-div-div-p-2" th:text="#{label.error4xx.msg4}"></p>
+            <p class="whole-div-div-p-2" th:text="#{label.error4xx.msg5}"></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -62,23 +62,18 @@
 
     <form action="/login" th:object="${userDTO}" method="post">
         <div class="login-box">
-            <div class="login-system-title" th:text="#{title.force}"></div>
-            <div class="login-system-subtitle" th:text="#{title.sub.force}"></div>
+            <img class="login-image-3" src="/images/login/title.png" alt="title.png"/>
             <div class="login-insert">
                 <img class="login-image-1" src="/images/login/person.png" alt="person.png"/>
                 <label>
-                    <input type="text"
-                           th:field="*{userId}"
-                           class="login-input">
+                    <input type="text" th:field="*{userId}" class="login-input">
                 </label>
             </div>
             <div class="field-error" th:errors="*{userId}" />
             <div class="login-insert">
                 <img class="login-image-2" src="/images/login/lock.png" alt="lock.png"/>
                 <label>
-                    <input type="password"
-                           th:field="*{password}"
-                           class="login-password-input">
+                    <input type="password" th:field="*{password}" class="login-password-input">
                 </label>
             </div>
             <div class="field-error" th:errors="*{password}" />

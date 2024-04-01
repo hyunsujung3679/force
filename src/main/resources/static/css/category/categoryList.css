@@ -1,7 +1,25 @@
+@media (max-width: 2000px) {
+    html { font-size: 125%; }
+}
+
+@media (max-width: 1600px) {
+    html { font-size: 100%; }
+}
+
+@media (max-width: 1200px) {
+    html { font-size: 75%; }
+}
+
+@media (max-width: 800px) {
+    html { font-size: 50%; }
+}
+
+@media (max-width: 400px) {
+    html { font-size: 25%; }
+}
+
 html {
     height: 100%;
-    width: 100%;
-    font-size: 100%;
 }
 
 body {
@@ -29,23 +47,30 @@ section {
     background-color: #757575;
 }
 
+.category-title-no {
+    color: #F0EB66;
+    width: 20%;
+    text-align: center;
+    border: 1px solid black;
+}
+
 .category-title-name {
     color: #F0EB66;
-    width: 50%;
+    width: 40%;
     text-align: center;
     border: 1px solid black;
 }
 
 .category-title-use {
     color: #F0EB66;
-    width: 25%;
+    width: 20%;
     text-align: center;
     border: 1px solid black;
 }
 
 .category-title-rank {
     color: #F0EB66;
-    width: 25%;
+    width: 20%;
     text-align: center;
     border: 1px solid black;
 }
@@ -55,22 +80,29 @@ section {
     cursor:pointer;
 }
 
+.category-no {
+    width: 20%;
+    text-align: center;
+    border: 1px solid black;
+    pointer-events : none;
+}
+
 .category-name {
-    width: 50%;
+    width: 40%;
     text-align: center;
     border: 1px solid black;
     pointer-events : none;
 }
 
 .category-use {
-    width: 25%;
+    width: 20%;
     text-align: center;
     border: 1px solid black;
     pointer-events : none;
 }
 
 .category-rank {
-    width: 25%;
+    width: 20%;
     text-align: center;
     border: 1px solid black;
     pointer-events : none;

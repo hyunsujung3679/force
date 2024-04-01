@@ -46,24 +46,27 @@ body {
 
 .header {
     display: flex;
-    justify-content: space-between;
+    height: 7.5%;
 }
 
 .header-title {
     background-color: #ABA8A8;
     margin-left: 3.5%;
+    height: 100%;
 }
 
 .main-title {
     font-weight: bold;
-    font-size: 100%;
 }
 
 .header-content {
     display: flex;
     justify-content: space-around;
-    width: 75%;
+    width: 79.5%;
     background-color: #757575;
+    height: 98%;
+    margin-left:0.2%;
+    margin-top:0.1%;
 }
 
 .content {
@@ -73,21 +76,26 @@ body {
 .button-1 {
     background-color: #757575;
     font-weight: bold;
-    font-size: 100%;
     color: white;
     cursor:pointer;
     border-color: #ABA8A8;
+    height: 100%;
+    width:5%;
 }
 
 .button-2 {
     background-color: #757575;
     font-weight: bold;
-    font-size: 100%;
     color: white;
     cursor:pointer;
     border-color: #ABA8A8;
     height: 100%;
     width: 100%;
+}
+
+.header-form {
+    height: 100%;
+    width: 4.8%;
 }
 
 .main {
@@ -106,14 +114,22 @@ body {
 
 .side-bar-button-wrap {
     margin-left: 12%;
+    height: 100%;
 }
 
 .side-bar-button {
     width: 85%;
     background-color: #F2EDFF;
     font-weight: bold;
-    font-size: 140%;
     cursor:pointer;
     border-color: white;
     margin-top:15%;
+    height: 10%;
+    font-size: 110%;
+}
+
+.header-title-image {
+    width: 10.5%;
+    margin-top: 0.1%;
+    cursor: pointer;
 }

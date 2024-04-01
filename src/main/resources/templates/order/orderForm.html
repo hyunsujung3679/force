@@ -245,7 +245,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         html +=         '<div>' + data[index].totalSalePrice.toLocaleString() + '</div>'
                         html +=     '</div>'
                         html +=     '<div class="table-content-6">'
-                        html +=         '<div>' + data[index].etc + '</div>'
+                        html +=         '<div class="table-content-6-div">' + data[index].etc + '</div>'
                         html +=     '</div>'
                         html += '</div>'
 
@@ -535,7 +535,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                                     <div th:text="${#numbers.formatInteger(order.totalSalePrice, 0, 'COMMA')}"></div>
                                 </div>
                                 <div class="table-content-6">
-                                    <div th:text="${order.etc}"></div>
+                                    <div class="table-content-6-div" th:text="${order.etc}"></div>
                                 </div>
                             </div>
                         </div>

@@ -6,10 +6,7 @@ import com.hsj.force.common.Constants;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CategoryInsertDTO;
-import com.hsj.force.domain.dto.CategoryListDTO;
-import com.hsj.force.domain.dto.CategoryUpdateDTO;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +28,11 @@ public class CategoryService {
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
         List<CategoryListDTO> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
+
+        for(int i = 0; i < categoryList.size(); i++) {
+            CategoryListDTO category = categoryList.get(i);
+            category.setNo(i + 1);
+        }
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("categoryList", categoryList);

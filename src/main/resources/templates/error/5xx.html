@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head th:replace="fragment/header :: common_header(~{::link}, ~{::script})">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error/error.css}">
+    <script th:inline="javascript"></script>
+</head>
+<body>
+<div class="whole-div">
+    <div class="whole-div-div">
+        <img class="error-image" src="/images/login/title.png" alt="title.png" th:onclick="|location.href='@{/table}'|"/>
+        <p class="whole-div-div-p-1" th:text="#{label.error5xx.msg1}">죄송합니다.</p>
+        <p class="whole-div-div-p-1" th:text="#{label.error5xx.msg2}">시스템 오류가 발생했습니다.</p>
+        <br>
+        <p class="whole-div-div-p-2" th:text="#{label.error5xx.msg3}">방문하시려는 페이지의 오류를 개선하고 있습니다.</p>
+        <p class="whole-div-div-p-2" th:text="#{label.error5xx.msg4}">현재 페이지에 접근할 수 없습니다.</p>
+        <p class="whole-div-div-p-2" th:text="#{label.error5xx.msg5}">잠시 후 다시 시도하시기 바랍니다.</p>
+    </div>
+</div>
+</body>
+</html>

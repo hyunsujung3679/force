@@ -23,7 +23,7 @@
 
 .first-div-input {
     margin-left: 1%;
-    width: 30%;
+    width: 60%;
 }
 
 .second-div {
@@ -34,6 +34,7 @@
 
 .second-div-select {
     margin-left: 1%;
+    width: 66%;
 }
 
 .third-div {
@@ -43,7 +44,7 @@
 }
 
 .third-div-input {
-    width: 10%;
+    width: 64%;
     margin-left: 1%;
 }
 

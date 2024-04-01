@@ -38,7 +38,7 @@ public class MenuController {
     private final CommonService commonService;
 
     @GetMapping
-    public String menuForm(HttpSession session, Model model) {
+    public String menuListForm(HttpSession session, Model model) {
 
         User loginMember = (User) session.getAttribute("loginMember");
         if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {

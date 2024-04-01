@@ -16,7 +16,7 @@
     height: 70%;
     background-color: white;
     cursor:pointer;
-    border-radius: 5px;
+    border-radius: 7px;
 }
 
 .second-line {
@@ -47,7 +47,6 @@
     width: 5%;
     background-color: #5DA4EF;
     font-weight: bold;
-    font-size: 110%;
     color: white;
     cursor:pointer;
     border-color: grey;

@@ -23,8 +23,7 @@ public class OpenCloseInsertDTO {
     private String opener;
 
     @NumberFormat(pattern = "###,###")
-    @NotEmpty(message = "아이디를 입력해주세요")
-    private String openMoney;
+    private int openMoney;
     @DateTimeFormat(pattern = "yyyy-MM-dd (E)")
     private LocalDateTime closeDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")

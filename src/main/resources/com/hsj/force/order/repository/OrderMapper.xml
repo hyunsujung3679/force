@@ -340,4 +340,23 @@
            AND O.ORDER_STATUS_NO = 'OS001'
     </select>
 
+    <select id="selectOrderListV2" resultType="com.hsj.force.domain.dto.OrderListDTO">
+        SELECT O.ORDER_NO
+             , O.ORDER_SEQ
+             , O.STORE_NO
+             , O.TABLE_NO
+             , O.MENU_NO
+             , O.SALE_PRICE
+             , O.QUANTITY
+             , O.TOTAL_SALE_PRICE
+             , O.ORDER_STATUS_NO
+             , M.MENU_NAME
+        FROM TORDER O
+           , TMENU M
+        WHERE O.MENU_NO = M.MENU_NO
+          AND O.ORDER_STATUS_NO = 'OS001'
+          AND M.SALE_STATUS_NO = 'SS001'
+          AND O.STORE_NO = #{storeNo}
+    </select>
+
 </mapper>

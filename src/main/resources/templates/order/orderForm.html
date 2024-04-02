@@ -75,7 +75,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 contentType: "application/json",
                 success: function(data) {
                     if(data > 0) {
-                        location.reload();
+                        selectOrderList();
                     } else {
                         $("#exception-modal-1").modal({});
                     }
@@ -93,14 +93,15 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/cancel/selection",
+                url: "/order/cancel-selection",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
                 contentType: "application/json",
                 success: function(data) {
                     if(data > 0) {
-                        location.reload();
+                        selectOrderList();
+                        $(".menu-color").removeClass("order-color");
                     }
                 },
                 error: function(xhr) {
@@ -115,14 +116,14 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/cancel/whole",
+                url: "/order/cancel-whole",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
                 contentType: "application/json",
                 success: function(data) {
                     if(data > 0) {
-                        location.reload();
+                        selectOrderList();
                     }
                 },
                 error: function(xhr) {
@@ -139,14 +140,16 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, quantity : quantity, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/change/quantity",
+                url: "/order/change-quantity",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
                 contentType: "application/json",
                 success: function(data) {
                     if(data > 0) {
-                        location.reload();
+                        selectOrderList();
+                        $(".menu-color").removeClass("order-color");
+                        $("input[name=inputValue]").val(0);
                     }
                 },
                 error: function(xhr) {
@@ -163,7 +166,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, salePrice : salePrice, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/change/salePrice",
+                url: "/order/change-salePrice",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -291,7 +294,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, percent : percent, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/full/per",
+                url: "/order/discount-full-per",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -316,7 +319,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, discountPrice : discountPrice, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/full/price",
+                url: "/order/discount-full-price",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -340,7 +343,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/full/cancel",
+                url: "/order/discount-full-cancel",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -365,7 +368,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, percent : percent, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/sel/per",
+                url: "/order/discount-sel-per",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -391,7 +394,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, discountPrice : discountPrice, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/sel/price",
+                url: "/order/discount-sel-price",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -416,7 +419,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {orderNo : orderNo, menuNo : menuNo, tableNo : tableNo};
 
             $.ajax({
-                url: "/order/discount/sel/cancel",
+                url: "/order/discount-sel-cancel",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",

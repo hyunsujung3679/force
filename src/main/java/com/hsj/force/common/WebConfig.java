@@ -1,5 +1,6 @@
 package com.hsj.force.common;
 
+import com.hsj.force.open.service.OpenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

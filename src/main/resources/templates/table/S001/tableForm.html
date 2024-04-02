@@ -10,7 +10,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             $("#table-move-modal").modal({});
 
             $.ajax({
-                url: "/table/exist/order/list",
+                url: "/table/exist-order/list",
                 type: "get",
                 success: function(data) {
                     $(".before-list").html("");
@@ -26,7 +26,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             });
 
             $.ajax({
-                url: "/table/not/exist/order/list",
+                url: "/table/not-exist-order/list",
                 type: "get",
                 success: function(data) {
                     $(".after-list").html("");
@@ -49,7 +49,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {beforeTableNo : beforeTableNo, afterTableNo : afterTableNo};
 
             $.ajax({
-                url: "/table/update/V1",
+                url: "/table/move",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",
@@ -71,7 +71,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             $("#table-combine-modal").modal({});
 
             $.ajax({
-                url: "/table/exist/order/list",
+                url: "/table-exist-order/list",
                 type: "get",
                 success: function(data) {
                     $(".first-list").html("");
@@ -96,7 +96,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const parameter = {firstTableNo : firstTableNo, secondTableNo : secondTableNo};
 
             $.ajax({
-                url: "/table/update/V2",
+                url: "/table/combine",
                 type: "post",
                 data: JSON.stringify(parameter),
                 dataType : "json",

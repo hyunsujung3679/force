@@ -53,4 +53,6 @@ public interface OrderMapper {
     String selectLastOrderNo(String storeNo);
 
     List<String> selectMenuNoList(String storeNo, String orderNo);
+
+    List<OrderListDTO> selectOrderListV2(String storeNo);
 }

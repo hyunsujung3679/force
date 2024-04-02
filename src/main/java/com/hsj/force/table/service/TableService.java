@@ -3,6 +3,7 @@ package com.hsj.force.table.service;
 import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
+import com.hsj.force.order.repository.OrderMapper;
 import com.hsj.force.table.repository.TableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,12 +23,13 @@ public class TableService {
     private final TableMapper tableMapper;
 
     private final CommonMapper commonMapper;
+    private final OrderMapper orderMapper;
 
     public Map<String, Object> selectTableInfo(User loginMember) {
 
         String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
         List<TableListDTO> tableList = tableMapper.selectTableList(loginMember.getStoreNo());
-        List<OrderListDTO> orderList = tableMapper.selectOrderList(loginMember.getStoreNo());
+        List<OrderListDTO> orderList = orderMapper.selectOrderListV2(loginMember.getStoreNo());
         Map<String, List<OrderListDTO>> tableOfOrderMap = new HashMap<>();
         List<OrderListDTO> tempOrderList = null;
 

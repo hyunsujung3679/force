@@ -10,7 +10,22 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             const categoryNo = div.children[0].value;
 
             $.ajax({
-                url: "/menu/" + categoryNo,
+                url: "/menu/" + categoryNo + "/list",
+                type: "get",
+                success: function(data) {
+                    selectMenuList(data);
+                },
+                error: function(xhr) {
+                    console.log(xhr);
+                }
+            });
+
+        }
+
+        function selectMenuListByFirstCategoryNo() {
+
+            $.ajax({
+                url: "/menu/first-category/list",
                 type: "get",
                 success: function(data) {
                     selectMenuList(data);
@@ -76,6 +91,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 success: function(data) {
                     if(data > 0) {
                         selectOrderList();
+                        selectMenuListByFirstCategoryNo();
                     } else {
                         $("#exception-modal-1").modal({});
                     }
@@ -101,6 +117,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 success: function(data) {
                     if(data > 0) {
                         selectOrderList();
+                        selectMenuListByFirstCategoryNo();
                         $(".menu-color").removeClass("order-color");
                     }
                 },
@@ -124,6 +141,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 success: function(data) {
                     if(data > 0) {
                         selectOrderList();
+                        selectMenuListByFirstCategoryNo();
                     }
                 },
                 error: function(xhr) {
@@ -148,6 +166,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 success: function(data) {
                     if(data > 0) {
                         selectOrderList();
+                        selectMenuListByFirstCategoryNo();
                         $(".menu-color").removeClass("order-color");
                         $("input[name=inputValue]").val(0);
                     }

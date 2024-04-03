@@ -26,4 +26,6 @@ public interface CategoryMapper {
     int updateCategory(Category category);
 
     CategoryUpdateDTO selectCategory(String storeNo, String categoryNo);
+
+    String selectFirstCategoryNo(String storeNo);
 }

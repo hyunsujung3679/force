@@ -55,7 +55,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                 dataType : "json",
                 contentType: "application/json",
                 success: function(data) {
-                    location.reload();
+                    if(data > 0) {
+                        location.reload();
+                    }
                 },
                 error: function(xhr) {
                     console.log(xhr);
@@ -71,7 +73,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
             $("#table-combine-modal").modal({});
 
             $.ajax({
-                url: "/table-exist-order/list",
+                url: "/table/exist-order/list",
                 type: "get",
                 success: function(data) {
                     $(".first-list").html("");
@@ -91,6 +93,9 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
         }
 
         function tableCombine() {
+
+            const errorMsg = [[#{message.no.combine.same.table}]];
+
             const firstTableNo = $(".first-list").val();
             const secondTableNo = $(".second-list").val();
             const parameter = {firstTableNo : firstTableNo, secondTableNo : secondTableNo};
@@ -105,7 +110,7 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                     if(data > 0) {
                         location.reload();
                     } else {
-                        $(".field-error-1").text($("input[name=field-error-1]").val());
+                        $(".field-error-1").text(errorMsg);
                     }
                 },
                 error: function(xhr) {

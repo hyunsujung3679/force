@@ -161,7 +161,6 @@ public class MenuController {
 
         Map<String, String> errors = new HashMap<>();
         User loginMember = (User) session.getAttribute("loginMember");
-        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(menu.getMenuName())) {
             errors.put("menuName", messageSource.getMessage("message.input.menu.name", null, Locale.KOREA));
@@ -190,8 +189,12 @@ public class MenuController {
         }
 
         if(!errors.isEmpty()) {
-            model.addAttribute("header", commonLayoutDTO);
-            model.addAttribute("menu", new MenuInsertDTO());
+            Map<String, Object> map = menuService.selectMenuUpdateInfo(loginMember, menuNo);
+            MenuUpdateDTO menuUpdateDTO = (MenuUpdateDTO) map.get("menu");
+            model.addAttribute("header", map.get("commonLayoutForm"));
+            model.addAttribute("menu", map.get("menu"));
+            model.addAttribute("ingredientQuantityList", map.get("ingredientQuantityList"));
+            model.addAttribute("imageSaveName", menuUpdateDTO.getImageSaveName());
             model.addAttribute("errors", errors);
             return "menu/menuUpdate";
         }
@@ -230,11 +233,18 @@ public class MenuController {
         return new UrlResource("file:" + fileDir + fileName);
     }
 
-    @GetMapping("/{categoryNo}")
+    @GetMapping("/{categoryNo}/list")
     @ResponseBody
     public List<MenuListDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
         User loginMember = (User) session.getAttribute("loginMember");
         return menuService.selectMenuListByCategoryNo(loginMember.getStoreNo(), categoryNo);
+    }
+
+    @GetMapping("/first-category/list")
+    @ResponseBody
+    public List<MenuListDTO> selectMenuListByFirstCategory(HttpSession session) {
+        User loginMember = (User) session.getAttribute("loginMember");
+        return menuService.selectMenuListByFirstCategory(loginMember.getStoreNo());
     }
 
 }

@@ -100,7 +100,7 @@ form {
 }
 
 .second-content-div-1 {
-    margin-left: 25%;
+    margin-left: 20%;
 }
 
 .second-content-div-2 {
@@ -184,4 +184,8 @@ form {
     font-size: 150%;
     border-color: white;
     font-weight: bold;
+}
+
+.second-content-div {
+    width: 40%;
 }

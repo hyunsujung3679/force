@@ -18,39 +18,39 @@
                 </div>
             </div>
             <div class="second-content">
-                <div>
+                <div class="second-content-div">
                     <span th:text="|#{label.total.sale.price} : |"></span>
-                    <span th:text="${close.sumSalePrice}"></span>
+                    <span th:text="${#numbers.formatInteger(close.sumSalePrice, 0, 'COMMA')}"></span>
                 </div>
                 <div class="second-content-div-1">
                     <span th:text="|#{label.number.of.sale} : |"></span>
-                    <span th:text="${close.sumOrderCnt}"></span>
+                    <span th:text="${#numbers.formatInteger(close.sumOrderCnt, 0, 'COMMA')}"></span>
                 </div>
             </div>
             <div class="second-content">
-                <div>
+                <div class="second-content-div">
                     <span th:text="|#{label.cancel.order.sale.price} : |"></span>
-                    <span th:text="${close.sumCancelPrice}"></span>
+                    <span th:text="${#numbers.formatInteger(close.sumCancelPrice, 0, 'COMMA')}"></span>
                 </div>
-                <div class="second-content-div-2">
+                <div class="second-content-div-1">
                     <span th:text="|#{label.number.of.order.cancel} : |"></span>
-                    <span th:text="${close.sumCancelCnt}"></span>
+                    <span th:text="${#numbers.formatInteger(close.sumCancelCnt, 0, 'COMMA')}"></span>
                 </div>
             </div>
             <div class="second-content">
-                <div>
+                <div class="second-content-div">
                     <span th:text="|#{label.total.discount.price} : |"></span>
-                    <span th:text="${close.discountPrice}"></span>
+                    <span th:text="${#numbers.formatInteger(close.discountPrice, 0, 'COMMA')}"></span>
                 </div>
-                <div class="second-content-div-3">
+                <div class="second-content-div-1">
                     <span th:text="|#{label.real.order.cnt} : |"></span>
-                    <span th:text="${close.realOrderCnt}"></span>
+                    <span th:text="${#numbers.formatInteger(close.realOrderCnt, 0, 'COMMA')}"></span>
                 </div>
             </div>
             <div class="second-content">
-                <div>
+                <div class="second-content-div">
                     <span th:text="|#{label.total.sale.price-2} : |"></span>
-                    <span th:text="${close.totalSalePrice}"></span>
+                    <span th:text="${#numbers.formatInteger(close.totalSalePrice, 0, 'COMMA')}"></span>
                 </div>
             </div>
             <div class="line-1"></div>

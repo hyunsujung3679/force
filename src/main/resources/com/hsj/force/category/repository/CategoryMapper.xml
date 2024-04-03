@@ -105,4 +105,13 @@
         WHERE C.STORE_NO = #{storeNo}
         AND C.CATEGORY_NO = #{categoryNo}
     </select>
+
+    <select id="selectFirstCategoryNo" resultType="String">
+        SELECT CATEGORY_NO
+        FROM TCATEGORY
+        WHERE STORE_NO = #{storeNo}
+          AND USE_YN = '1'
+        ORDER BY PRIORITY ASC
+            LIMIT 1
+    </select>
 </mapper>

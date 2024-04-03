@@ -1,5 +1,6 @@
 package com.hsj.force.menu.service;
 
+import com.hsj.force.category.repository.CategoryMapper;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
@@ -27,6 +28,7 @@ public class MenuService {
     private final CommonMapper commonMapper;
     private final MenuMapper menuMapper;
     private final IngredientMapper ingredientMapper;
+    private final CategoryMapper categoryMapper;
 
     public List<MenuListDTO> selectMenuListByCategoryNo(String storeNo, String categoryNo) {
         Map<String, Object> paramMap = new HashMap<>();
@@ -337,5 +339,33 @@ public class MenuService {
             return 0;
         }
 
+    }
+
+    public List<MenuListDTO> selectMenuListByFirstCategory(String storeNo) {
+
+        String categoryNo = categoryMapper.selectFirstCategoryNo(storeNo);
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("storeNo", storeNo);
+        paramMap.put("categoryNo", categoryNo);
+
+        List<MenuListDTO> menuList = menuMapper.selectMenuListV2(paramMap);
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
+
+        boolean isEnoughStock;
+        for(MenuListDTO menu : menuList) {
+            isEnoughStock = true;
+            for(MenuIngredientListDTO menuIngredient : menuIngredientList) {
+                if(menu.getMenuNo().equals(menuIngredient.getMenuNo())) {
+                    if(menuIngredient.getNeedQuantity() > menuIngredient.getStockQuantity()) {
+                        isEnoughStock = false;
+                        break;
+                    }
+                }
+            }
+            menu.setEnoughStock(isEnoughStock);
+        }
+
+        return menuList;
     }
 }

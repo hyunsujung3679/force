@@ -18,10 +18,10 @@ public class MenuUpdateDTO {
     private String ingredientNo2;
     private String ingredientNo3;
     private String ingredientNo4;
-    private Integer quantity1;
-    private Integer quantity2;
-    private Integer quantity3;
-    private Integer quantity4;
+    private Double quantity1;
+    private Double quantity2;
+    private Double quantity3;
+    private Double quantity4;
     private List<MenuIngredientListDTO> ingredientQuantityList;
     private String imageOriginName;
     private String imageSaveName;

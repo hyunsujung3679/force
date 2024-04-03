@@ -4,32 +4,32 @@
 <mapper namespace="com.hsj.force.close.repository.CloseMapper">
 
     <select id="selectSumInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
-        SELECT SUM(O.SALE_PRICE) AS SUM_SALE_PRICE
+        SELECT SUM(O.TOTAL_SALE_PRICE) AS SUM_SALE_PRICE
              , COUNT(*) AS SUM_ORDER_CNT
         FROM TORDER O
-        WHERE date_format(O.ORDER_DATE, '%Y-%m-%d') &gt;= (SELECT OC.MODIFY_DATE
-                                                           FROM TOPENCLOSE OC
-                                                           WHERE OC.CLOSE_MONEY IS NULL)
-          AND O.STORE_NO = #{storeNo}
+        WHERE O.ORDER_DATE &gt;= (SELECT OC.MODIFY_DATE
+                                  FROM TOPENCLOSE OC
+                                  WHERE OC.CLOSE_MONEY IS NULL)
+        AND O.STORE_NO = #{storeNo}
     </select>
 
     <select id="selectCancelInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
         SELECT SUM(O.TOTAL_SALE_PRICE) AS SUM_CANCEL_PRICE
              , COUNT(*) AS SUM_CANCEL_CNT
         FROM TORDER O
-        WHERE date_format(O.ORDER_DATE, '%Y-%m-%d') > (SELECT OC.MODIFY_DATE
-                                                       FROM TOPENCLOSE OC
-                                                       WHERE OC.CLOSE_MONEY IS NULL)
-          AND O.ORDER_STATUS_NO = 'OS002'
-          AND O.STORE_NO = #{storeNo}
+        WHERE O.ORDER_DATE &gt;= (SELECT OC.MODIFY_DATE
+                                  FROM TOPENCLOSE OC
+                                  WHERE OC.CLOSE_MONEY IS NULL)
+        AND O.ORDER_STATUS_NO = 'OS002'
+        AND O.STORE_NO = #{storeNo}
     </select>
 
     <select id="selectDiscountPrice" resultType="int">
         SELECT SUM(O.DISCOUNT_PRICE) AS DISCOUNT_PRICE
         FROM TORDER O
-        WHERE date_format(O.ORDER_DATE, '%Y-%m-%d') > (SELECT OC.MODIFY_DATE
-                                                       FROM TOPENCLOSE OC
-                                                       WHERE OC.CLOSE_MONEY IS NULL)
+        WHERE O.ORDER_DATE &gt;= (SELECT OC.MODIFY_DATE
+                                  FROM TOPENCLOSE OC
+                                  WHERE OC.CLOSE_MONEY IS NULL)
           AND O.ORDER_STATUS_NO = 'OS003'
           AND O.STORE_NO = #{storeNo}
     </select>
@@ -38,9 +38,9 @@
         SELECT COUNT(*) AS REAL_ORDER_CNT
              , SUM(O.TOTAL_SALE_PRICE) AS TOTAL_SALE_PRICE
         FROM TORDER O
-        WHERE date_format(O.ORDER_DATE, '%Y-%m-%d') > (SELECT OC.MODIFY_DATE
-                                                       FROM TOPENCLOSE OC
-                                                       WHERE OC.CLOSE_MONEY IS NULL)
+        WHERE O.ORDER_DATE &gt;= (SELECT OC.MODIFY_DATE
+                                  FROM TOPENCLOSE OC
+                                  WHERE OC.CLOSE_MONEY IS NULL)
           AND O.ORDER_STATUS_NO = 'OS003'
           AND O.STORE_NO = #{storeNo}
     </select>

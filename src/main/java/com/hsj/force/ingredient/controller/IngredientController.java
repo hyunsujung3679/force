@@ -109,7 +109,6 @@ public class IngredientController {
 
         Map<String, String> errors = new HashMap<>();
         User loginMember = (User) session.getAttribute("loginMember");
-        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(ingredient.getIngredientName())) {
             errors.put("ingredientName", messageSource.getMessage("message.input.ingredient.name", null, Locale.KOREA));
@@ -122,8 +121,10 @@ public class IngredientController {
         }
 
         if(!errors.isEmpty()) {
-            model.addAttribute("header", commonLayoutDTO);
-            model.addAttribute("ingredient", new IngredientUpdateDTO());
+            Map<String, Object> map = ingredientService.selectIngredientUpdateInfo(loginMember, ingredient.getIngredientNo());
+            model.addAttribute("header", map.get("commonLayoutForm"));
+            model.addAttribute("ingredient", map.get("ingredient"));
+            model.addAttribute("inDeReasonList", map.get("inDeReasonList"));
             model.addAttribute("errors", errors);
             return "ingredient/ingredientUpdate";
         }

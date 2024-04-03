@@ -107,7 +107,6 @@ public class CategoryController {
 
         Map<String, String> errors = new HashMap<>();
         User loginMember = (User) session.getAttribute("loginMember");
-        CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(category.getCategoryName())) {
             errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
@@ -116,8 +115,9 @@ public class CategoryController {
             errors.put("priority", messageSource.getMessage("message.input.priority", null, Locale.KOREA));
         }
         if(!errors.isEmpty()) {
-            model.addAttribute("header", commonLayoutDTO);
-            model.addAttribute("category", new CategoryUpdateDTO());
+            Map<String, Object> map = categoryService.selectCategoryUpdateInfo(loginMember, category.getCategoryNo());
+            model.addAttribute("header", map.get("commonLayoutForm"));
+            model.addAttribute("category", map.get("category"));
             model.addAttribute("errors", errors);
             return "category/categoryUpdate";
         }

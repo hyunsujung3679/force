@@ -7,132 +7,133 @@
 <body>
 
     <form th:action th:object="${close}" method="post">
-    <div class="close-first-div">
-        <div class="close-first-div-left">
-            <div class="first-content">
-                <div>
-                    <p class="first-content-first-div-p" th:text="#{label.deadline.settlement}"></p>
+        <div class="close-first-div">
+            <div class="close-first-div-left">
+                <div class="first-content">
+                    <div>
+                        <p class="first-content-first-div-p" th:text="#{label.deadline.settlement}"></p>
+                    </div>
+                    <div class="first-content-second-div">
+                        <p class="first-content-second-div-p" th:text="|#{label.post.time} : ${#temporals.format(close.currentDate, 'YYYY-MM-dd HH:mm (E)')}|"></p>
+                    </div>
                 </div>
-                <div class="first-content-second-div">
-                    <p class="first-content-second-div-p" th:text="|#{label.post.time} : ${#temporals.format(close.currentDate, 'YYYY-MM-dd HH:mm (E)')}|"></p>
+                <div class="second-content">
+                    <div class="second-content-div">
+                        <span th:text="|#{label.total.sale.price} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.sumSalePrice, 0, 'COMMA')}"></span>
+                    </div>
+                    <div class="second-content-div-1">
+                        <span th:text="|#{label.number.of.sale} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.sumOrderCnt, 0, 'COMMA')}"></span>
+                    </div>
+                </div>
+                <div class="second-content">
+                    <div class="second-content-div">
+                        <span th:text="|#{label.cancel.order.sale.price} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.sumCancelPrice, 0, 'COMMA')}"></span>
+                    </div>
+                    <div class="second-content-div-1">
+                        <span th:text="|#{label.number.of.order.cancel} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.sumCancelCnt, 0, 'COMMA')}"></span>
+                    </div>
+                </div>
+                <div class="second-content">
+                    <div class="second-content-div">
+                        <span th:text="|#{label.total.discount.price} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.discountPrice, 0, 'COMMA')}"></span>
+                    </div>
+                    <div class="second-content-div-1">
+                        <span th:text="|#{label.real.order.cnt} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.realOrderCnt, 0, 'COMMA')}"></span>
+                    </div>
+                </div>
+                <div class="second-content">
+                    <div class="second-content-div">
+                        <span th:text="|#{label.total.sale.price-2} : |"></span>
+                        <span th:text="${#numbers.formatInteger(close.totalSalePrice, 0, 'COMMA')}"></span>
+                    </div>
+                </div>
+                <div class="line-1"></div>
+            </div>
+            <div class="close-first-div-right">
+                <div class="third-content">
+                    <div>
+                        <p class="third-content-first-div-p" th:text="#{label.closing.cash.present}"></p>
+                    </div>
+                </div>
+                <div class="fourth-content-wrap">
+                    <div class="fourth-content">
+                        <span th:text="#{label.one.hun.thous}"></span>
+                        <div class="fourth-content-div-1">
+                            <input type="number" min="0" th:field="*{oneHunThous}" class="fourth-content-input">
+                            <span th:text="#{label.num}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.fifty.thous}"></span>
+                        <div class="fourth-content-div-1">
+                            <input type="number" min="0" th:field="*{fiftyThous}" class="fourth-content-input">
+                            <span th:text="#{label.num}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.ten.thous}"></span>
+                        <div class="fourth-content-div-2">
+                            <input type="number" min="0" th:field="*{tenThous}" class="fourth-content-input">
+                            <span th:text="#{label.num}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.five.thous}"></span>
+                        <div class="fourth-content-div-1">
+                            <input type="number" min="0" th:field="*{fiveThous}" class="fourth-content-input">
+                            <span th:text="#{label.num}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.one.thous}"></span>
+                        <div class="fourth-content-div-2">
+                            <input type="number" min="0" th:field="*{oneThous}" class="fourth-content-input">
+                            <span th:text="#{label.num}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.five.hun}"></span>
+                        <div class="fourth-content-div-2">
+                            <input type="number" min="0" th:field="*{fiveHun}" class="fourth-content-input">
+                            <span th:text="#{label.num-2}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.one.hun}"></span>
+                        <div class="fourth-content-div-3">
+                            <input type="number" min="0" th:field="*{oneHun}" class="fourth-content-input">
+                            <span th:text="#{label.num-2}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.fifty}"></span>
+                        <div class="fourth-content-div-2">
+                            <input type="number" min="0" th:field="*{fifty}" class="fourth-content-input">
+                            <span th:text="#{label.num-2}"></span>
+                        </div>
+                    </div>
+                    <div class="fourth-content">
+                        <span th:text="#{label.ten}"></span>
+                        <div class="fourth-content-div-3">
+                            <input type="number" min="0" th:field="*{ten}" class="fourth-content-input">
+                            <span th:text="#{label.num-2}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="line-2"></div>
+                <div class="button-wrap">
+                    <button type="submit" class="submit-button" th:text="#{button.close}"></button>
+                    <button type="button" class="submit-button" th:text="#{button.back}" th:onclick="|location.href='@{/table}'|"></button>
                 </div>
             </div>
-            <div class="second-content">
-                <div class="second-content-div">
-                    <span th:text="|#{label.total.sale.price} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.sumSalePrice, 0, 'COMMA')}"></span>
-                </div>
-                <div class="second-content-div-1">
-                    <span th:text="|#{label.number.of.sale} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.sumOrderCnt, 0, 'COMMA')}"></span>
-                </div>
-            </div>
-            <div class="second-content">
-                <div class="second-content-div">
-                    <span th:text="|#{label.cancel.order.sale.price} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.sumCancelPrice, 0, 'COMMA')}"></span>
-                </div>
-                <div class="second-content-div-1">
-                    <span th:text="|#{label.number.of.order.cancel} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.sumCancelCnt, 0, 'COMMA')}"></span>
-                </div>
-            </div>
-            <div class="second-content">
-                <div class="second-content-div">
-                    <span th:text="|#{label.total.discount.price} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.discountPrice, 0, 'COMMA')}"></span>
-                </div>
-                <div class="second-content-div-1">
-                    <span th:text="|#{label.real.order.cnt} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.realOrderCnt, 0, 'COMMA')}"></span>
-                </div>
-            </div>
-            <div class="second-content">
-                <div class="second-content-div">
-                    <span th:text="|#{label.total.sale.price-2} : |"></span>
-                    <span th:text="${#numbers.formatInteger(close.totalSalePrice, 0, 'COMMA')}"></span>
-                </div>
-            </div>
-            <div class="line-1"></div>
         </div>
-        <div class="close-first-div-right">
-            <div class="third-content">
-                <div>
-                    <p class="third-content-first-div-p" th:text="#{label.closing.cash.present}"></p>
-                </div>
-            </div>
-            <div class="fourth-content-wrap">
-                <div class="fourth-content">
-                    <span th:text="#{label.one.hun.thous}"></span>
-                    <div class="fourth-content-div-1">
-                        <input type="number" min="0" th:field="*{oneHunThous}" class="fourth-content-input">
-                        <span th:text="#{label.num}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.fifty.thous}"></span>
-                    <div class="fourth-content-div-1">
-                        <input type="number" min="0" th:field="*{fiftyThous}" class="fourth-content-input">
-                        <span th:text="#{label.num}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.ten.thous}"></span>
-                    <div class="fourth-content-div-2">
-                        <input type="number" min="0" th:field="*{tenThous}" class="fourth-content-input">
-                        <span th:text="#{label.num}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.five.thous}"></span>
-                    <div class="fourth-content-div-1">
-                        <input type="number" min="0" th:field="*{fiveThous}" class="fourth-content-input">
-                        <span th:text="#{label.num}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.one.thous}"></span>
-                    <div class="fourth-content-div-2">
-                        <input type="number" min="0" th:field="*{oneThous}" class="fourth-content-input">
-                        <span th:text="#{label.num}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.five.hun}"></span>
-                    <div class="fourth-content-div-2">
-                        <input type="number" min="0" th:field="*{fiveHun}" class="fourth-content-input">
-                        <span th:text="#{label.num-2}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.one.hun}"></span>
-                    <div class="fourth-content-div-3">
-                        <input type="number" min="0" th:field="*{oneHun}" class="fourth-content-input">
-                        <span th:text="#{label.num-2}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.fifty}"></span>
-                    <div class="fourth-content-div-2">
-                        <input type="number" min="0" th:field="*{fifty}" class="fourth-content-input">
-                        <span th:text="#{label.num-2}"></span>
-                    </div>
-                </div>
-                <div class="fourth-content">
-                    <span th:text="#{label.ten}"></span>
-                    <div class="fourth-content-div-3">
-                        <input type="number" min="0" th:field="*{ten}" class="fourth-content-input">
-                        <span th:text="#{label.num-2}"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="line-2"></div>
-            <div class="button-wrap">
-                <button type="submit" class="submit-button" th:text="#{button.close}"></button>
-                <button type="button" class="submit-button" th:text="#{button.back}" th:onclick="|location.href='@{/table}'|"></button>
-            </div>
-        </div>
-    </div>
+    </form>
 
 </body>
 </html>

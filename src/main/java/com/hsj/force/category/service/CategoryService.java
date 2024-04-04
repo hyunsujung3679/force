@@ -40,7 +40,7 @@ public class CategoryService {
         return map;
     }
 
-    public void insertCategory(User loginMember, CategoryInsertDTO categoryInsertDTO) {
+    public int insertCategory(User loginMember, CategoryInsertDTO categoryInsertDTO) {
 
         Category category = new Category();
         category.setStoreNo(loginMember.getStoreNo());
@@ -54,7 +54,7 @@ public class CategoryService {
 
         checkPriority(loginMember, category);
 
-        categoryMapper.insertCategory(category);
+        return categoryMapper.insertCategory(category);
     }
 
 

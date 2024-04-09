@@ -21,7 +21,6 @@ import java.util.Map;
 public class TableService {
 
     private final TableMapper tableMapper;
-
     private final CommonMapper commonMapper;
     private final OrderMapper orderMapper;
 
@@ -82,10 +81,20 @@ public class TableService {
     }
 
     public int moveTable(User loginMember, TableDTO table) {
-        return tableMapper.updateTableNo(loginMember.getStoreNo(), table.getAfterTableNo(), table.getBeforeTableNo(), loginMember.getUserId());
+        int result = tableMapper.updateTableNoV1(loginMember.getStoreNo(), table.getAfterTableNo(), table.getBeforeTableNo(), loginMember.getUserId());
+        if(result > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public int combineTable(User loginMember, TableDTO table) {
-        return tableMapper.updateTableNo(loginMember.getStoreNo(), table.getFirstTableNo(), table.getSecondTableNo(), loginMember.getUserId());
+        int result = tableMapper.updateTableNoV2(loginMember.getStoreNo(), table.getFirstTableNo(), table.getSecondTableNo(), loginMember.getUserId());
+        if(result > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }

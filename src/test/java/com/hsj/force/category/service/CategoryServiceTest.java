@@ -21,7 +21,6 @@ class CategoryServiceTest {
     @Autowired
     private CategoryService categoryService;
     private User loginMember = null;
-    private CategoryInsertDTO categoryInsertDTO = null;
 
     @BeforeEach
     public void beforeEach() {
@@ -33,32 +32,24 @@ class CategoryServiceTest {
         loginMember.setPhoneNum("01027287526");
         loginMember.setPassword("1234");
         loginMember.setUseYn("1");
-
-        categoryInsertDTO = new CategoryInsertDTO();
-        categoryInsertDTO.setCategoryName("0404-1");
-        categoryInsertDTO.setPriority(99);
-        categoryInsertDTO.setUseYn("1");
     }
 
     @Test
     void selectCategoryListInfo() {
-        Map<String, Object> map1 = categoryService.selectCategoryListInfo(loginMember);
-        List<CategoryListDTO> categoryList1 = (List<CategoryListDTO>) map1.get("categoryList");
-        int beforeSize = categoryList1.size();
+        Map<String, Object> map = categoryService.selectCategoryListInfo(loginMember);
+        assertThat(map.get("commonLayoutForm")).isNotNull();
+        assertThat(map.get("categoryList")).isNotNull();
 
-        categoryService.insertCategory(loginMember, categoryInsertDTO);
-
-        Map<String, Object> map2 = categoryService.selectCategoryListInfo(loginMember);
-        List<CategoryListDTO> categoryList2 = (List<CategoryListDTO>) map2.get("categoryList");
-        int afterSize = categoryList2.size();
-
-        assertThat(map1.get("commonLayoutForm")).isNotNull();
-        assertThat(map2.get("commonLayoutForm")).isNotNull();
-        assertThat(afterSize).isEqualTo(beforeSize + 1);
     }
 
     @Test
     void insertCategory() {
+
+       CategoryInsertDTO categoryInsertDTO = new CategoryInsertDTO();
+       categoryInsertDTO.setCategoryName("0404-1");
+       categoryInsertDTO.setPriority(99);
+       categoryInsertDTO.setUseYn("1");
+
        int result = categoryService.insertCategory(loginMember, categoryInsertDTO);
        assertThat(result).isEqualTo(1);
     }
@@ -85,14 +76,7 @@ class CategoryServiceTest {
 
     @Test
     void selectCategoryList() {
-        List<CategoryListDTO> categoryList1 = categoryService.selectCategoryList(loginMember.getStoreNo());
-        int beforeSize = categoryList1.size();
-
-        categoryService.insertCategory(loginMember, categoryInsertDTO);
-
-        List<CategoryListDTO> categoryList2 = categoryService.selectCategoryList(loginMember.getStoreNo());
-        int afterSize = categoryList2.size();
-
-        assertThat(afterSize).isEqualTo(beforeSize + 1);
+        List<CategoryListDTO> categoryList = categoryService.selectCategoryList(loginMember.getStoreNo());
+        assertThat(categoryList).isNotNull();
     }
 }

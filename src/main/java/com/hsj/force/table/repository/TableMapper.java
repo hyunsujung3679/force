@@ -17,5 +17,7 @@ public interface TableMapper {
 
     List<TableListDTO> selectTableNotExistOrderList(String storeNo);
 
-    int updateTableNo(String storeNo, String afterTableNo, String beforeTableNo, String modifyId);
+    int updateTableNoV1(String storeNo, String afterTableNo, String beforeTableNo, String modifyId);
+
+    int updateTableNoV2(String storeNo, String firstTableNo, String secondTableNo, String modifyId);
 }

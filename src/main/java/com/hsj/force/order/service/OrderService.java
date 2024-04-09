@@ -224,7 +224,12 @@ public class OrderService {
         order.setTableNo(tableNo);
         order.setOrderStatusNo("OS003");
         order.setModifyId(loginMember.getUserId());
-        return orderMapper.updateOrderStatusV1(order);
+        int result = orderMapper.updateOrderStatusV1(order);
+        if(result > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public int cancelSelection(User loginMember, OrderSaveDTO orderSaveDTO) {
@@ -472,6 +477,11 @@ public class OrderService {
                 orderInfo.setModifyId(loginMember.getUserId());
                 count += orderMapper.updateDiscountCancel(orderInfo);
             }
+        }
+        if(count > 0) {
+            count = 1;
+        } else {
+            count = 0;
         }
         return count;
     }

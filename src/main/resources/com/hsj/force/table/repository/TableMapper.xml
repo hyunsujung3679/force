@@ -35,13 +35,24 @@
          ORDER BY T.TABLE_NO ASC
     </select>
 
-    <update id="updateTableNo">
+    <update id="updateTableNoV1">
         UPDATE TORDER O
            SET O.TABLE_NO = #{afterTableNo}
              , O.MODIFY_ID = #{modifyId}
              , O.MODIFY_DATE = NOW()
          WHERE O.STORE_NO = #{storeNo}
            AND O.TABLE_NO = #{beforeTableNo}
+           AND O.ORDER_STATUS_NO = 'OS001'
+    </update>
+
+    <update id="updateTableNoV2">
+        UPDATE TORDER O
+        SET O.TABLE_NO = #{secondTableNo}
+          , O.MODIFY_ID = #{modifyId}
+          , O.MODIFY_DATE = NOW()
+        WHERE O.STORE_NO = #{storeNo}
+          AND O.TABLE_NO = #{firstTableNo}
+          AND O.ORDER_STATUS_NO = 'OS001'
     </update>
 
 </mapper>

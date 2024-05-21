@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id "com.gorylenko.gradle-git-properties" version "2.4.1" //git info
 }
 
 group = 'com.hsj'
@@ -29,6 +30,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	implementation 'org.springframework.boot:spring-boot-starter-aop'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator 추가
+	implementation 'io.micrometer:micrometer-registry-prometheus' //추가
 
 //	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 //	implementation 'com.querydsl:querydsl-jpa:5.0.0'
@@ -47,3 +50,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+springBoot {
+	buildInfo()
+}
+

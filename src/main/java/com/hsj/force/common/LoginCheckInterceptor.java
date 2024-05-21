@@ -15,6 +15,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         String requestURI = request.getRequestURI();
         HttpSession session = request.getSession(false);
+
+        if(requestURI.contains("actuator")) {
+            return true;
+        }
+
         if (session == null || session.getAttribute(Constants.LOGIN_MEMBER) == null) {
             response.sendRedirect("/login?redirectURL=" + requestURI);
             return false;

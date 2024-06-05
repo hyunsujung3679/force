@@ -33,4 +33,7 @@ public class OpenCloseInsertDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime currentTime;
 
+    private String userId;
+    private String userName;
+
 }

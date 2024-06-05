@@ -1,8 +1,8 @@
 package com.hsj.force.login.controller;
 
 import com.hsj.force.common.Constants;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.UserDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.login.service.LoginService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        User loginMember = loginService.findUser(userDTO);
+        TUser loginMember = loginService.findUser(userDTO);
         if(loginMember == null) {
             bindingResult.reject("loginFail", messageSource.getMessage("message.id.password.wrong", null, Locale.KOREA));
             return "login/loginForm";

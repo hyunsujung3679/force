@@ -1,8 +1,9 @@
 package com.hsj.force.login.service;
 
-import com.hsj.force.domain.User;
+
 import com.hsj.force.domain.dto.UserDTO;
-import com.hsj.force.login.repository.LoginMapper;
+import com.hsj.force.domain.entity.TUser;
+import com.hsj.force.login.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final LoginMapper loginMapper;
+    private final LoginRepository loginRepository;
 
-    public User findUser(UserDTO user) {
-        return loginMapper.findUser(user);
+    public TUser findUser(UserDTO user) {
+        return loginRepository.findUser(user.getUserId(), user.getPassword());
     }
 
 }

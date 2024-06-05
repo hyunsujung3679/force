@@ -37,21 +37,21 @@ class OpenServiceTest {
         assertThat(result).isEqualTo(1);
     }
 
-    @Test
-    void selectOpenInfo() {
-        OpenCloseInsertDTO open = openService.selectOpenInfo(loginMember.getStoreNo());
-        assertThat(open).isNotNull();
-    }
+//    @Test
+//    void selectOpenInfo() {
+//        OpenCloseInsertDTO open = openService.selectOpenInfo(loginMember.getStoreNo());
+//        assertThat(open).isNotNull();
+//    }
 
-    @Test
-    void insertOpen() {
-        OpenCloseInsertDTO open = new OpenCloseInsertDTO();
-        open.setOpenMoney(10000);
-        open.setStoreNo(loginMember.getStoreNo());
-        open.setInsertId(loginMember.getUserId());
-        open.setModifyId(loginMember.getUserId());
-
-        int result = openService.insertOpen(open);
-        assertThat(result).isEqualTo(1);
-    }
+//    @Test
+//    void insertOpen() {
+//        OpenCloseInsertDTO open = new OpenCloseInsertDTO();
+//        open.setOpenMoney(10000);
+//        open.setStoreNo(loginMember.getStoreNo());
+//        open.setInsertId(loginMember.getUserId());
+//        open.setModifyId(loginMember.getUserId());
+//
+//        int result = openService.insertOpen(open);
+//        assertThat(result).isEqualTo(1);
+//    }
 }

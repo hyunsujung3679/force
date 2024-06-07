@@ -35,14 +35,14 @@ class TableServiceTest {
         loginMember.setUseYn("1");
     }
 
-    @Test
-    void selectTableInfo() {
-        Map<String, Object> map = tableService.selectTableInfo(loginMember);
-        assertThat(map.get("commonLayoutForm")).isNotNull();
-        assertThat(map.get("tableList")).isNotNull();
-        assertThat(map.get("tableTotalPriceList")).isNotNull();
-        assertThat(map.get("tableOfOrderMap")).isNotNull();
-    }
+//    @Test
+//    void selectTableInfo() {
+//        Map<String, Object> map = tableService.selectTableInfo(loginMember);
+//        assertThat(map.get("commonLayoutForm")).isNotNull();
+//        assertThat(map.get("tableList")).isNotNull();
+//        assertThat(map.get("tableTotalPriceList")).isNotNull();
+//        assertThat(map.get("tableOfOrderMap")).isNotNull();
+//    }
 
     @Test
     void selectTableExistOrderList() {

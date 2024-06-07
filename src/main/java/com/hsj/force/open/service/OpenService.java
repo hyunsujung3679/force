@@ -4,6 +4,7 @@ import com.hsj.force.common.ComUtils;
 import com.hsj.force.domain.dto.OpenCloseInsertDTO;
 import com.hsj.force.domain.entity.TOpenClose;
 import com.hsj.force.domain.entity.TUser;
+import com.hsj.force.domain.entity.embedded.TOpenCloseId;
 import com.hsj.force.open.repository.OpenMapper;
 import com.hsj.force.open.repository.OpenRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class OpenService {
     public final OpenMapper openMapper;
     public final OpenRepository openRepository;
 
+    //TODO: 삭제필요
     public int selectIsOpen(String storeNo) {
         return openMapper.selectIsOpen(storeNo);
     }
@@ -31,7 +33,7 @@ public class OpenService {
         return openRepository.findIsOpen(storeNo);
     }
 
-    public OpenCloseInsertDTO findOpen(String storeNo) {
+    public OpenCloseInsertDTO findOpenInfo(String storeNo) {
 
         TOpenClose open = null;
         TUser user = null;
@@ -49,6 +51,7 @@ public class OpenService {
         }
 
         int procedure = 1;
+        // TODO: JPA 적용 필요
 //        String procedureStr = openRepository.findOpenCloseSeq(storeNo);
         String procedureStr = openMapper.selectOpenCloseSeq(storeNo);
         if(procedureStr == null) {
@@ -60,18 +63,28 @@ public class OpenService {
         return openCloseInsertDTO;
     }
 
-    public int saveOpen(int openMoeny, String storeNo, String userId) {
+    public void saveOpen(int openMoeny, String storeNo, String userId) {
+
+        String openCloseNo = "";
+        if(openRepository.findOpenCloseNo(storeNo).isPresent()) {
+            openCloseNo = openRepository.findOpenCloseNo(storeNo).get();
+        }
 
         TOpenClose open = new TOpenClose();
-        open.getTOpenCloseId().setOpenCloseNo(ComUtils.getNextNo(openRepository.findOpenCloseNo(storeNo), OPEN_CLOSE_NO_PREFIX));
+        TOpenCloseId id = new TOpenCloseId();
+        open.setTOpenCloseId(id);
+
+        open.getTOpenCloseId().setOpenCloseNo(ComUtils.getNextNo(openCloseNo, OPEN_CLOSE_NO_PREFIX));
+        // TODO: JPA 적용 필요
         open.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq(storeNo)));
         open.getTOpenCloseId().setStoreNo(storeNo);
         open.setOpenMoney(openMoeny);
+        open.setCloseMoney(null);
         open.setInsertId(userId);
         open.setInsertDate(LocalDateTime.now());
         open.setModifyId(userId);
         open.setModifyDate(LocalDateTime.now());
 
-        return openRepository.saveOpen(open);
+        openRepository.saveOpen(open);
     }
 }

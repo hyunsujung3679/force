@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
@@ -26,6 +29,9 @@ public class TTable {
     private String insertDate;
     private String modifyId;
     private String modifyDate;
+
+    @OneToMany(mappedBy = "table")
+    private List<TOrder> orders = new ArrayList<>();
 
     //==연관관계 메서드==//
     public void setStore(TStore store) {

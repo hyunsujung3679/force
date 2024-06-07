@@ -3,6 +3,7 @@ package com.hsj.force.table.controller;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.TableDTO;
 import com.hsj.force.domain.dto.TableListDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
 import com.hsj.force.table.service.TableService;
 import jakarta.servlet.http.HttpSession;
@@ -26,18 +27,20 @@ public class TableController {
     @GetMapping
     public String tableForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
-            return "redirect:/open";
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
+            return "redirect:/table";
         }
 
-        Map<String, Object> map = tableService.selectTableInfo(loginMember);
+        Map<String, Object> map = tableService.findTableInfo(loginMember);
         model.addAttribute("header", map.get("commonLayoutForm"));
         model.addAttribute("tableList", map.get("tableList"));
         model.addAttribute("tableTotalPriceList", map.get("tableTotalPriceList"));
         model.addAttribute("tableOfOrderMap", map.get("tableOfOrderMap"));
 
-        return "table/" + loginMember.getStoreNo() + "/tableForm";
+        return "table/" + storeNo + "/tableForm";
     }
 
     @GetMapping("/exist-order/list")

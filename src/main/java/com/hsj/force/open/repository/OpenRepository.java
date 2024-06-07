@@ -31,7 +31,7 @@ public class OpenRepository {
                         "select oc " +
                                 "from TOpenClose oc " +
                                 "where oc.tOpenCloseId.storeNo = :storeNo " +
-                                "order by modifyId desc limit 1", TOpenClose.class)
+                                "order by modifyDate desc limit 1", TOpenClose.class)
                 .setParameter("storeNo", storeNo)
                 .getResultList();
         return open.stream().findAny();
@@ -47,13 +47,14 @@ public class OpenRepository {
         return user.stream().findAny();
     }
 
-    public String findOpenCloseNo(String storeNo) {
-        return em.createQuery("select oc " +
-                                      "from TOpenClose oc " +
-                                      "where oc.tOpenCloseId.storeNo = :storeNo " +
-                                      "order by oc.tOpenCloseId.openCloseNo desc limit 1", String.class)
+    public Optional<String> findOpenCloseNo(String storeNo) {
+        List<String> openCloseNo = em.createQuery("select oc.tOpenCloseId.openCloseNo " +
+                        "from TOpenClose oc " +
+                        "where oc.tOpenCloseId.storeNo = :storeNo " +
+                        "order by oc.tOpenCloseId.openCloseNo desc limit 1", String.class)
                 .setParameter("storeNo", storeNo)
-                .getSingleResult();
+                .getResultList();
+        return openCloseNo.stream().findAny();
     }
 
 
@@ -68,6 +69,7 @@ public class OpenRepository {
 //                .getSingleResult();
 //    }
 
-    public int saveOpen(TOpenClose open) {
+    public void saveOpen(TOpenClose open) {
+        em.persist(open);
     }
 }

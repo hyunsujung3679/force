@@ -28,7 +28,7 @@ public class TOpenClose {
     private int oneHun;
     private int fifty;
     private int ten;
-    private int closeMoney;
+    private Integer closeMoney;
 
     private String insertId;
     private LocalDateTime insertDate;

@@ -1,5 +1,7 @@
 package com.hsj.force.common;
 
+import org.springframework.util.StringUtils;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,7 +25,7 @@ public class ComUtils {
      */
     public static String getNextNo(String previousNo, String prefix) {
         String nextNo = "";
-        if(previousNo == null) {
+        if(!StringUtils.hasText(previousNo)) {
             nextNo = prefix + "001";
         } else {
             int previousNoInt = 0;
@@ -44,7 +46,7 @@ public class ComUtils {
      */
     public static String getNextSeq(String previousSeq) {
         String nextSeq = "";
-        if(previousSeq == null) {
+        if(!StringUtils.hasText(previousSeq)) {
             nextSeq = "001";
         } else {
             nextSeq = String.format("%03d", Integer.parseInt(previousSeq) + 1);

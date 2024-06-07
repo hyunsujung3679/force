@@ -1,9 +1,7 @@
 package com.hsj.force.open.controller;
 
 import com.hsj.force.common.Constants;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OpenCloseInsertDTO;
-import com.hsj.force.domain.entity.TOpenClose;
 import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -34,7 +32,7 @@ public class OpenController {
             return "redirect:/table";
         }
 
-        OpenCloseInsertDTO open = openService.findOpen(storeNo);
+        OpenCloseInsertDTO open = openService.findOpenInfo(storeNo);
         open.setOpener(loginMember.getUserId() + " - " + loginMember.getUserName());
         open.setCurrentDate(LocalDateTime.now());
         open.setCurrentTime(LocalDateTime.now());
@@ -48,10 +46,6 @@ public class OpenController {
     public String insertOpenClose(@ModelAttribute OpenCloseInsertDTO open, HttpSession session) {
 
         TUser loginMember = (TUser) session.getAttribute(Constants.LOGIN_MEMBER);
-//        open.setStoreNo(loginMember.getStore().getStoreNo());
-//        open.setInsertId(loginMember.getUserId());
-//        open.setModifyId(loginMember.getUserId());
-
         openService.saveOpen(open.getOpenMoney(), loginMember.getStore().getStoreNo(), loginMember.getUserId());
 
         return "redirect:/table";

@@ -1,11 +1,12 @@
 package com.hsj.force.domain.entity;
 
 import com.hsj.force.domain.entity.embedded.TOpenCloseId;
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 public class TOpenClose {
 
     @EmbeddedId
-    private TOpenCloseId tOpenCloseId;
+    private TOpenCloseId openCloseId;
 
     private String openCloseSeq;
     private int openMoney;

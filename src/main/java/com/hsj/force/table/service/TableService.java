@@ -34,7 +34,6 @@ public class TableService {
     private final OrderRepository orderRepository;
 
     private final TableMapper tableMapper;
-    private final OrderMapper orderMapper;
 
     public Map<String, Object> findTableInfo(TUser loginMember) {
         String storeNo = loginMember.getStore().getStoreNo();
@@ -47,15 +46,39 @@ public class TableService {
         List<TTable> tables = tableRepository.findAll(storeNo);
         List<TOrder> orders = orderRepository.findAllV2(storeNo);
 
-//        List<TableListDTO> tableList = tableMapper.selectTableList(storeNo);
-//        List<OrderListDTO> orderList = orderMapper.selectOrderListV2(storeNo);
+        List<TableListDTO> tableList = new ArrayList<>();
+        TableListDTO tableListDTO = null;
+        for (TTable table : tables) {
+            tableListDTO = new TableListDTO();
+            tableListDTO.setTableNo(table.getTableNo());
+            tableListDTO.setTableName(table.getTableName());
+            tableList.add(tableListDTO);
+        }
+
+        List<OrderListDTO> orderList = new ArrayList<>();
+        OrderListDTO orderListDTO = null;
+        for (TOrder order : orders) {
+            orderListDTO = new OrderListDTO();
+            orderListDTO.setOrderNo(order.getOrderId().getOrderNo());
+            orderListDTO.setOrderSeq(order.getOrderId().getOrderSeq());
+            orderListDTO.setStoreNo(order.getOrderId().getStore().getStoreNo());
+            orderListDTO.setTableNo(order.getTable().getTableNo());
+            orderListDTO.setMenuNo(order.getMenu().getMenuNo());
+            orderListDTO.setSalePrice(order.getSalePrice());
+            orderListDTO.setQuantity(order.getQuantity());
+            orderListDTO.setTotalSalePrice(order.getTotalSalePrice());
+            orderListDTO.setOrderStatusNo(order.getOrderStatus().getOrderStatusNo());
+            orderListDTO.setMenuName(order.getMenu().getMenuName());
+            orderList.add(orderListDTO);
+        }
+
         Map<String, List<OrderListDTO>> tableOfOrderMap = new HashMap<>();
         List<OrderListDTO> tempOrderList = null;
 
-        for(TTable table : tables) {
+        for(TableListDTO table : tableList) {
             tempOrderList = new ArrayList<>();
-            for(TOrder order : orders) {
-                if(table.getTableNo().equals(order.getTable().getTableNo())) {
+            for(OrderListDTO order : orderList) {
+                if(table.getTableNo().equals(order.getTableNo())) {
                     tempOrderList.add(order);
                 }
             }

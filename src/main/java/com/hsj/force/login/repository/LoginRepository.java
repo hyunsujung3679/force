@@ -14,7 +14,12 @@ public class LoginRepository {
     private final EntityManager em;
 
     public TUser findUser(String userId, String password) {
-        return em.createQuery("select u from TUser u join fetch u.store where u.userId = :userId and u.password = :password", TUser.class)
+        return em.createQuery(
+                "select u " +
+                        "from TUser u " +
+                        "join fetch u.store " +
+                        "where u.userId = :userId " +
+                        "and u.password = :password", TUser.class)
                 .setParameter("userId", userId)
                 .setParameter("password", password)
                 .getSingleResult();

@@ -72,12 +72,12 @@ public class OpenService {
 
         TOpenClose open = new TOpenClose();
         TOpenCloseId id = new TOpenCloseId();
-        open.setTOpenCloseId(id);
+        open.setOpenCloseId(id);
 
-        open.getTOpenCloseId().setOpenCloseNo(ComUtils.getNextNo(openCloseNo, OPEN_CLOSE_NO_PREFIX));
+        open.getOpenCloseId().setOpenCloseNo(ComUtils.getNextNo(openCloseNo, OPEN_CLOSE_NO_PREFIX));
         // TODO: JPA 적용 필요
         open.setOpenCloseSeq(ComUtils.getNextSeq(openMapper.selectOpenCloseSeq(storeNo)));
-        open.getTOpenCloseId().setStoreNo(storeNo);
+        open.getOpenCloseId().setStoreNo(storeNo);
         open.setOpenMoney(openMoeny);
         open.setCloseMoney(null);
         open.setInsertId(userId);

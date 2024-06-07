@@ -3,6 +3,7 @@ package com.hsj.force.order.controller;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OrderListDTO;
 import com.hsj.force.domain.dto.OrderSaveDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
 import com.hsj.force.order.service.OrderService;
 import jakarta.servlet.http.HttpSession;
@@ -27,12 +28,14 @@ public class OrderController {
                             HttpSession session,
                             Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
-            return "redirect:/open";
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
+            return "redirect:/table";
         }
 
-        Map<String, Object> map = orderService.selectOrderInfo(loginMember, tableNo);
+        Map<String, Object> map = orderService.findOrderInfo(loginMember, tableNo);
         model.addAttribute("header", map.get("commonLayoutForm"));
         model.addAttribute("categoryList", map.get("categoryList"));
         model.addAttribute("menuList", map.get("menuList"));

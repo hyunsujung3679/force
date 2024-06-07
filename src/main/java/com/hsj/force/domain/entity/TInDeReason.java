@@ -9,24 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TCATEGORY")
+@Table(name = "TINDEEREASON")
 @Getter
 @Setter
-public class TCategory {
+public class TInDeReason {
 
     @Id
-    @Column(name = "CATEGORY_NO")
-    private String categoryNo;
+    @Column(name = "IN_DE_REASON_NO")
+    private String inDeReasonNo;
 
-    private String storeNo;
-    private String categoryName;
-    private int priority;
-    private String useYn;
+    private String inDeReason;
     private String insertId;
     private LocalDateTime insertDate;
     private String modifyId;
     private LocalDateTime modifyDate;
 
-    @OneToMany(mappedBy = "category")
-    private List<TMenu> menus = new ArrayList<>();
+    @OneToMany(mappedBy = "inDeReason")
+    private List<TIngredientHis> ingredientHiss = new ArrayList<>();
 }

@@ -1,6 +1,7 @@
 package com.hsj.force.order.service;
 
 import com.hsj.force.category.repository.CategoryMapper;
+import com.hsj.force.category.repository.CategoryRepository;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
@@ -9,9 +10,12 @@ import com.hsj.force.domain.IngredientHis;
 import com.hsj.force.domain.Order;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.entity.*;
 import com.hsj.force.ingredient.repository.IngredientMapper;
 import com.hsj.force.menu.repository.MenuMapper;
+import com.hsj.force.menu.repository.MenuRepository;
 import com.hsj.force.order.repository.OrderMapper;
+import com.hsj.force.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OrderService {
 
+    private final CategoryRepository categoryRepository;
+    private final MenuRepository menuRepository;
+    private final OrderRepository orderRepository;
+
     private final CommonMapper commonMapper;
     private final MenuMapper menuMapper;
     private final CategoryMapper categoryMapper;
@@ -34,16 +42,24 @@ public class OrderService {
     private final IngredientMapper ingredientMapper;
     private final MessageSource messageSource;
 
-    public Map<String, Object> selectOrderInfo(User loginMember, String tableNo) {
+    public Map<String, Object> findOrderInfo(TUser loginMember, String tableNo) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
 
         Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("storeNo", loginMember.getStoreNo());
+        paramMap.put("storeNo", storeNo);
         paramMap.put("tableNo", tableNo);
 
-        List<CategoryListDTO> categoryList = categoryMapper.selectCategoryListByOrderForm(loginMember.getStoreNo());
-        List<MenuListDTO> menuList = menuMapper.selectMenuList(loginMember.getStoreNo());
+        List<TCategory> categories = categoryRepository.findCategoryByOrderForm(storeNo);
+        List<TOrder> orders = orderRepository.findAll(storeNo, tableNo);
+        List<TMenuIngredient> menuIngredients = menuRepository.findMenuIngredient(storeNo);
+
+        // TODO: JPA 적용 필요
+        List<MenuListDTO> menuList = menuMapper.selectMenuList(storeNo);
+
+        List<CategoryListDTO> categoryList = categoryMapper.selectCategoryListByOrderForm(storeNo);
         List<OrderListDTO> orderList = orderMapper.selectOrderList(paramMap);
-        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(loginMember.getStoreNo());
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
@@ -90,7 +106,7 @@ public class OrderService {
             menu.setEnoughStock(isEnoughStock);
         }
 
-        String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
+        String storeName = commonMapper.selectStoreName(storeNo);
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
         commonLayoutForm.setStoreName(storeName);

@@ -15,7 +15,10 @@ public class CommonRepository {
 
 
     public Optional<String> findStoreName(String storeNo) {
-        List<String> storeName = em.createQuery("select s.storeName from TStore s where s.storeNo = :storeNo", String.class)
+        List<String> storeName = em.createQuery(
+                "select s.storeName " +
+                        "from TStore s " +
+                        "where s.storeNo = :storeNo", String.class)
                 .setParameter("storeNo", storeNo)
                 .getResultList();
         return storeName.stream().findAny();

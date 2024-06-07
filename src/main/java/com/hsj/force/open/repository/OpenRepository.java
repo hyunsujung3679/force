@@ -20,7 +20,7 @@ public class OpenRepository {
                 "select count(*) " +
                         "from TOpenClose oc " +
                         "where oc.closeMoney is null " +
-                        "and oc.tOpenCloseId.storeNo = :storeNo", Long.class)
+                        "and oc.openCloseId.storeNo = :storeNo", Long.class)
                 .setParameter("storeNo", storeNo)
                 .getSingleResult();
         return result > 0;
@@ -30,7 +30,7 @@ public class OpenRepository {
         List<TOpenClose> open = em.createQuery(
                         "select oc " +
                                 "from TOpenClose oc " +
-                                "where oc.tOpenCloseId.storeNo = :storeNo " +
+                                "where oc.openCloseId.storeNo = :storeNo " +
                                 "order by modifyDate desc limit 1", TOpenClose.class)
                 .setParameter("storeNo", storeNo)
                 .getResultList();
@@ -48,10 +48,10 @@ public class OpenRepository {
     }
 
     public Optional<String> findOpenCloseNo(String storeNo) {
-        List<String> openCloseNo = em.createQuery("select oc.tOpenCloseId.openCloseNo " +
+        List<String> openCloseNo = em.createQuery("select oc.openCloseId.openCloseNo " +
                         "from TOpenClose oc " +
-                        "where oc.tOpenCloseId.storeNo = :storeNo " +
-                        "order by oc.tOpenCloseId.openCloseNo desc limit 1", String.class)
+                        "where oc.openCloseId.storeNo = :storeNo " +
+                        "order by oc.openCloseId.openCloseNo desc limit 1", String.class)
                 .setParameter("storeNo", storeNo)
                 .getResultList();
         return openCloseNo.stream().findAny();

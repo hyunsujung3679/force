@@ -14,18 +14,15 @@ public class MenuRepository {
 
     private final EntityManager em;
 
-    public List<TMenuIngredient> findMenuIngredient(String storeNo) {
-        String sql = "SELECT MI.MENU_NO, " +
-                            "MI.INGREDIENT_NO, " +
-                            "MI.QUANTITY AS NEED_QUANTITY, " +
-                            "MI.QUANTITY AS STOCK_QUANTITY " +
-                       "FROM TMENUINGREDIENT MI, TINGREIDNET I " +
-                      "WHERE MI.INGREDIENT_NO = I.INGREDIENT_NO " +
-                        "AND MI.STORE_NO = I.STORE_NO " +
-                        "AND MI.STORE_NO = ?";
-
-        return em.createNativeQuery(sql, TMenuIngredient.class)
-                .setParameter(1, storeNo)
-                .getResultList();
-    }
+//    public List<TMenuIngredient> findMenuIngredient(String storeNo) {
+//        String sql = "SELECT MI.MENU_N"
+//
+//        return em.createQuery("select mi " +
+//                        "from TMenuIngredient mi " +
+//                        "join TIngredient i " +
+//                        "on mi.menuIngredientId.ingredientNo = i.ingredientId.ingredientNo " +
+//                        "and ", TMenuIngredient.class)
+////                .setParameter(1, storeNo)
+//                .getResultList();
+//    }
 }

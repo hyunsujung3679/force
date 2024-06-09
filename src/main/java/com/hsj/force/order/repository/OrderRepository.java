@@ -17,9 +17,8 @@ public class OrderRepository {
         return em.createQuery(
                 "select o " +
                         "from TOrder o " +
-                        "join TMenu m " +
-                        "on o.menu.menuNo = m.menuNo " +
-                        "and o.orderStatus.orderStatusNo = :orderStatusNo " +
+                        "join fetch o.menu m " +
+                        "where o.orderStatus.orderStatusNo = :orderStatusNo " +
                         "and o.orderId.store.storeNo = :storeNo " +
                         "and o.table.tableNo = :tableNo", TOrder.class)
                 .setParameter("orderStatusNo", "OS001")

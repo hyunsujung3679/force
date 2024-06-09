@@ -52,14 +52,13 @@ public class OrderService {
 
         List<TCategory> categories = categoryRepository.findCategoryByOrderForm(storeNo);
         List<TOrder> orders = orderRepository.findAll(storeNo, tableNo);
-        List<TMenuIngredient> menuIngredients = menuRepository.findMenuIngredient(storeNo);
 
         // TODO: JPA 적용 필요
         List<MenuListDTO> menuList = menuMapper.selectMenuList(storeNo);
+        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         List<CategoryListDTO> categoryList = categoryMapper.selectCategoryListByOrderForm(storeNo);
         List<OrderListDTO> orderList = orderMapper.selectOrderList(paramMap);
-        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;

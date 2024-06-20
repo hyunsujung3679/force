@@ -4,6 +4,7 @@ import com.hsj.force.close.service.CloseService;
 import com.hsj.force.common.Constants;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,10 @@ public class CloseController {
     @GetMapping
     public String closeForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
             return "redirect:/open";
         }
 
@@ -68,11 +71,8 @@ public class CloseController {
             close.setTen(0);
         }
 
-        User loginMember = (User) session.getAttribute(Constants.LOGIN_MEMBER);
-        close.setStoreNo(loginMember.getStoreNo());
-        close.setModifyId(loginMember.getUserId());
-
-        closeService.updateOpenClose(close);
+        TUser loginMember = (TUser) session.getAttribute(Constants.LOGIN_MEMBER);
+        closeService.updateOpenClose(loginMember, close);
 
         return "redirect:/login";
     }

@@ -271,13 +271,15 @@ xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
                         html +=     '</div>'
                         html += '</div>'
 
-                        totalPrice += data[index].salePrice;
                         totalQuantity += data[index].quantity;
                         totalDiscountPrice += data[index].discountPrice;
                         totalSalePrice += data[index].totalSalePrice;
 
                         $(".table-middle").append(html);
                     }
+
+                    totalPrice = totalSalePrice + totalDiscountPrice;
+
                     for(let index in data) {
                         $("input[name=order-no]").eq(index).val(data[index].orderNo);
                         $("input[name=menu-no]").eq(index).val(data[index].menuNo);

@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import com.hsj.force.domain.entity.embedded.TOrderId;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,7 +20,10 @@ public class TOrder {
     private TOrderId orderId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "TABLE_NO")
+    @JoinColumns({
+            @JoinColumn(name = "STORE_NO"),
+            @JoinColumn(name = "TABLE_NO")
+    })
     private TTable table;
 
     @ManyToOne(fetch = LAZY)
@@ -41,6 +45,7 @@ public class TOrder {
     private String serviceYn;
     private LocalDateTime orderDate;
     private LocalDateTime cancelDate;
+
     private String insertId;
     private LocalDateTime insertDate;
     private String modifyId;

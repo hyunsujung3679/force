@@ -18,7 +18,7 @@ public class TMenuIngredient {
     @EmbeddedId
     private TMenuIngredientId menuIngredientId;
 
-    private int quantity;
+    private double quantity;
     private String insertId;
     private LocalDateTime insertDate;
     private String modifyId;

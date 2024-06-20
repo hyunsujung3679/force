@@ -1,10 +1,10 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +19,9 @@ public class TSaleStatus {
     private String saleStatusNo;
 
     private String saleStatus;
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
+
+    @Embedded
+    private CommonData commonData;
 
     @OneToMany(mappedBy = "saleStatus")
     private List<TMenu> menus = new ArrayList<>();

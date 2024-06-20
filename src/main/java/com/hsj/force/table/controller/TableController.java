@@ -46,21 +46,21 @@ public class TableController {
     @GetMapping("/exist-order/list")
     @ResponseBody
     public List<TableListDTO> selectTableExistOrderList(HttpSession session) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return tableService.selectTableExistOrderList(loginMember.getStoreNo());
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return tableService.selectTableExistOrderList(loginMember.getStore().getStoreNo());
     }
 
     @GetMapping("/not-exist-order/list")
     @ResponseBody
     public List<TableListDTO> selectTableNotExistOrderList(HttpSession session) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return tableService.selectTableNotExistOrderList(loginMember.getStoreNo());
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return tableService.selectTableNotExistOrderList(loginMember.getStore().getStoreNo());
     }
 
     @PostMapping("/move")
     @ResponseBody
     public int moveTable(HttpSession session, @RequestBody TableDTO table) {
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         return tableService.moveTable(loginMember, table);
     }
 
@@ -70,7 +70,7 @@ public class TableController {
         if(table.getFirstTableNo().equals(table.getSecondTableNo())) {
             return 0;
         } else {
-            User loginMember = (User) session.getAttribute("loginMember");
+            TUser loginMember = (TUser) session.getAttribute("loginMember");
             return tableService.combineTable(loginMember, table);
         }
     }

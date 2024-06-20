@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,20 +17,18 @@ public class TUser {
     @Column(name = "USER_NO")
     private String userNo;
 
-    private String userId;
-    private String userName;
-
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "STORE_NO")
     private TStore store;
 
+    private String userId;
     private String password;
+    private String userName;
     private String phoneNum;
     private String useYn;
-    private String insertId;
-    private String insertDate;
-    private String modifyId;
-    private String modifyDate;
+
+    @Embedded
+    private CommonData commonData;
 
     //==연관관계 메서드==//
     public void setStore(TStore store) {

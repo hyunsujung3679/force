@@ -1,11 +1,11 @@
 package com.hsj.force.menu.controller;
 
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.MenuInsertDTO;
 import com.hsj.force.domain.dto.MenuListDTO;
 import com.hsj.force.domain.dto.MenuUpdateDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.menu.service.MenuService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -40,8 +40,10 @@ public class MenuController {
     @GetMapping
     public String menuListForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
             return "redirect:/open";
         }
 
@@ -56,7 +58,7 @@ public class MenuController {
     @GetMapping("/insert")
     public String menuInsertForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         model.addAttribute("header", commonLayoutDTO);
@@ -72,7 +74,7 @@ public class MenuController {
                              Model model) throws IOException {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(menu.getMenuName())) {
@@ -139,7 +141,7 @@ public class MenuController {
                                  HttpSession session,
                                  Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         Map<String, Object> map = menuService.selectMenuUpdateInfo(loginMember, menuNo);
         MenuUpdateDTO menu = (MenuUpdateDTO) map.get("menu");
@@ -160,7 +162,7 @@ public class MenuController {
                              Model model) throws IOException {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         if(!StringUtils.hasText(menu.getMenuName())) {
             errors.put("menuName", messageSource.getMessage("message.input.menu.name", null, Locale.KOREA));
@@ -236,15 +238,15 @@ public class MenuController {
     @GetMapping("/{categoryNo}/list")
     @ResponseBody
     public List<MenuListDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return menuService.selectMenuListByCategoryNo(loginMember.getStoreNo(), categoryNo);
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return menuService.selectMenuListByCategoryNo(loginMember.getStore().getStoreNo(), categoryNo);
     }
 
     @GetMapping("/first-category/list")
     @ResponseBody
     public List<MenuListDTO> selectMenuListByFirstCategory(HttpSession session) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return menuService.selectMenuListByFirstCategory(loginMember.getStoreNo());
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return menuService.selectMenuListByFirstCategory(loginMember.getStore().getStoreNo());
     }
 
 }

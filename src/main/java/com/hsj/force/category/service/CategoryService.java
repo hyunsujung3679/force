@@ -1,33 +1,45 @@
 package com.hsj.force.category.service;
 
 import com.hsj.force.category.repository.CategoryMapper;
+import com.hsj.force.category.repository.CategoryRepository;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.Category;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.entity.TCategory;
+import com.hsj.force.domain.entity.TUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
+    private final CategoryRepository categoryRepository;
+
     private final CommonService commonService;
     private final CategoryMapper categoryMapper;
 
-    public Map<String, Object> selectCategoryListInfo(User loginMember) {
+    public Map<String, Object> selectCategoryListInfo(TUser loginMember) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
 
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        List<CategoryListDTO> categoryList = categoryMapper.selectCategoryList(loginMember.getStoreNo());
+        List<TCategory> categories = categoryRepository.findCategoryV1(storeNo);
+        List<CategoryListDTO> categoryList = categories.stream()
+                .map(c -> new CategoryListDTO(c))
+                .collect(Collectors.toList());
 
         for(int i = 0; i < categoryList.size(); i++) {
             CategoryListDTO category = categoryList.get(i);
@@ -40,65 +52,107 @@ public class CategoryService {
         return map;
     }
 
-    public int insertCategory(User loginMember, CategoryInsertDTO categoryInsertDTO) {
+    public int insertCategory(TUser loginMember, CategoryInsertDTO categoryInsertDTO) {
 
-        Category category = new Category();
-        category.setStoreNo(loginMember.getStoreNo());
-        category.setCategoryName(categoryInsertDTO.getCategoryName());
-        category.setPriority(categoryInsertDTO.getPriority());
-        category.setUseYn(categoryInsertDTO.getUseYn());
-        String categoryNo = categoryMapper.selectCategoryNo(category.getStoreNo());
+        String storeNo = loginMember.getStore().getStoreNo();
+        String categoryName = categoryInsertDTO.getCategoryName();
+        int priority = categoryInsertDTO.getPriority();
+        String useYn = categoryInsertDTO.getUseYn();
+        String categoryNo = "";
+        if(categoryRepository.findMaxCategoryNo(storeNo).isPresent()) {
+            categoryNo = categoryRepository.findMaxCategoryNo(storeNo).get();
+        }
+        String userId = loginMember.getUserId();
+
+        TCategory category = new TCategory();
         category.setCategoryNo(ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX));
-        category.setInsertId(loginMember.getUserId());
-        category.setModifyId(loginMember.getUserId());
+        category.setStoreNo(storeNo);
+        category.setCategoryName(categoryName);
+        category.setPriority(priority);
+        category.setUseYn(useYn);
+        category.setInsertId(userId);
+        category.setInsertDate(LocalDateTime.now());
+        category.setModifyId(userId);
+        category.setModifyDate(LocalDateTime.now());
 
-        checkPriority(loginMember, category);
+        checkPriority(loginMember, category, category.getPriority());
 
-        return categoryMapper.insertCategory(category);
+        categoryRepository.saveCategory(category);
+
+        return 1;
     }
 
 
-    public int updateCategory(User loginMember, CategoryUpdateDTO categoryUpdateDTO) {
+    public int updateCategory(TUser loginMember, CategoryUpdateDTO categoryUpdateDTO) {
 
-        Category category = new Category();
-        category.setCategoryNo(categoryUpdateDTO.getCategoryNo());
-        category.setCategoryName(categoryUpdateDTO.getCategoryName());
-        category.setUseYn(categoryUpdateDTO.getUseYn());
-        category.setPriority(categoryUpdateDTO.getPriority());
-        category.setStoreNo(loginMember.getStoreNo());
-        category.setModifyId(loginMember.getUserId());
+        String storeNo = loginMember.getStore().getStoreNo();
+        String categoryNo = categoryUpdateDTO.getCategoryNo();
+        String categoryName = categoryUpdateDTO.getCategoryName();
+        String useYn = categoryUpdateDTO.getUseYn();
+        int priority = categoryUpdateDTO.getPriority();
+        String userId = loginMember.getUserId();
 
-        checkPriority(loginMember, category);
+        TCategory category = null;
+        if(categoryRepository.findCategoryV3(storeNo, categoryNo).isPresent()) {
+            category = categoryRepository.findCategoryV3(storeNo, categoryNo).get();
 
-        return categoryMapper.updateCategory(category);
+            checkPriority(loginMember, category, priority);
+
+            category.setCategoryName(categoryName);
+            category.setUseYn(useYn);
+            category.setPriority(priority);
+            category.setModifyId(userId);
+            category.setModifyDate(LocalDateTime.now());
+        }
+
+        return 1;
     }
 
-    public Map<String, Object> selectCategoryUpdateInfo(User loginMember, String categoryNo) {
+    public Map<String, Object> selectCategoryUpdateInfo(TUser loginMember, String categoryNo) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
 
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        CategoryUpdateDTO categoryUpdateDTO = categoryMapper.selectCategory(loginMember.getStoreNo(), categoryNo);
+
+        TCategory category = null;
+        if(categoryRepository.findCategoryV3(storeNo, categoryNo).isPresent()) {
+            category = categoryRepository.findCategoryV3(storeNo, categoryNo).get();
+        }
 
         map.put("commonLayoutForm", commonLayoutForm);
-        map.put("category", categoryUpdateDTO);
+        map.put("category", category);
 
         return map;
     }
 
     public List<CategoryListDTO> selectCategoryList(String storeNo) {
-        return categoryMapper.selectCategoryList(storeNo);
+        List<TCategory> categories = categoryRepository.findCategoryV1(storeNo);
+        return categories.stream()
+                .map(c -> new CategoryListDTO(c))
+                .collect(Collectors.toList());
     }
 
-    private void checkPriority(User loginMember, Category category) {
-        Integer priority = categoryMapper.selectPriority(category);
-        if(priority != null) {
-            int maxPriority = categoryMapper.selectMaxPriority(category);
-            CategoryUpdateDTO categoryUpdateDTO = new CategoryUpdateDTO();
-            categoryUpdateDTO.setMaxPriority(maxPriority + 1);
-            categoryUpdateDTO.setModifyId(loginMember.getUserId());
-            categoryUpdateDTO.setStoreNo(loginMember.getStoreNo());
-            categoryUpdateDTO.setPriority(category.getPriority());
-            categoryMapper.updatePriority(categoryUpdateDTO);
+    private void checkPriority(TUser loginMember, TCategory category, int priority) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
+        String userId = loginMember.getUserId();
+
+        TCategory checkCategory = null;
+        if(categoryRepository.findCategoryV2(storeNo, priority).isPresent()) {
+            checkCategory = categoryRepository.findCategoryV2(storeNo, priority).get();
         }
+
+        if(checkCategory != null) {
+
+            if(checkCategory.getCategoryNo().equals(category.getCategoryNo())) return;
+
+            int maxPriority = categoryRepository.findMaxPriority(storeNo);
+
+            checkCategory.setPriority((maxPriority + 1));
+            checkCategory.setModifyId(userId);
+            checkCategory.setModifyDate(LocalDateTime.now());
+        }
+
     }
 }

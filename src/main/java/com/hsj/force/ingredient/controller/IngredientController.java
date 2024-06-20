@@ -6,6 +6,7 @@ import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.IngredientInsertDTO;
 import com.hsj.force.domain.dto.IngredientListDTO;
 import com.hsj.force.domain.dto.IngredientUpdateDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.ingredient.service.IngredientService;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
@@ -34,8 +35,10 @@ public class IngredientController {
     @GetMapping
     public String ingredientListForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
             return "redirect:/open";
         }
 
@@ -50,7 +53,7 @@ public class IngredientController {
     @GetMapping("/insert")
     public String ingredientInsertForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         model.addAttribute("header", commonLayoutDTO);
@@ -65,7 +68,7 @@ public class IngredientController {
                                    Model model) {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(ingredient.getIngredientName())) {
@@ -91,7 +94,7 @@ public class IngredientController {
                                      HttpSession session,
                                      Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         Map<String, Object> map = ingredientService.selectIngredientUpdateInfo(loginMember, ingredientNo);
 
@@ -108,7 +111,7 @@ public class IngredientController {
                                    Model model) {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         if(!StringUtils.hasText(ingredient.getIngredientName())) {
             errors.put("ingredientName", messageSource.getMessage("message.input.ingredient.name", null, Locale.KOREA));
@@ -135,7 +138,7 @@ public class IngredientController {
     @GetMapping("/list")
     @ResponseBody
     public List<IngredientListDTO> selectIngredientList(HttpSession session) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return ingredientService.selectIngredientList(loginMember.getStoreNo());
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return ingredientService.selectIngredientList(loginMember.getStore().getStoreNo());
     }
 }

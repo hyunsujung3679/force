@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.TTableId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,21 +8,21 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.FetchType.LAZY;
-
 @Entity
 @Table(name = "TTABLE")
+@IdClass(TTableId.class)
 @Getter
 @Setter
 public class TTable {
 
+//    @EmbeddedId
+//    private TTableId tableId;
+
     @Id
-    @Column(name = "TABLE_NO")
     private String tableNo;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "STORE_NO")
-    private TStore store;
+    @Id
+    private String storeNo;
 
     private String tableName;
     private String useYn;
@@ -33,9 +34,4 @@ public class TTable {
     @OneToMany(mappedBy = "table")
     private List<TOrder> orders = new ArrayList<>();
 
-    //==연관관계 메서드==//
-    public void setStore(TStore store) {
-        this.store = store;
-        store.getTables().add(this);
-    }
 }

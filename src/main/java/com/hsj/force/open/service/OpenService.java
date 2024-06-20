@@ -4,6 +4,7 @@ import com.hsj.force.common.ComUtils;
 import com.hsj.force.domain.dto.OpenCloseInsertDTO;
 import com.hsj.force.domain.entity.TOpenClose;
 import com.hsj.force.domain.entity.TUser;
+import com.hsj.force.domain.entity.embedded.CommonData;
 import com.hsj.force.domain.entity.embedded.TOpenCloseId;
 import com.hsj.force.open.repository.OpenMapper;
 import com.hsj.force.open.repository.OpenRepository;
@@ -52,7 +53,6 @@ public class OpenService {
 
         int procedure = 1;
         // TODO: JPA 적용 필요
-//        String procedureStr = openRepository.findOpenCloseSeq(storeNo);
         String procedureStr = openMapper.selectOpenCloseSeq(storeNo);
         if(procedureStr == null) {
             openCloseInsertDTO.setProcedure(procedure);

@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity.embedded;
 
+import com.hsj.force.domain.entity.TCategory;
 import com.hsj.force.domain.entity.TMenu;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -15,9 +16,8 @@ import static jakarta.persistence.FetchType.LAZY;
 @Embeddable
 public class TMenuPriceId implements Serializable {
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "MENU_NO")
-    private TMenu menu;
+    @Column(name = "MENU_NO")
+    private String menuNo;
 
     @Column(name = "MENU_SEQ")
     private String menuSeq;

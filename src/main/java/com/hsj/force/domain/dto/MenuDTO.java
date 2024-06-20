@@ -12,4 +12,15 @@ public class MenuDTO {
     private int salePrice;
     private String imageSaveName;
 
+    public MenuDTO() {
+    }
+
+    public MenuDTO(String menuNo, String menuName, String saleStatusNo, String categoryNo, int salePrice, String imageSaveName) {
+        this.menuNo = menuNo;
+        this.menuName = menuName;
+        this.saleStatusNo = saleStatusNo;
+        this.categoryNo = categoryNo;
+        this.salePrice = salePrice;
+        this.imageSaveName = imageSaveName;
+    }
 }

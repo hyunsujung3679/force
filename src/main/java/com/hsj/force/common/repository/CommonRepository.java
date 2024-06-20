@@ -13,7 +13,6 @@ public class CommonRepository {
 
     private final EntityManager em;
 
-
     public Optional<String> findStoreName(String storeNo) {
         List<String> storeName = em.createQuery(
                 "select s.storeName " +

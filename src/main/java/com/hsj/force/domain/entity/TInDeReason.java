@@ -1,15 +1,15 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TINDEEREASON")
+@Table(name = "TINDEREASON")
 @Getter
 @Setter
 public class TInDeReason {
@@ -19,10 +19,9 @@ public class TInDeReason {
     private String inDeReasonNo;
 
     private String inDeReason;
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
+
+    @Embedded
+    private CommonData commonData;
 
     @OneToMany(mappedBy = "inDeReason")
     private List<TIngredientHis> ingredientHiss = new ArrayList<>();

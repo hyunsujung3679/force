@@ -3,16 +3,22 @@ package com.hsj.force.ingredient.service;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.repository.CommonMapper;
+import com.hsj.force.common.repository.CommonRepository;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.InDeReason;
 import com.hsj.force.domain.Ingredient;
 import com.hsj.force.domain.IngredientHis;
 import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.CommonLayoutDTO;
-import com.hsj.force.domain.dto.IngredientInsertDTO;
-import com.hsj.force.domain.dto.IngredientListDTO;
-import com.hsj.force.domain.dto.IngredientUpdateDTO;
+import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.entity.TInDeReason;
+import com.hsj.force.domain.entity.TIngredient;
+import com.hsj.force.domain.entity.TIngredientHis;
+import com.hsj.force.domain.entity.TUser;
+import com.hsj.force.domain.entity.embedded.CommonData;
+import com.hsj.force.domain.entity.embedded.TIngredientHisId;
+import com.hsj.force.domain.entity.embedded.TIngredientId;
 import com.hsj.force.ingredient.repository.IngredientMapper;
+import com.hsj.force.ingredient.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,31 +27,49 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class IngredientService {
 
+    private final IngredientRepository ingredientRepository;
+    private final CommonRepository commonRepository;
+
     private final CommonService commonService;
     private final IngredientMapper ingredientMapper;
     private final CommonMapper commonMapper;
 
     public List<IngredientListDTO> selectIngredientList(String storeNo) {
-        return ingredientMapper.selectIngredientList(storeNo);
+        List<TIngredient> ingredients = ingredientRepository.findIngredientV2(storeNo);
+        return ingredients.stream()
+                .map(i -> new IngredientListDTO(i))
+                .collect(Collectors.toList());
     }
 
-    public Map<String, Object> selectIngredientInfo(User loginMember) {
+    public Map<String, Object> selectIngredientInfo(TUser loginMember) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
+        String userName = loginMember.getUserName();
 
         Map<String, Object> map = new HashMap<>();
-        String storeName = commonMapper.selectStoreName(loginMember.getStoreNo());
+
+        String storeName = "";
+        if(commonRepository.findStoreName(storeNo).isPresent()) {
+            storeName = commonRepository.findStoreName(storeNo).get();
+        }
+
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
-        commonLayoutForm.setSalesMan(loginMember.getUserName());
+        commonLayoutForm.setSalesMan(userName);
         commonLayoutForm.setStoreName(storeName);
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        List<IngredientListDTO> ingredientList = ingredientMapper.selectIngredientListV2(loginMember.getStoreNo());
+        List<TIngredient> ingredients = ingredientRepository.findIngredientV2(storeNo);
+        List<IngredientListDTO> ingredientList = ingredients.stream()
+                .map(i -> new IngredientListDTO(i))
+                .collect(Collectors.toList());
         for(int i = 0; i < ingredientList.size(); i++) {
             IngredientListDTO ingredient = ingredientList.get(i);
             ingredient.setNo(i + 1);
@@ -57,47 +81,75 @@ public class IngredientService {
         return map;
     }
 
-    public int insertIngredient(User loginMember, IngredientInsertDTO ingredientInsertDTO) {
+    public int insertIngredient(TUser loginMember, IngredientInsertDTO ingredientInsertDTO) {
 
-        int ingredientSaveResult = 0;
-        int ingredientHisSaveResult = 0;
-
-        Ingredient ingredient = new Ingredient();
-        String ingredientNo = ingredientMapper.selectIngredientNo(loginMember.getStoreNo());
-        String nextIngredientNo = ComUtils.getNextNo(ingredientNo, Constants.INGREDIENT_NO_PREFIX);
-        ingredient.setIngredientNo(nextIngredientNo);
-        ingredient.setStoreNo(loginMember.getStoreNo());
-        ingredient.setIngredientName(ingredientInsertDTO.getIngredientName());
+        String storeNo = loginMember.getStore().getStoreNo();
+        String ingredientName = ingredientInsertDTO.getIngredientName();
         double quantity = ingredientInsertDTO.getQuantity();
-        ingredient.setQuantity(quantity);
-        ingredient.setInsertId(loginMember.getUserId());
-        ingredient.setModifyId(loginMember.getUserId());
-        ingredientSaveResult = ingredientMapper.insertIngredient(ingredient);
+        String userId = loginMember.getUserId();
 
-        IngredientHis ingredientHis = new IngredientHis();
-        ingredientHis.setIngredientNo(nextIngredientNo);
-        ingredientHis.setStoreNo(loginMember.getStoreNo());
-        String ingredientSeq = ingredientMapper.selectIngredientSeq(ingredientHis);
-        ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-        ingredientHis.setInDeQuantity(quantity);
-        ingredientHis.setInDeReasonNo("ID003");
-        ingredientHis.setInsertId(loginMember.getUserId());
-        ingredientHis.setModifyId(loginMember.getUserId());
-        ingredientHisSaveResult = ingredientMapper.insertIngredientHis(ingredientHis);
+        TIngredient ingredient = new TIngredient();
 
-        if(ingredientSaveResult > 0 && ingredientHisSaveResult > 0) {
-            return 1;
-        } else {
-            return 0;
+        TIngredientId ingredientId = new TIngredientId();
+        String ingredientNo = "";
+        if(ingredientRepository.findIngredientNo(storeNo).isPresent()) {
+            ingredientNo = ingredientRepository.findIngredientNo(storeNo).get();
         }
+        String nextIngredientNo = ComUtils.getNextNo(ingredientNo, Constants.INGREDIENT_NO_PREFIX);
+        ingredientId.setIngredientNo(nextIngredientNo);
+        ingredientId.setStoreNo(storeNo);
+
+        ingredient.setIngredientId(ingredientId);
+        ingredient.setIngredientName(ingredientName);
+        ingredient.setQuantity(quantity);
+        ingredient.setInsertId(userId);
+        ingredient.setInsertDate(LocalDateTime.now());
+        ingredient.setModifyId(userId);
+        ingredient.setModifyDate(LocalDateTime.now());
+
+        ingredientRepository.saveIngredient(ingredient);
+
+        TIngredientHis ingredientHis = new TIngredientHis();
+
+        TIngredientHisId ingredientHisId = new TIngredientHisId();
+        String ingredientSeq = "";
+        if(ingredientRepository.findIngredientSeq(nextIngredientNo, storeNo).isPresent()) {
+            ingredientSeq = ingredientRepository.findIngredientSeq(nextIngredientNo, storeNo).get();
+        }
+        ingredientHisId.setIngredientNo(nextIngredientNo);
+        ingredientHisId.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
+        ingredientHisId.setStoreNo(storeNo);
+
+        ingredientHis.setIngredientHisId(ingredientHisId);
+        ingredientHis.setInDeQuantity(quantity);
+        ingredientHis.setInDeReason(ingredientRepository.findInDeReason("ID003"));
+        ingredientHis.setCommonData(new CommonData(userId, LocalDateTime.now(), userId, LocalDateTime.now()));
+
+        ingredientRepository.saveIngredientHis(ingredientHis);
+
+        return 1;
     }
 
-    public Map<String, Object> selectIngredientUpdateInfo(User loginMember, String ingredientNo) {
+    public Map<String, Object> selectIngredientUpdateInfo(TUser loginMember, String ingredientNo) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
 
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        IngredientUpdateDTO ingredientUpdateDTO = ingredientMapper.selectIngredient(loginMember.getStoreNo(), ingredientNo);
-        List<InDeReason> inDeReasonList = ingredientMapper.selectInDeReasonList();
+
+        TIngredientId ingredientId = new TIngredientId();
+        ingredientId.setIngredientNo(ingredientNo);
+        ingredientId.setStoreNo(storeNo);
+        TIngredient ingredient = ingredientRepository.findIngredient(ingredientId);
+
+        IngredientUpdateDTO ingredientUpdateDTO = new IngredientUpdateDTO();
+        ingredientUpdateDTO.setIngredientNo(ingredientNo);
+        ingredientUpdateDTO.setIngredientName(ingredient.getIngredientName());
+
+        List<TInDeReason> inDeReasons = ingredientRepository.findInDeReasonV1();
+        List<InDeReasonListDTO> inDeReasonList = inDeReasons.stream()
+                .map(i -> new InDeReasonListDTO(i))
+                .collect(Collectors.toList());
 
         map.put("commonLayoutForm", commonLayoutForm);
         map.put("ingredient", ingredientUpdateDTO);
@@ -106,36 +158,45 @@ public class IngredientService {
         return map;
     }
 
-    public int updateIngredient(User loginMember, IngredientUpdateDTO ingredientUpdateDTO) {
+    public int updateIngredient(TUser loginMember, IngredientUpdateDTO ingredientUpdateDTO) {
 
-        int ingredientUpdateResult = 0;
-        int ingredientHisSaveResult = 0;
+        String storeNo = loginMember.getStore().getStoreNo();
+        String ingredientNo = ingredientUpdateDTO.getIngredientNo();
+        double inDeQuantity = ingredientUpdateDTO.getInDeQuantity();
+        String userId = loginMember.getUserId();
+        String inDeReasonNo = ingredientUpdateDTO.getInDeReasonNo();
+        String ingredientName = ingredientUpdateDTO.getIngredientName();
 
-        Ingredient ingredient = new Ingredient();
-        ingredient.setIngredientNo(ingredientUpdateDTO.getIngredientNo());
-        ingredient.setStoreNo(loginMember.getStoreNo());
-        double quantity = ingredientMapper.selectQuantity(ingredient);
-        ingredient.setQuantity(quantity + ingredientUpdateDTO.getInDeQuantity());
-        ingredient.setModifyId(loginMember.getUserId());
+        TIngredientId ingredientId = new TIngredientId();
+        ingredientId.setIngredientNo(ingredientNo);
+        ingredientId.setStoreNo(storeNo);
 
-        ingredientUpdateResult = ingredientMapper.updateIngredient(ingredient);
+        TIngredient ingredient = ingredientRepository.findIngredient(ingredientId);
+        double quantity = ingredientRepository.findIngredientQuantity(ingredientNo, storeNo);
+        ingredient.setIngredientName(ingredientName);
+        ingredient.setQuantity(quantity + inDeQuantity);
+        ingredient.setModifyId(userId);
+        ingredient.setModifyDate(LocalDateTime.now());
 
-        IngredientHis ingredientHis = new IngredientHis();
-        ingredientHis.setIngredientNo(ingredientUpdateDTO.getIngredientNo());
-        ingredientHis.setStoreNo(loginMember.getStoreNo());
-        String ingredientSeq = ingredientMapper.selectIngredientSeq(ingredientHis);
-        ingredientHis.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-        ingredientHis.setInDeQuantity(ingredientUpdateDTO.getInDeQuantity());
-        ingredientHis.setInDeReasonNo(ingredientUpdateDTO.getInDeReasonNo());
-        ingredientHis.setInsertId(loginMember.getUserId());
-        ingredientHis.setModifyId(loginMember.getUserId());
-        ingredientHisSaveResult = ingredientMapper.insertIngredientHis(ingredientHis);
+        TIngredientHis ingredientHis = new TIngredientHis();
 
-        if(ingredientUpdateResult > 0 && ingredientHisSaveResult > 0) {
-            return 1;
-        } else {
-            return 0;
+        TIngredientHisId ingredientHisId = new TIngredientHisId();
+        ingredientHisId.setIngredientNo(ingredientNo);
+        String ingredientSeq = null;
+        if (ingredientRepository.findIngredientSeq(ingredientNo, storeNo).isPresent()) {
+            ingredientSeq = ingredientRepository.findIngredientSeq(ingredientNo, storeNo).get();
         }
+        ingredientHisId.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
+        ingredientHisId.setStoreNo(storeNo);
+
+        ingredientHis.setIngredientHisId(ingredientHisId);
+        ingredientHis.setInDeReason(ingredientRepository.findInDeReason(inDeReasonNo));
+        ingredientHis.setInDeQuantity(ingredientUpdateDTO.getInDeQuantity());
+        ingredientHis.setCommonData(new CommonData(userId, LocalDateTime.now(), userId, LocalDateTime.now()));
+
+        ingredientRepository.saveIngredientHis(ingredientHis);
+
+        return 1;
 
     }
 }

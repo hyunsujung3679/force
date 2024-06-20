@@ -1,6 +1,8 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import com.hsj.force.domain.entity.embedded.TOpenCloseId;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -30,7 +32,6 @@ public class TOpenClose {
     private int fifty;
     private int ten;
     private Integer closeMoney;
-
     private String insertId;
     private LocalDateTime insertDate;
     private String modifyId;

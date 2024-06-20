@@ -23,7 +23,7 @@ public interface MenuMapper {
 
     List<MenuIngredientListDTO> selectMenuIngredientList(String storeNo);
 
-    List<MenuIngredientListDTO> selectMenuIngredientListByMenuNo(Order order);
+    List<MenuIngredientListDTO> selectMenuIngredientListByMenuNo(String menuNo, String storeNo);
 
     String selectMenuNo(String storeNo);
 

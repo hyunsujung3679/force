@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,15 +20,14 @@ public class TStore {
 
     private String storeName;
     private String useYn;
-    private String insertId;
-    private String insertDate;
-    private String modifyId;
-    private String modifyDate;
+
+    @Embedded
+    private CommonData commonData;
 
     @OneToMany(mappedBy = "store")
     private List<TUser> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "store")
-    private List<TTable> tables = new ArrayList<>();
+//    @OneToMany(mappedBy = "store")
+//    private List<TTable> tables = new ArrayList<>();
 
 }

@@ -7,6 +7,7 @@ import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CategoryListDTO;
 import com.hsj.force.domain.dto.CategoryUpdateDTO;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
+import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +35,10 @@ public class CategoryController {
     @GetMapping
     public String categoryListForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
-        if(openService.selectIsOpen(loginMember.getStoreNo()) == 0) {
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        String storeNo = loginMember.getStore().getStoreNo();
+
+        if(!openService.findIsOpen(storeNo)) {
             return "redirect:/open";
         }
 
@@ -50,7 +53,7 @@ public class CategoryController {
     @GetMapping("/insert")
     public String categoryInsertForm(HttpSession session, Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         model.addAttribute("header", commonLayoutDTO);
@@ -65,7 +68,7 @@ public class CategoryController {
                                  Model model) {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
         CommonLayoutDTO commonLayoutDTO = commonService.selectHeaderInfo(loginMember);
 
         if(!StringUtils.hasText(category.getCategoryName())) {
@@ -90,7 +93,7 @@ public class CategoryController {
                                      HttpSession session,
                                      Model model) {
 
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         Map<String, Object> map = categoryService.selectCategoryUpdateInfo(loginMember, categoryNo);
 
@@ -106,7 +109,7 @@ public class CategoryController {
                                  Model model) {
 
         Map<String, String> errors = new HashMap<>();
-        User loginMember = (User) session.getAttribute("loginMember");
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
 
         if(!StringUtils.hasText(category.getCategoryName())) {
             errors.put("categoryName", messageSource.getMessage("message.input.category.name", null, Locale.KOREA));
@@ -128,7 +131,7 @@ public class CategoryController {
     @GetMapping("/list")
     @ResponseBody
     public List<CategoryListDTO> selectCategoryList(HttpSession session) {
-        User loginMember = (User) session.getAttribute("loginMember");
-        return categoryService.selectCategoryList(loginMember.getStoreNo());
+        TUser loginMember = (TUser) session.getAttribute("loginMember");
+        return categoryService.selectCategoryList(loginMember.getStore().getStoreNo());
     }
 }

@@ -1,11 +1,10 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import com.hsj.force.domain.entity.embedded.TIngredientHisId;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -18,16 +17,14 @@ public class TIngredientHis {
     @EmbeddedId
     private TIngredientHisId ingredientHisId;
 
-    private int inDeQuantity;
+    private Double inDeQuantity;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "IN_DE_REASON_NO")
     private TInDeReason inDeReason;
 
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
+    @Embedded
+    private CommonData commonData;
 
     //==연관관계 메서드==//
     public void setInDeReason(TInDeReason inDeReason) {

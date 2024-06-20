@@ -7,13 +7,12 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-@Embeddable
-public class TIngredientId implements Serializable {
+public class TTableId implements Serializable {
 
-    @Column(name = "INGREDIENT_NO")
-    private String ingredientNo;
+//    @Column(name = "TABLE_NO")
+    private String tableNo;
 
-    @Column(name = "STORE_NO")
+//    @Column(name = "STORE_NO")
     private String storeNo;
 
 }

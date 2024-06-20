@@ -1,5 +1,6 @@
 package com.hsj.force.domain.entity;
 
+import com.hsj.force.domain.entity.embedded.CommonData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

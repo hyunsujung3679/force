@@ -1,6 +1,5 @@
 package com.hsj.force.table.service;
 
-import com.hsj.force.common.repository.CommonMapper;
 import com.hsj.force.common.repository.CommonRepository;
 import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
@@ -10,7 +9,7 @@ import com.hsj.force.domain.dto.TableListDTO;
 import com.hsj.force.domain.entity.TOrder;
 import com.hsj.force.domain.entity.TTable;
 import com.hsj.force.domain.entity.TUser;
-import com.hsj.force.order.repository.OrderMapper;
+import com.hsj.force.domain.entity.embedded.TTableId;
 import com.hsj.force.order.repository.OrderRepository;
 import com.hsj.force.table.repository.TableMapper;
 import com.hsj.force.table.repository.TableRepository;
@@ -23,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -44,33 +44,11 @@ public class TableService {
         }
 
         List<TTable> tables = tableRepository.findAll(storeNo);
-        List<TOrder> orders = orderRepository.findAllV2(storeNo);
+        List<TableListDTO> tableList = tables.stream()
+                .map(t -> new TableListDTO(t))
+                .collect(Collectors.toList());
 
-        List<TableListDTO> tableList = new ArrayList<>();
-        TableListDTO tableListDTO = null;
-        for (TTable table : tables) {
-            tableListDTO = new TableListDTO();
-            tableListDTO.setTableNo(table.getTableNo());
-            tableListDTO.setTableName(table.getTableName());
-            tableList.add(tableListDTO);
-        }
-
-        List<OrderListDTO> orderList = new ArrayList<>();
-        OrderListDTO orderListDTO = null;
-        for (TOrder order : orders) {
-            orderListDTO = new OrderListDTO();
-            orderListDTO.setOrderNo(order.getOrderId().getOrderNo());
-            orderListDTO.setOrderSeq(order.getOrderId().getOrderSeq());
-            orderListDTO.setStoreNo(order.getOrderId().getStore().getStoreNo());
-            orderListDTO.setTableNo(order.getTable().getTableNo());
-            orderListDTO.setMenuNo(order.getMenu().getMenuNo());
-            orderListDTO.setSalePrice(order.getSalePrice());
-            orderListDTO.setQuantity(order.getQuantity());
-            orderListDTO.setTotalSalePrice(order.getTotalSalePrice());
-            orderListDTO.setOrderStatusNo(order.getOrderStatus().getOrderStatusNo());
-            orderListDTO.setMenuName(order.getMenu().getMenuName());
-            orderList.add(orderListDTO);
-        }
+        List<OrderListDTO> orderList = orderRepository.findAllV2(storeNo);
 
         Map<String, List<OrderListDTO>> tableOfOrderMap = new HashMap<>();
         List<OrderListDTO> tempOrderList = null;
@@ -116,28 +94,56 @@ public class TableService {
     }
 
     public List<TableListDTO> selectTableExistOrderList(String storeNo) {
+        //TODO: JPA 적용 필요
         return tableMapper.selectTableExistOrderList(storeNo);
     }
 
     public List<TableListDTO> selectTableNotExistOrderList(String storeNo) {
+        //TODO: JPA 적용 필요
         return tableMapper.selectTableNotExistOrderList(storeNo);
     }
 
-    public int moveTable(User loginMember, TableDTO table) {
-        int result = tableMapper.updateTableNoV1(loginMember.getStoreNo(), table.getAfterTableNo(), table.getBeforeTableNo(), loginMember.getUserId());
-        if(result > 0) {
-            return 1;
-        } else {
-            return 0;
+    public int moveTable(TUser loginMember, TableDTO tableDTO) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
+        String userId = loginMember.getUserId();
+        String afterTableNo = tableDTO.getAfterTableNo();
+        String beforeTableNo = tableDTO.getBeforeTableNo();
+
+        TTableId tableId = new TTableId();
+        tableId.setStoreNo(storeNo);
+        tableId.setTableNo(afterTableNo);
+        TTable table = tableRepository.findTable(tableId);
+
+        List<TOrder> orders = orderRepository.findOrderV3(storeNo, beforeTableNo);
+        for(TOrder order : orders) {
+            order.setTable(table);
+            order.setModifyId(userId);
+            order.setModifyDate(LocalDateTime.now());
         }
+
+        return 1;
     }
 
-    public int combineTable(User loginMember, TableDTO table) {
-        int result = tableMapper.updateTableNoV2(loginMember.getStoreNo(), table.getFirstTableNo(), table.getSecondTableNo(), loginMember.getUserId());
-        if(result > 0) {
-            return 1;
-        } else {
-            return 0;
+    public int combineTable(TUser loginMember, TableDTO tableDTO) {
+
+        String storeNo = loginMember.getStore().getStoreNo();
+        String firstTableNo = tableDTO.getFirstTableNo();
+        String secondTableNo = tableDTO.getSecondTableNo();
+        String userId = loginMember.getUserId();
+
+        TTableId tableId = new TTableId();
+        tableId.setStoreNo(storeNo);
+        tableId.setTableNo(secondTableNo);
+        TTable table = tableRepository.findTable(tableId);
+
+        List<TOrder> orders = orderRepository.findOrderV3(storeNo, firstTableNo);
+        for(TOrder order : orders) {
+            order.setTable(table);
+            order.setModifyId(userId);
+            order.setModifyDate(LocalDateTime.now());
         }
+
+        return 1;
     }
 }

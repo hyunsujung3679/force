@@ -41,9 +41,7 @@ public class MenuController {
     public String menuListForm(HttpSession session, Model model) {
 
         TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/open";
         }
 
@@ -123,7 +121,7 @@ public class MenuController {
         menu.setImageExt(imageExt);
         menu.setImageSaveName(imageSaveName);
         menu.setImagePath(fileDir);
-        int result = menuService.insertMenu(loginMember, menu);
+        int result = menuService.insertMenu(menu);
         if(result > 0) {
             File mkdir = new File(fileDir);
             if(!mkdir.exists()) {
@@ -214,7 +212,7 @@ public class MenuController {
             menu.setImagePath(fileDir);
         }
 
-        int result = menuService.updateMenu(loginMember, menu);
+        int result = menuService.updateMenu(menu);
         if(result > 0) {
             if(!file.isEmpty()) {
                 File mkdir = new File(fileDir);
@@ -237,16 +235,14 @@ public class MenuController {
 
     @GetMapping("/{categoryNo}/list")
     @ResponseBody
-    public List<MenuListDTO> selectMenuListByCategoryNo(HttpSession session, @PathVariable String categoryNo) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return menuService.selectMenuListByCategoryNo(loginMember.getStore().getStoreNo(), categoryNo);
+    public List<MenuListDTO> selectMenuListByCategoryNo(@PathVariable String categoryNo) {
+        return menuService.selectMenuListByCategoryNo(categoryNo);
     }
 
     @GetMapping("/first-category/list")
     @ResponseBody
-    public List<MenuListDTO> selectMenuListByFirstCategory(HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return menuService.selectMenuListByFirstCategory(loginMember.getStore().getStoreNo());
+    public List<MenuListDTO> selectMenuListByFirstCategory() {
+        return menuService.selectMenuListByFirstCategory();
     }
 
 }

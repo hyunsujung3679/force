@@ -1,31 +1,47 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
-import com.hsj.force.domain.entity.embedded.TIngredientId;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TINGREDIENT")
 @Getter
 @Setter
-public class TIngredient {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TIngredient extends BaseEntity implements Persistable<String> {
 
-    @EmbeddedId
-    private TIngredientId ingredientId;
+    @Id
+    @Column(name = "INGREDIENT_NO")
+    private String ingredientNo;
 
     private String ingredientName;
     private double quantity;
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
 
+    public TIngredient(String ingredientNo) {
+        this.ingredientNo = ingredientNo;
+    }
+
+    public TIngredient(String ingredientNo, String ingredientName, double quantity) {
+        this.ingredientNo = ingredientNo;
+        this.ingredientName = ingredientName;
+        this.quantity = quantity;
+    }
+
+    @Override
+    public String getId() {
+        return ingredientNo;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

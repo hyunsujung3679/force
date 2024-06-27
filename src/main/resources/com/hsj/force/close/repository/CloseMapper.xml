@@ -10,7 +10,6 @@
         WHERE O.ORDER_DATE &gt;= (SELECT OC.MODIFY_DATE
                                   FROM TOPENCLOSE OC
                                   WHERE OC.CLOSE_MONEY IS NULL)
-        AND O.STORE_NO = #{storeNo}
     </select>
 
     <select id="selectCancelInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
@@ -21,7 +20,6 @@
                                   FROM TOPENCLOSE OC
                                   WHERE OC.CLOSE_MONEY IS NULL)
         AND O.ORDER_STATUS_NO = 'OS002'
-        AND O.STORE_NO = #{storeNo}
     </select>
 
     <select id="selectDiscountPrice" resultType="int">
@@ -31,7 +29,6 @@
                                   FROM TOPENCLOSE OC
                                   WHERE OC.CLOSE_MONEY IS NULL)
           AND O.ORDER_STATUS_NO = 'OS003'
-          AND O.STORE_NO = #{storeNo}
     </select>
 
     <select id="selectRealOrderInfo" resultType="com.hsj.force.domain.dto.OpenCloseUpdateDTO">
@@ -42,25 +39,6 @@
                                   FROM TOPENCLOSE OC
                                   WHERE OC.CLOSE_MONEY IS NULL)
           AND O.ORDER_STATUS_NO = 'OS003'
-          AND O.STORE_NO = #{storeNo}
     </select>
-
-    <update id="updateOpenClose">
-        UPDATE TOPENCLOSE
-        SET ONE_HUN_THOUS= #{oneHunThous}
-          , FIFTY_THOUS = #{fiftyThous}
-          , TEN_THOUS = #{tenThous}
-          , FIVE_THOUS = #{fiveThous}
-          , ONE_THOUS = #{oneThous}
-          , FIVE_HUN = #{fiveHun}
-          , ONE_HUN = #{oneHun}
-          , FIFTY = #{fifty}
-          , TEN = #{ten}
-          , CLOSE_MONEY = #{closeMoney}
-          , MODIFY_ID = #{modifyId}
-          , MODIFY_DATE = NOW()
-        WHERE STORE_NO = #{storeNo}
-          AND CLOSE_MONEY IS NULL
-    </update>
 
 </mapper>

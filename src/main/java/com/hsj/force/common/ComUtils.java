@@ -8,16 +8,6 @@ import java.time.format.DateTimeFormatter;
 public class ComUtils {
 
     /**
-     * 날짜 변환
-     * @param dateStr
-     * @return LocalDateTime
-     */
-    public static LocalDateTime stringTolocalDateTime(String dateStr) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(dateStr, formatter);
-    }
-
-    /**
      * 다음 기본키(NO) 조회
      * @param previousNo
      * @param prefix

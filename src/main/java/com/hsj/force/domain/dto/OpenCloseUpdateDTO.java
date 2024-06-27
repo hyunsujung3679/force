@@ -27,7 +27,6 @@ public class OpenCloseUpdateDTO {
     private Integer ten;
     private int closeMoney;
 
-    private String storeNo;
     private String modifyId;
 
 }

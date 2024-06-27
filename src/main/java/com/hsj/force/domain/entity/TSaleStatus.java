@@ -1,9 +1,12 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +15,8 @@ import java.util.List;
 @Table(name = "TSALESTATUS")
 @Getter
 @Setter
-public class TSaleStatus {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TSaleStatus extends BaseEntity implements Persistable<String> {
 
     @Id
     @Column(name = "SALE_STATUS_NO")
@@ -20,9 +24,16 @@ public class TSaleStatus {
 
     private String saleStatus;
 
-    @Embedded
-    private CommonData commonData;
-
     @OneToMany(mappedBy = "saleStatus")
     private List<TMenu> menus = new ArrayList<>();
+
+    @Override
+    public String getId() {
+        return saleStatusNo;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

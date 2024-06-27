@@ -2,7 +2,6 @@ package com.hsj.force.category.controller;
 
 import com.hsj.force.category.service.CategoryService;
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CategoryInsertDTO;
 import com.hsj.force.domain.dto.CategoryListDTO;
 import com.hsj.force.domain.dto.CategoryUpdateDTO;
@@ -36,9 +35,7 @@ public class CategoryController {
     public String categoryListForm(HttpSession session, Model model) {
 
         TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/open";
         }
 
@@ -84,7 +81,7 @@ public class CategoryController {
             return "category/categoryInsert";
         }
 
-        categoryService.insertCategory(loginMember, category);
+        categoryService.insertCategory(category);
         return "redirect:/category";
     }
 
@@ -124,14 +121,13 @@ public class CategoryController {
             model.addAttribute("errors", errors);
             return "category/categoryUpdate";
         }
-        categoryService.updateCategory(loginMember, category);
+        categoryService.updateCategory(category);
         return "redirect:/category";
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public List<CategoryListDTO> selectCategoryList(HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return categoryService.selectCategoryList(loginMember.getStore().getStoreNo());
+    public List<CategoryListDTO> selectCategoryList() {
+        return categoryService.selectCategoryList();
     }
 }

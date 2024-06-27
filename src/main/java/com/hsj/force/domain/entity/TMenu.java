@@ -1,11 +1,12 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,8 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table(name = "TMENU")
 @Getter
 @Setter
-public class TMenu {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TMenu extends BaseEntity {
 
     @Id
     @Column(name = "MENU_NO")
@@ -35,13 +37,24 @@ public class TMenu {
     private String imageOriginName;
     private String imagePath;
     private String imageExt;
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
 
     @OneToMany(mappedBy = "menu")
     private List<TOrder> orders = new ArrayList<>();
+
+    public TMenu(String menuNo) {
+        this.menuNo = menuNo;
+    }
+
+    public TMenu(String menuNo, String menuName, TSaleStatus saleStatus, TCategory category, String imageSaveName, String imageOriginName, String imagePath, String imageExt) {
+        this.menuNo = menuNo;
+        this.menuName = menuName;
+        this.saleStatus = saleStatus;
+        this.category = category;
+        this.imageSaveName = imageSaveName;
+        this.imageOriginName = imageOriginName;
+        this.imagePath = imagePath;
+        this.imageExt = imageExt;
+    }
 
     //==연관관계 메서드==//
     public void setSaleStatus(TSaleStatus saleStatus) {

@@ -1,6 +1,5 @@
 package com.hsj.force.table.controller;
 
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.TableDTO;
 import com.hsj.force.domain.dto.TableListDTO;
 import com.hsj.force.domain.entity.TUser;
@@ -28,50 +27,44 @@ public class TableController {
     public String tableForm(HttpSession session, Model model) {
 
         TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/table";
         }
 
-        Map<String, Object> map = tableService.findTableInfo(loginMember);
+        Map<String, Object> map = tableService.selectTableInfo(loginMember);
         model.addAttribute("header", map.get("commonLayoutForm"));
         model.addAttribute("tableList", map.get("tableList"));
         model.addAttribute("tableTotalPriceList", map.get("tableTotalPriceList"));
         model.addAttribute("tableOfOrderMap", map.get("tableOfOrderMap"));
 
-        return "table/" + storeNo + "/tableForm";
+        return "table/" + "S001" + "/tableForm";
     }
 
     @GetMapping("/exist-order/list")
     @ResponseBody
-    public List<TableListDTO> selectTableExistOrderList(HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return tableService.selectTableExistOrderList(loginMember.getStore().getStoreNo());
+    public List<TableListDTO> selectTableExistOrderList() {
+        return tableService.selectTableExistOrderList();
     }
 
     @GetMapping("/not-exist-order/list")
     @ResponseBody
-    public List<TableListDTO> selectTableNotExistOrderList(HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return tableService.selectTableNotExistOrderList(loginMember.getStore().getStoreNo());
+    public List<TableListDTO> selectTableNotExistOrderList() {
+        return tableService.selectTableNotExistOrderList();
     }
 
     @PostMapping("/move")
     @ResponseBody
-    public int moveTable(HttpSession session, @RequestBody TableDTO table) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return tableService.moveTable(loginMember, table);
+    public int moveTable(@RequestBody TableDTO table) {
+        return tableService.moveTable(table);
     }
 
     @PostMapping("/combine")
     @ResponseBody
-    public int combineTable(HttpSession session, @RequestBody TableDTO table) {
+    public int combineTable(@RequestBody TableDTO table) {
         if(table.getFirstTableNo().equals(table.getSecondTableNo())) {
             return 0;
         } else {
-            TUser loginMember = (TUser) session.getAttribute("loginMember");
-            return tableService.combineTable(loginMember, table);
+            return tableService.combineTable(table);
         }
     }
 

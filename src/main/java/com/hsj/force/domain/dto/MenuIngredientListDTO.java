@@ -1,6 +1,5 @@
 package com.hsj.force.domain.dto;
 
-import com.hsj.force.domain.entity.TMenu;
 import com.hsj.force.domain.entity.TMenuIngredient;
 import lombok.Data;
 
@@ -24,6 +23,13 @@ public class MenuIngredientListDTO {
         this.needQuantity = needQuantity;
     }
 
+    public MenuIngredientListDTO(String menuNo, double stockQuantity, String ingredientNo, double needQuantity) {
+        this.menuNo = menuNo;
+        this.stockQuantity = stockQuantity;
+        this.ingredientNo = ingredientNo;
+        this.needQuantity = needQuantity;
+    }
+
     public MenuIngredientListDTO(String menuNo, String ingredientNo, double menuQuantity, double ingredientQuantity, double needQuantity) {
         this.menuNo = menuNo;
         this.ingredientNo = ingredientNo;
@@ -33,7 +39,7 @@ public class MenuIngredientListDTO {
     }
 
     public MenuIngredientListDTO(TMenuIngredient menuIngredient) {
-        this.ingredientNo = menuIngredient.getMenuIngredientId().getIngredientNo();
+        this.ingredientNo = menuIngredient.getIngredientNo();
         this.quantity = menuIngredient.getQuantity();
     }
 }

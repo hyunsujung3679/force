@@ -21,11 +21,10 @@ public class OrderListDTO {
     private String serviceYn;
     private String no;
     private String etc;
-    private String storeNo;
     private String tableNo;
     private String orderStatusNo;
 
-    public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String no, String etc, String storeNo, String tableNo, String orderStatusNo) {
+    public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String no, String etc, String tableNo, String orderStatusNo) {
         this.orderNo = orderNo;
         this.orderSeq = orderSeq;
         this.menuNo = menuNo;
@@ -41,12 +40,11 @@ public class OrderListDTO {
         this.serviceYn = serviceYn;
         this.no = no;
         this.etc = etc;
-        this.storeNo = storeNo;
         this.tableNo = tableNo;
         this.orderStatusNo = orderStatusNo;
     }
 
-    public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String storeNo, String tableNo, String orderStatusNo) {
+    public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String tableNo, String orderStatusNo) {
         this.orderNo = orderNo;
         this.orderSeq = orderSeq;
         this.menuNo = menuNo;
@@ -62,14 +60,13 @@ public class OrderListDTO {
         this.serviceYn = serviceYn;
         this.no = no;
         this.etc = etc;
-        this.storeNo = storeNo;
         this.tableNo = tableNo;
         this.orderStatusNo = orderStatusNo;
     }
 
     public OrderListDTO (TOrder order) {
-        orderNo = order.getOrderId().getOrderNo();
-        orderSeq = order.getOrderId().getOrderSeq();
+        orderNo = order.getOrderNo();
+        orderSeq = order.getOrderSeq();
         menuNo = order.getMenu().getMenuNo();
         menuName = order.getMenu().getMenuName();
         salePrice = order.getSalePrice();
@@ -81,7 +78,6 @@ public class OrderListDTO {
         selPriceYn = order.getSelPriceYn();
         selPerYn = order.getSelPerYn();
         serviceYn = order.getServiceYn();
-        storeNo = order.getTable().getStoreNo();
         tableNo = order.getTable().getTableNo();
         orderStatusNo = order.getOrderStatus().getOrderStatusNo();
     }

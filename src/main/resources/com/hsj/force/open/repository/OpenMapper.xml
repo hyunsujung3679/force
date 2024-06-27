@@ -3,19 +3,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.open.repository.OpenMapper">
 
-    <select id="selectIsOpen" resultType="int">
-        SELECT COUNT(*)
-          FROM TOPENCLOSE
-         WHERE CLOSE_MONEY IS NULL
-           AND STORE_NO = #{storeNo}
-    </select>
-
     <select id="selectOpenCloseSeq" resultType="String">
         SELECT OC.OPEN_CLOSE_SEQ
           FROM TOPENCLOSE OC
          WHERE CLOSE_MONEY IS NOT NULL
            AND date_format(OC.INSERT_DATE, '%Y-%m-%d') = curdate()
-           AND OC.STORE_NO = #{storeNo}
          ORDER BY OC.OPEN_CLOSE_SEQ DESC
          LIMIT 1
    </select>

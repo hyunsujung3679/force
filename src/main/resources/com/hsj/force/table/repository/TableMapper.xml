@@ -3,25 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsj.force.table.repository.TableMapper">
 
-    <select id="selectTableList" resultType="com.hsj.force.domain.dto.TableListDTO">
-        SELECT T.TABLE_NO
-             , T.TABLE_NAME
-          FROM TTABLE T
-         WHERE T.STORE_NO = #{storeNo}
-         ORDER BY T.TABLE_NO ASC
-    </select>
-
-    <select id="selectTableExistOrderList" resultType="com.hsj.force.domain.dto.TableListDTO">
-        SELECT DISTINCT(T.TABLE_NO)
-             , T.TABLE_NAME
-          FROM TTABLE T
-             , TORDER O
-         WHERE T.TABLE_NO = O.TABLE_NO
-           AND T.STORE_NO = #{storeNo}
-           AND O.ORDER_STATUS_NO = 'OS001'
-         ORDER BY T.TABLE_NO ASC
-    </select>
-
     <select id="selectTableNotExistOrderList" resultType="com.hsj.force.domain.dto.TableListDTO">
         SELECT T.TABLE_NO
              , T.TABLE_NAME
@@ -31,28 +12,7 @@
                             WHERE T.TABLE_NO = O.TABLE_NO
                               AND O.ORDER_STATUS_NO = 'OS001'
         )
-           AND T.STORE_NO = #{storeNo}
          ORDER BY T.TABLE_NO ASC
     </select>
-
-    <update id="updateTableNoV1">
-        UPDATE TORDER O
-           SET O.TABLE_NO = #{afterTableNo}
-             , O.MODIFY_ID = #{modifyId}
-             , O.MODIFY_DATE = NOW()
-         WHERE O.STORE_NO = #{storeNo}
-           AND O.TABLE_NO = #{beforeTableNo}
-           AND O.ORDER_STATUS_NO = 'OS001'
-    </update>
-
-    <update id="updateTableNoV2">
-        UPDATE TORDER O
-        SET O.TABLE_NO = #{secondTableNo}
-          , O.MODIFY_ID = #{modifyId}
-          , O.MODIFY_DATE = NOW()
-        WHERE O.STORE_NO = #{storeNo}
-          AND O.TABLE_NO = #{firstTableNo}
-          AND O.ORDER_STATUS_NO = 'OS001'
-    </update>
 
 </mapper>

@@ -1,25 +1,26 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
-import jakarta.persistence.*;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import static jakarta.persistence.FetchType.LAZY;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "TUSER")
 @Getter
 @Setter
-public class TUser {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TUser extends BaseEntity implements Persistable<String> {
 
     @Id
     @Column(name = "USER_NO")
     private String userNo;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "STORE_NO")
-    private TStore store;
 
     private String userId;
     private String password;
@@ -27,12 +28,13 @@ public class TUser {
     private String phoneNum;
     private String useYn;
 
-    @Embedded
-    private CommonData commonData;
+    @Override
+    public String getId() {
+        return userNo;
+    }
 
-    //==연관관계 메서드==//
-    public void setStore(TStore store) {
-        this.store = store;
-        store.getUsers().add(this);
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
     }
 }

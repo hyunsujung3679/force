@@ -15,7 +15,7 @@ public class IngredientListDTO {
     }
 
     public IngredientListDTO(TIngredient ingredient) {
-        this.ingredientNo = ingredient.getIngredientId().getIngredientNo();
+        this.ingredientNo = ingredient.getIngredientNo();
         this.ingredientName = ingredient.getIngredientName();
         this.quantity = ingredient.getQuantity();
     }

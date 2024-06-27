@@ -1,23 +1,23 @@
 package com.hsj.force.category.service;
 
-import com.hsj.force.category.repository.CategoryMapper;
-import com.hsj.force.category.repository.CategoryRepository;
+import com.hsj.force.category.repository.CategoryJpaRepository;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.Category;
-import com.hsj.force.domain.User;
-import com.hsj.force.domain.dto.*;
+import com.hsj.force.domain.dto.CategoryInsertDTO;
+import com.hsj.force.domain.dto.CategoryListDTO;
+import com.hsj.force.domain.dto.CategoryUpdateDTO;
+import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.entity.TCategory;
 import com.hsj.force.domain.entity.TUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -25,18 +25,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CategoryService {
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryJpaRepository categoryJpaRepository;
 
     private final CommonService commonService;
-    private final CategoryMapper categoryMapper;
 
     public Map<String, Object> selectCategoryListInfo(TUser loginMember) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
-        List<TCategory> categories = categoryRepository.findCategoryV1(storeNo);
+        List<TCategory> categories = categoryJpaRepository.findAllByOrderByPriority();
         List<CategoryListDTO> categoryList = categories.stream()
                 .map(c -> new CategoryListDTO(c))
                 .collect(Collectors.toList());
@@ -52,72 +49,58 @@ public class CategoryService {
         return map;
     }
 
-    public int insertCategory(TUser loginMember, CategoryInsertDTO categoryInsertDTO) {
+    public int insertCategory(CategoryInsertDTO categoryInsertDTO) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
         String categoryName = categoryInsertDTO.getCategoryName();
         int priority = categoryInsertDTO.getPriority();
         String useYn = categoryInsertDTO.getUseYn();
-        String categoryNo = "";
-        if(categoryRepository.findMaxCategoryNo(storeNo).isPresent()) {
-            categoryNo = categoryRepository.findMaxCategoryNo(storeNo).get();
-        }
-        String userId = loginMember.getUserId();
 
-        TCategory category = new TCategory();
-        category.setCategoryNo(ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX));
-        category.setStoreNo(storeNo);
-        category.setCategoryName(categoryName);
-        category.setPriority(priority);
-        category.setUseYn(useYn);
-        category.setInsertId(userId);
-        category.setInsertDate(LocalDateTime.now());
-        category.setModifyId(userId);
-        category.setModifyDate(LocalDateTime.now());
+        String categoryNo = categoryJpaRepository.findFirstByOrderByCategoryNoDesc().getCategoryNo();
 
-        checkPriority(loginMember, category, category.getPriority());
+        TCategory category = new TCategory(
+                ComUtils.getNextNo(categoryNo, Constants.CATEGORY_NO_PREFIX),
+                categoryName,
+                priority,
+                useYn);
 
-        categoryRepository.saveCategory(category);
+        checkPriority(category, category.getPriority());
+
+        categoryJpaRepository.save(category);
 
         return 1;
     }
 
+    public int updateCategory(CategoryUpdateDTO categoryUpdateDTO) {
 
-    public int updateCategory(TUser loginMember, CategoryUpdateDTO categoryUpdateDTO) {
-
-        String storeNo = loginMember.getStore().getStoreNo();
         String categoryNo = categoryUpdateDTO.getCategoryNo();
         String categoryName = categoryUpdateDTO.getCategoryName();
         String useYn = categoryUpdateDTO.getUseYn();
         int priority = categoryUpdateDTO.getPriority();
-        String userId = loginMember.getUserId();
 
         TCategory category = null;
-        if(categoryRepository.findCategoryV3(storeNo, categoryNo).isPresent()) {
-            category = categoryRepository.findCategoryV3(storeNo, categoryNo).get();
-
-            checkPriority(loginMember, category, priority);
-
-            category.setCategoryName(categoryName);
-            category.setUseYn(useYn);
-            category.setPriority(priority);
-            category.setModifyId(userId);
-            category.setModifyDate(LocalDateTime.now());
+        Optional<TCategory> optionalCategory = categoryJpaRepository.findById(categoryNo);
+        if(optionalCategory.isPresent()) {
+            category = optionalCategory.get();
         }
+
+        checkPriority(category, priority);
+
+        category.setCategoryName(categoryName);
+        category.setUseYn(useYn);
+        category.setPriority(priority);
 
         return 1;
     }
 
     public Map<String, Object> selectCategoryUpdateInfo(TUser loginMember, String categoryNo) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-
         Map<String, Object> map = new HashMap<>();
         CommonLayoutDTO commonLayoutForm = commonService.selectHeaderInfo(loginMember);
 
         TCategory category = null;
-        if(categoryRepository.findCategoryV3(storeNo, categoryNo).isPresent()) {
-            category = categoryRepository.findCategoryV3(storeNo, categoryNo).get();
+        Optional<TCategory> optionalCategory = categoryJpaRepository.findById(categoryNo);
+        if(optionalCategory.isPresent()) {
+            category = optionalCategory.get();
         }
 
         map.put("commonLayoutForm", commonLayoutForm);
@@ -126,32 +109,23 @@ public class CategoryService {
         return map;
     }
 
-    public List<CategoryListDTO> selectCategoryList(String storeNo) {
-        List<TCategory> categories = categoryRepository.findCategoryV1(storeNo);
+    public List<CategoryListDTO> selectCategoryList() {
+        List<TCategory> categories = categoryJpaRepository.findAllByOrderByPriority();
         return categories.stream()
                 .map(c -> new CategoryListDTO(c))
                 .collect(Collectors.toList());
     }
 
-    private void checkPriority(TUser loginMember, TCategory category, int priority) {
+    private void checkPriority(TCategory category, int priority) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
-
-        TCategory checkCategory = null;
-        if(categoryRepository.findCategoryV2(storeNo, priority).isPresent()) {
-            checkCategory = categoryRepository.findCategoryV2(storeNo, priority).get();
-        }
-
+        TCategory checkCategory = categoryJpaRepository.findOneByPriority(priority);
         if(checkCategory != null) {
 
             if(checkCategory.getCategoryNo().equals(category.getCategoryNo())) return;
 
-            int maxPriority = categoryRepository.findMaxPriority(storeNo);
+            int maxPriority = categoryJpaRepository.findFirstByOrderByPriorityDesc().getPriority();
 
             checkCategory.setPriority((maxPriority + 1));
-            checkCategory.setModifyId(userId);
-            checkCategory.setModifyDate(LocalDateTime.now());
         }
 
     }

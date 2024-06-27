@@ -5,13 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CloseMapper {
-    OpenCloseUpdateDTO selectSumInfo(String storeNo);
+    OpenCloseUpdateDTO selectSumInfo();
 
-    OpenCloseUpdateDTO selectCancelInfo(String storeNo);
+    OpenCloseUpdateDTO selectCancelInfo();
 
-    Integer selectDiscountPrice(String storeNo);
+    Integer selectDiscountPrice();
 
-    OpenCloseUpdateDTO selectRealOrderInfo(String storeNo);
+    OpenCloseUpdateDTO selectRealOrderInfo();
 
-    int updateOpenClose(OpenCloseUpdateDTO close);
 }

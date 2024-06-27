@@ -1,6 +1,5 @@
 package com.hsj.force.domain.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
@@ -12,7 +11,6 @@ public class OpenCloseInsertDTO {
 
     private String openCloseNo;
     private String openCloseSeq;
-    private String storeNo;
     private String insertId;
     private String modifyId;
     private String closer;

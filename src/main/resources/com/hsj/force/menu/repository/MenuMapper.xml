@@ -19,11 +19,9 @@
                WHERE M.CATEGORY_NO = C.CATEGORY_NO
                  AND M.MENU_NO = MP.MENU_NO
                  AND M.SALE_STATUS_NO = 'SS001'
-                 AND C.STORE_NO = #{storeNo}
                  AND C.CATEGORY_NO = (SELECT C1.CATEGORY_NO
                                         FROM TCATEGORY C1
-                                       WHERE C1.STORE_NO = #{storeNo}
-                                         AND C1.USE_YN = '1'
+                                       WHERE C1.USE_YN = '1'
                                        ORDER BY C1.PRIORITY ASC
                                        LIMIT 1)
                  AND C.USE_YN = '1') A
@@ -36,7 +34,7 @@
              , A.CATEGORY_NO
              , A.SALE_PRICE
         FROM (SELECT RANK() OVER(PARTITION BY MP.MENU_NO ORDER BY MP.MENU_SEQ DESC, M.MENU_NO ASC) AS RN
-                     , M.MENU_NO
+                   , M.MENU_NO
                    , M.MENU_NAME
                    , M.CATEGORY_NO
                    , MP.SALE_PRICE
@@ -46,28 +44,9 @@
               WHERE M.CATEGORY_NO = C.CATEGORY_NO
                 AND M.MENU_NO = MP.MENU_NO
                 AND M.SALE_STATUS_NO = 'SS001'
-                AND C.STORE_NO = #{storeNo}
                 AND C.CATEGORY_NO = #{categoryNo}
             AND C.USE_YN = '1') A
         WHERE RN = 1
-    </select>
-
-    <select id="selectMenu" resultType="com.hsj.force.domain.dto.MenuDTO">
-        SELECT M.MENU_NO
-             , M.MENU_NAME
-             , M.SALE_STATUS_NO
-             , M.CATEGORY_NO
-             , MP.SALE_PRICE
-             , M.IMAGE_SAVE_NAME
-          FROM TMENU M
-             , TMENUPRICE MP
-             , TCATEGORY C
-         WHERE M.MENU_NO = MP.MENU_NO
-           AND M.CATEGORY_NO = C.CATEGORY_NO
-           AND C.STORE_NO = #{storeNo}
-           AND M.MENU_NO = #{menuNo}
-         ORDER BY MP.MENU_SEQ DESC
-         LIMIT 1
     </select>
 
     <select id="selectMenuListByMenuForm" resultType="com.hsj.force.domain.dto.MenuListDTO">
@@ -89,183 +68,8 @@
               WHERE M.CATEGORY_NO = C.CATEGORY_NO
                 AND M.MENU_NO = MP.MENU_NO
                 AND M.SALE_STATUS_NO = SS.SALE_STATUS_NO
-                AND C.STORE_NO = #{storeNo}
                 AND C.USE_YN = '1') A
         WHERE RN = 1
-    </select>
-
-    <select id="selectMenuIngredientList" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
-        SELECT MI.MENU_NO
-             , MI.INGREDIENT_NO
-             , MI.QUANTITY AS NEED_QUANTITY
-             , I.QUANTITY AS STOCK_QUANTITY
-          FROM TMENUINGREDIENT MI
-             , TINGREDIENT I
-         WHERE MI.INGREDIENT_NO = I.INGREDIENT_NO
-           AND MI.STORE_NO = I.STORE_NO
-           AND MI.STORE_NO = #{storeNo}
-    </select>
-
-    <select id="selectMenuIngredientListByMenuNo" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
-        SELECT MI.MENU_NO
-             , MI.INGREDIENT_NO
-             , MI.QUANTITY AS NEED_QUANTITY
-             , I.QUANTITY AS STOCK_QUANTITY
-        FROM TMENUINGREDIENT MI
-           , TINGREDIENT I
-        WHERE MI.INGREDIENT_NO = I.INGREDIENT_NO
-          AND MI.STORE_NO = I.STORE_NO
-          AND MI.STORE_NO = #{storeNo}
-          AND MI.MENU_NO = #{menuNo}
-    </select>
-
-    <select id="selectMenuNo" resultType="String">
-        SELECT M.MENU_NO
-        FROM TMENU M
-           , TCATEGORY C
-        WHERE M.CATEGORY_NO = C.CATEGORY_NO
-          AND C.STORE_NO = #{storeNo}
-        ORDER BY M.MENU_NO DESC
-        LIMIT 1
-    </select>
-
-    <insert id="insertMenu">
-        INSERT
-        INTO TMENU
-        (
-          MENU_NO
-        , MENU_NAME
-        , SALE_STATUS_NO
-        , CATEGORY_NO
-        , IMAGE_SAVE_NAME
-        , IMAGE_ORIGIN_NAME
-        , IMAGE_PATH
-        , IMAGE_EXT
-        , INSERT_ID
-        , INSERT_DATE
-        , MODIFY_ID
-        , MODIFY_DATE
-        )
-        VALUES
-        (
-          #{menuNo}
-        , #{menuName}
-        , #{saleStatusNo}
-        , #{categoryNo}
-        , #{imageSaveName}
-        , #{imageOriginName}
-        , #{imagePath}
-        , #{imageExt}
-        , #{insertId}
-        , NOW()
-        , #{modifyId}
-        , NOW()
-        )
-    </insert>
-
-    <insert id="insertMenuIngredient">
-        INSERT
-        INTO TMENUINGREDIENT
-        (
-          MENU_NO
-        , INGREDIENT_NO
-        , STORE_NO
-        , QUANTITY
-        , INSERT_ID
-        , INSERT_DATE
-        , MODIFY_ID
-        , MODIFY_DATE
-        )
-        VALUES
-        (
-          #{menuNo}
-        , #{ingredientNo}
-        , #{storeNo}
-        , #{quantity}
-        , #{insertId}
-        , NOW()
-        , #{modifyId}
-        , NOW()
-        )
-    </insert>
-
-    <insert id="insertMenuPrice">
-        INSERT
-        INTO TMENUPRICE
-        (
-          MENU_NO
-        , MENU_SEQ
-        , SALE_PRICE
-        , INSERT_ID
-        , INSERT_DATE
-        , MODIFY_ID
-        , MODIFY_DATE
-        )
-        VALUES
-        (
-          #{menuNo}
-        , #{menuSeq}
-        , #{salePrice}
-        , #{insertId}
-        , NOW()
-        , #{modifyId}
-        , NOW()
-        )
-    </insert>
-
-    <select id="selectMenuIngredientListByMenuNoV2" resultType="com.hsj.force.domain.dto.MenuIngredientListDTO">
-        SELECT MI.INGREDIENT_NO
-             , MI.QUANTITY
-        FROM TMENUINGREDIENT MI
-        WHERE MI.MENU_NO = #{menuNo}
-          AND MI.STORE_NO = #{storeNo}
-    </select>
-
-    <update id="updateMenuV1">
-        UPDATE TMENU M
-        SET M.MENU_NAME = #{menuName}
-          , M.CATEGORY_NO = #{categoryNo}
-          , M.SALE_STATUS_NO = #{saleStatusNo}
-          , M.IMAGE_SAVE_NAME = #{imageSaveName}
-          , M.IMAGE_ORIGIN_NAME = #{imageOriginName}
-          , M.IMAGE_EXT = #{imageExt}
-          , M.IMAGE_PATH = #{imagePath}
-          , M.MODIFY_ID = #{modifyId}
-          , M.MODIFY_DATE = NOW()
-        WHERE M.MENU_NO = #{menuNo}
-    </update>
-
-    <update id="updateMenuV2">
-        UPDATE TMENU M
-        SET M.MENU_NAME = #{menuName}
-          , M.CATEGORY_NO = #{categoryNo}
-          , M.SALE_STATUS_NO = #{saleStatusNo}
-          , M.MODIFY_ID = #{modifyId}
-          , M.MODIFY_DATE = NOW()
-        WHERE M.MENU_NO = #{menuNo}
-    </update>
-
-    <delete id="deleteMenuIngredient">
-        DELETE
-          FROM TMENUINGREDIENT MI
-         WHERE MI.STORE_NO = #{storeNo}
-        AND MI.MENU_NO = #{menuNo}
-    </delete>
-
-    <select id="selectMenuSeq" resultType="String">
-        SELECT MP.MENU_SEQ
-        FROM TMENUPRICE MP
-        WHERE MP.MENU_NO = #{menuNo}
-        ORDER BY MP.MENU_SEQ DESC
-            LIMIT 1
-    </select>
-
-    <select id="selectSalePrice" resultType="int">
-        SELECT MP.SALE_PRICE
-        FROM TMENUPRICE MP
-        WHERE MP.MENU_NO = #{menuNo}
-        ORDER BY MP.MENU_SEQ DESC
-            LIMIT 1
     </select>
 
 </mapper>

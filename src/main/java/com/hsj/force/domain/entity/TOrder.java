@@ -1,10 +1,13 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
 import com.hsj.force.domain.entity.embedded.TOrderId;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 import java.time.LocalDateTime;
 
@@ -12,18 +15,22 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "TORDER")
+@IdClass(TOrderId.class)
 @Getter
 @Setter
-public class TOrder {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TOrder extends BaseEntity implements Persistable<TOrderId> {
 
-    @EmbeddedId
-    private TOrderId orderId;
+    @Id
+    @Column(name = "ORDER_NO")
+    private String orderNo;
+
+    @Id
+    @Column(name = "ORDER_SEQ")
+    private String orderSeq;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "STORE_NO"),
-            @JoinColumn(name = "TABLE_NO")
-    })
+    @JoinColumn(name = "TABLE_NO")
     private TTable table;
 
     @ManyToOne(fetch = LAZY)
@@ -46,10 +53,24 @@ public class TOrder {
     private LocalDateTime orderDate;
     private LocalDateTime cancelDate;
 
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
+    public TOrder(String orderNo, String orderSeq, TTable table, TMenu menu, TOrderStatus orderStatus, int salePrice, int quantity, int discountPrice, int totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, LocalDateTime orderDate, LocalDateTime cancelDate) {
+        this.orderNo = orderNo;
+        this.orderSeq = orderSeq;
+        this.table = table;
+        this.menu = menu;
+        this.orderStatus = orderStatus;
+        this.salePrice = salePrice;
+        this.quantity = quantity;
+        this.discountPrice = discountPrice;
+        this.totalSalePrice = totalSalePrice;
+        this.fullPriceYn = fullPriceYn;
+        this.fullPerYn = fullPerYn;
+        this.selPriceYn = selPriceYn;
+        this.selPerYn = selPerYn;
+        this.serviceYn = serviceYn;
+        this.orderDate = orderDate;
+        this.cancelDate = cancelDate;
+    }
 
     //==연관관계 메서드==//
     public void setTable(TTable table) {
@@ -67,4 +88,13 @@ public class TOrder {
         menu.getOrders().add(this);
     }
 
+    @Override
+    public TOrderId getId() {
+        return new TOrderId(orderNo, orderSeq);
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

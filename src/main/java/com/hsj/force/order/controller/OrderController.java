@@ -1,6 +1,5 @@
 package com.hsj.force.order.controller;
 
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OrderListDTO;
 import com.hsj.force.domain.dto.OrderSaveDTO;
 import com.hsj.force.domain.entity.TUser;
@@ -29,13 +28,11 @@ public class OrderController {
                             Model model) {
 
         TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/open";
         }
 
-        Map<String, Object> map = orderService.findOrderInfo(loginMember, tableNo);
+        Map<String, Object> map = orderService.selectOrderInfo(loginMember, tableNo);
         model.addAttribute("header", map.get("commonLayoutForm"));
         model.addAttribute("categoryList", map.get("categoryList"));
         model.addAttribute("menuList", map.get("menuList"));
@@ -47,103 +44,88 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public String completeOrder(String tableNo,
-                                HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        orderService.completeOrder(loginMember, tableNo);
+    public String completeOrder(String tableNo) {
+        orderService.completeOrder(tableNo);
         return "redirect:/table";
     }
 
     @PostMapping("/save")
     @ResponseBody
-    public int saveOrder(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        boolean isEnoughStock = orderService.checkStock(loginMember.getStore().getStoreNo(), order.getMenuNo());
+    public int insertOrder(@RequestBody OrderSaveDTO order) {
+        boolean isEnoughStock = orderService.checkStock(order.getMenuNo());
         if(!isEnoughStock) return 0;
-        return orderService.saveOrder(loginMember, order);
+        return orderService.insertOrder(order);
     }
 
     @GetMapping
     @ResponseBody
-    public List<OrderListDTO> selectOrderList(String tableNo, HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.selectOrderList(loginMember.getStore().getStoreNo(), tableNo);
+    public List<OrderListDTO> selectOrderList(String tableNo) {
+        return orderService.selectOrderList(tableNo);
     }
 
     @PostMapping("/cancel-selection")
     @ResponseBody
-    public int cancelSelection(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.cancelSelection(loginMember, order);
+    public int cancelSelection(@RequestBody OrderSaveDTO order) {
+        return orderService.cancelSelection(order);
     }
 
     @PostMapping("/cancel-whole")
     @ResponseBody
-    public int cancelWhole(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.cancelWhole(loginMember, order);
+    public int cancelWhole(@RequestBody OrderSaveDTO order) {
+        return orderService.cancelWhole(order);
     }
 
     @PostMapping("/change-quantity")
     @ResponseBody
-    public int changeQuantity(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.changeQuantity(loginMember, order);
+    public int changeQuantity(@RequestBody OrderSaveDTO order) {
+        return orderService.changeQuantity(order);
     }
 
     @PostMapping("/change-salePrice")
     @ResponseBody
-    public int changeSalePrice(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.changeSalePrice(loginMember, order);
+    public int changeSalePrice(@RequestBody OrderSaveDTO order) {
+        return orderService.changeSalePrice(order);
     }
 
     @PostMapping("/service")
     @ResponseBody
-    public int service(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.service(loginMember, order);
+    public int service(@RequestBody OrderSaveDTO order) {
+        return orderService.service(order);
     }
 
     @PostMapping("/discount-full-per")
     @ResponseBody
-    public int discountFullPer(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountFullPer(loginMember, order);
+    public int discountFullPer(@RequestBody OrderSaveDTO order) {
+        return orderService.discountFullPer(order);
     }
 
     @PostMapping("/discount-full-price")
     @ResponseBody
-    public int discountFullPrice(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountFullPrice(loginMember, order);
+    public int discountFullPrice(@RequestBody OrderSaveDTO order) {
+        return orderService.discountFullPrice(order);
     }
 
     @PostMapping("/discount-full-cancel")
     @ResponseBody
-    public int discountFullCancel(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountFullCancel(loginMember, order);
+    public int discountFullCancel(@RequestBody OrderSaveDTO order) {
+        return orderService.discountFullCancel(order);
     }
 
     @PostMapping("/discount-sel-per")
     @ResponseBody
-    public int discountSelPer(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountSelPer(loginMember, order);
+    public int discountSelPer(@RequestBody OrderSaveDTO order) {
+        return orderService.discountSelPer(order);
     }
 
     @PostMapping("/discount-sel-price")
     @ResponseBody
-    public int discountSelPrice(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountSelPrice(loginMember, order);
+    public int discountSelPrice(@RequestBody OrderSaveDTO order) {
+        return orderService.discountSelPrice(order);
     }
 
     @PostMapping("/discount-sel-cancel")
     @ResponseBody
-    public int discountSelCancel(HttpSession session, @RequestBody OrderSaveDTO order) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return orderService.discountSelCancel(loginMember, order);
+    public int discountSelCancel(@RequestBody OrderSaveDTO order) {
+        return orderService.discountSelCancel(order);
     }
 }

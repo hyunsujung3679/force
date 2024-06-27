@@ -1,37 +1,46 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.TTableId;
-import jakarta.persistence.*;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "TTABLE")
-@IdClass(TTableId.class)
 @Getter
 @Setter
-public class TTable {
-
-//    @EmbeddedId
-//    private TTableId tableId;
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TTable extends BaseEntity implements Persistable<String> {
 
     @Id
     private String tableNo;
 
-    @Id
-    private String storeNo;
-
     private String tableName;
     private String useYn;
-    private String insertId;
-    private String insertDate;
-    private String modifyId;
-    private String modifyDate;
 
     @OneToMany(mappedBy = "table")
     private List<TOrder> orders = new ArrayList<>();
 
+    public TTable(String tableNo) {
+        this.tableNo = tableNo;
+    }
+
+    @Override
+    public String getId() {
+        return tableNo;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

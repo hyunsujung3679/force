@@ -1,7 +1,7 @@
 package com.hsj.force.common.controller;
 
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.SaleStatus;
+import com.hsj.force.domain.dto.SaleStatusListDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ public class CommonController {
 
     @GetMapping("/sale-status")
     @ResponseBody
-    public List<SaleStatus> selectSaleStatusList() {
+    public List<SaleStatusListDTO> selectSaleStatusList() {
         return commonService.selectSaleStatusList();
     }
 }

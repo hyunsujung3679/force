@@ -1,7 +1,6 @@
 package com.hsj.force.ingredient.controller;
 
 import com.hsj.force.common.service.CommonService;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.CommonLayoutDTO;
 import com.hsj.force.domain.dto.IngredientInsertDTO;
 import com.hsj.force.domain.dto.IngredientListDTO;
@@ -36,9 +35,7 @@ public class IngredientController {
     public String ingredientListForm(HttpSession session, Model model) {
 
         TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/open";
         }
 
@@ -85,12 +82,12 @@ public class IngredientController {
             return "ingredient/ingredientInsert";
         }
 
-        ingredientService.insertIngredient(loginMember, ingredient);
+        ingredientService.insertIngredient(ingredient);
         return "redirect:/ingredient";
     }
 
     @GetMapping("/{ingredientNo}/update")
-    public String categoryUpdateForm(@PathVariable String ingredientNo,
+    public String ingredientUpdateForm(@PathVariable String ingredientNo,
                                      HttpSession session,
                                      Model model) {
 
@@ -131,14 +128,13 @@ public class IngredientController {
             model.addAttribute("errors", errors);
             return "ingredient/ingredientUpdate";
         }
-        ingredientService.updateIngredient(loginMember, ingredient);
+        ingredientService.updateIngredient(ingredient);
         return "redirect:/ingredient";
     }
 
     @GetMapping("/list")
     @ResponseBody
-    public List<IngredientListDTO> selectIngredientList(HttpSession session) {
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        return ingredientService.selectIngredientList(loginMember.getStore().getStoreNo());
+    public List<IngredientListDTO> selectIngredientList() {
+        return ingredientService.selectIngredientList();
     }
 }

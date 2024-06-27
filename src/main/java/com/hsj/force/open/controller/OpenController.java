@@ -26,13 +26,12 @@ public class OpenController {
     public String openForm(HttpSession session, Model model) {
 
         TUser loginMember = (TUser) session.getAttribute(Constants.LOGIN_MEMBER);
-        String storeNo = loginMember.getStore().getStoreNo();
 
-        if(openService.findIsOpen(storeNo)) {
+        if(openService.selectIsOpen()) {
             return "redirect:/table";
         }
 
-        OpenCloseInsertDTO open = openService.findOpenInfo(storeNo);
+        OpenCloseInsertDTO open = openService.findOpenInfo();
         open.setOpener(loginMember.getUserId() + " - " + loginMember.getUserName());
         open.setCurrentDate(LocalDateTime.now());
         open.setCurrentTime(LocalDateTime.now());
@@ -43,11 +42,8 @@ public class OpenController {
     }
 
     @PostMapping
-    public String insertOpenClose(@ModelAttribute OpenCloseInsertDTO open, HttpSession session) {
-
-        TUser loginMember = (TUser) session.getAttribute(Constants.LOGIN_MEMBER);
-        openService.saveOpen(open.getOpenMoney(), loginMember.getStore().getStoreNo(), loginMember.getUserId());
-
+    public String insertOpenClose(@ModelAttribute OpenCloseInsertDTO open) {
+        openService.insertOpen(open.getOpenMoney());
         return "redirect:/table";
     }
 }

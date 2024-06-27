@@ -1,8 +1,6 @@
 package com.hsj.force.close.controller;
 
 import com.hsj.force.close.service.CloseService;
-import com.hsj.force.common.Constants;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
 import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
@@ -24,24 +22,20 @@ public class CloseController {
     private final CloseService closeService;
 
     @GetMapping
-    public String closeForm(HttpSession session, Model model) {
+    public String closeForm(Model model) {
 
-        TUser loginMember = (TUser) session.getAttribute("loginMember");
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        if(!openService.findIsOpen(storeNo)) {
+        if(!openService.selectIsOpen()) {
             return "redirect:/open";
         }
 
-        OpenCloseUpdateDTO close = closeService.selectCloseInfo(loginMember);
-
+        OpenCloseUpdateDTO close = closeService.selectCloseInfo();
         model.addAttribute("close", close);
 
         return "close/closeForm";
     }
 
     @PostMapping
-    public String updateOpenClose(@ModelAttribute OpenCloseUpdateDTO close, HttpSession session) {
+    public String updateOpenClose(@ModelAttribute OpenCloseUpdateDTO close) {
 
         if(close.getOneHunThous() == null) {
             close.setOneHunThous(0);
@@ -71,8 +65,7 @@ public class CloseController {
             close.setTen(0);
         }
 
-        TUser loginMember = (TUser) session.getAttribute(Constants.LOGIN_MEMBER);
-        closeService.updateOpenClose(loginMember, close);
+        closeService.updateOpenClose(close);
 
         return "redirect:/login";
     }

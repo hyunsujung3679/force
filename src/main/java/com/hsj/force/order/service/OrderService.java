@@ -1,25 +1,21 @@
 package com.hsj.force.order.service;
 
-import com.hsj.force.category.repository.CategoryMapper;
-import com.hsj.force.category.repository.CategoryRepository;
+import com.hsj.force.category.repository.CategoryJpaRepository;
 import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
-import com.hsj.force.common.repository.CommonMapper;
-import com.hsj.force.common.repository.CommonRepository;
-import com.hsj.force.domain.Ingredient;
-import com.hsj.force.domain.IngredientHis;
-import com.hsj.force.domain.Order;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.domain.entity.*;
-import com.hsj.force.domain.entity.embedded.*;
-import com.hsj.force.ingredient.repository.IngredientMapper;
-import com.hsj.force.ingredient.repository.IngredientRepository;
+import com.hsj.force.domain.entity.embedded.TIngredientHisId;
+import com.hsj.force.ingredient.repository.InDeReasonJpaRepository;
+import com.hsj.force.ingredient.repository.IngredientHisJpaRepository;
+import com.hsj.force.ingredient.repository.IngredientJpaRepository;
+import com.hsj.force.menu.repository.MenuIngredientJpaRepository;
+import com.hsj.force.menu.repository.MenuJpaRepository;
 import com.hsj.force.menu.repository.MenuMapper;
-import com.hsj.force.menu.repository.MenuRepository;
-import com.hsj.force.order.repository.OrderMapper;
-import com.hsj.force.order.repository.OrderRepository;
-import com.hsj.force.table.repository.TableRepository;
+import com.hsj.force.menu.repository.MenuPriceJpaRepository;
+import com.hsj.force.order.repository.OrderJpaRepository;
+import com.hsj.force.order.repository.OrderStatusJpaRepository;
+import com.hsj.force.table.repository.TableJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -29,6 +25,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -36,40 +33,33 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final CategoryRepository categoryRepository;
-    private final MenuRepository menuRepository;
-    private final OrderRepository orderRepository;
-    private final TableRepository tableRepository;
-    private final CommonRepository commonRepository;
-    private final IngredientRepository ingredientRepository;
+    private final CategoryJpaRepository categoryJpaRepository;
+    private final OrderJpaRepository orderJpaRepository;
+    private final MenuJpaRepository menuJpaRepository;
+    private final TableJpaRepository tableJpaRepository;
+    private final OrderStatusJpaRepository orderStatusJpaRepository;
+    private final IngredientJpaRepository ingredientJpaRepository;
+    private final InDeReasonJpaRepository inDeReasonJpaRepository;
+    private final IngredientHisJpaRepository ingredientHisJpaRepository;
+    private final MenuIngredientJpaRepository menuIngredientJpaRepository;
+    private final MenuPriceJpaRepository menuPriceJpaRepository;
 
-    private final CommonMapper commonMapper;
     private final MenuMapper menuMapper;
-    private final CategoryMapper categoryMapper;
-    private final OrderMapper orderMapper;
-    private final IngredientMapper ingredientMapper;
     private final MessageSource messageSource;
 
-    public Map<String, Object> findOrderInfo(TUser loginMember, String tableNo) {
+    public Map<String, Object> selectOrderInfo(TUser loginMember, String tableNo) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("storeNo", storeNo);
-        paramMap.put("tableNo", tableNo);
-
-        List<TCategory> categories = categoryRepository.findCategoryByOrderForm(storeNo);
+        List<TCategory> categories = categoryJpaRepository.findAllByUseYnOrderByPriority("1");
         List<CategoryListDTO> categoryList = categories.stream()
                 .map(c -> new CategoryListDTO(c))
                 .collect(Collectors.toList());
-        List<TOrder> orders = orderRepository.findAll(storeNo, tableNo);
+        List<TOrder> orders = orderJpaRepository.findAllByOrderStatusAndTable(new TOrderStatus("OS001"), new TTable(tableNo));
         List<OrderListDTO> orderList = orders.stream()
                 .map(o -> new OrderListDTO(o))
                 .collect(Collectors.toList());
 
-        // TODO: JPA 적용 필요
-        List<MenuListDTO> menuList = menuMapper.selectMenuList(storeNo);
-        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
+        List<MenuListDTO> menuList = menuMapper.selectMenuList();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
@@ -116,13 +106,9 @@ public class OrderService {
             menu.setEnoughStock(isEnoughStock);
         }
 
-        String storeName = "";
-        if(commonRepository.findStoreName(storeNo).isPresent()) {
-            storeName = commonRepository.findStoreName(storeNo).get();
-        }
         CommonLayoutDTO commonLayoutForm = new CommonLayoutDTO();
         commonLayoutForm.setSalesMan(loginMember.getUserName());
-        commonLayoutForm.setStoreName(storeName);
+        commonLayoutForm.setStoreName(messageSource.getMessage("word.store.name",null, null));
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
@@ -136,137 +122,106 @@ public class OrderService {
         return map;
     }
 
-    public int saveOrder(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int insertOrder(OrderSaveDTO orderSaveDTO) {
 
-        String orderNo = null;
-        String lastOrderNo = null;
-        String newOrderNo = null;
-
-        String storeNo = loginMember.getStore().getStoreNo();
         String tableNo = orderSaveDTO.getTableNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
 
-        if(orderRepository.findOrderNo(storeNo, tableNo).isPresent()) {
-            orderNo = orderRepository.findOrderNo(storeNo, tableNo).get();
-        }
+        TOrder orderNoOrder = orderJpaRepository.findFirstByTableOrderByOrderNoDesc(new TTable(tableNo));
+        String orderNo = orderNoOrder == null ? null : orderNoOrder.getOrderNo();
 
+        String newOrderNo = null;
+        TOrder newOrderNoOrder = null;
         if(orderNo == null) {
-            if(orderRepository.findLastOrderNo(storeNo).isPresent()) {
-                lastOrderNo = orderRepository.findLastOrderNo(storeNo).get();
-            }
-            newOrderNo = ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX);
+            newOrderNoOrder  = orderJpaRepository.findFirstByOrderByOrderNoDesc();
+            newOrderNo = ComUtils.getNextNo(newOrderNoOrder == null? null : newOrderNoOrder.getOrderNo(), Constants.ORDER_NO_PREFIX);
         } else {
-            List<String> orderStatusNoList = orderMapper.selectOrderStatusNoList(orderNo);
+            List<String> orderStatusNoList = orderJpaRepository.findAllByOrderNo(orderNo).stream().
+                    map(TOrder::getOrderStatus).toList().stream().
+                    map(TOrderStatus::getOrderStatusNo).toList();
             boolean isOld = orderStatusNoList.stream().anyMatch(value -> value.equals("OS001"));
             if(!isOld) {
-                if(orderRepository.findLastOrderNo(storeNo).isPresent()) {
-                    lastOrderNo = orderRepository.findLastOrderNo(storeNo).get();
-                }
-                newOrderNo = ComUtils.getNextNo(lastOrderNo, Constants.ORDER_NO_PREFIX);
+                newOrderNoOrder  = orderJpaRepository.findFirstByOrderByOrderNoDesc();
+                newOrderNo = ComUtils.getNextNo(newOrderNoOrder == null? null : newOrderNoOrder.getOrderNo(), Constants.ORDER_NO_PREFIX);
             } else {
                 newOrderNo = orderNo;
             }
         }
 
-        Integer quantity = null;
-        if(orderRepository.findOrderQuantity(storeNo, tableNo, menuNo).isPresent()) {
-            quantity = orderRepository.findOrderQuantity(storeNo, tableNo, menuNo).get();
-        }
-
-        MenuDTO menuDTO = new MenuDTO();
-        if(menuRepository.findMenuV2(storeNo, menuNo).isPresent()) {
-            menuDTO = menuRepository.findMenuV2(storeNo, menuNo).get();
-        }
-
-        String orderSeq = null;
-        if(orderRepository.findOrderSeq(newOrderNo).isPresent()) {
-            orderSeq = orderRepository.findOrderSeq(newOrderNo).get();
-        }
+        TOrder quantityOrder = orderJpaRepository.findOneV1(tableNo, menuNo, "OS001");
+        Integer quantity = quantityOrder == null? null : quantityOrder.getQuantity();
+        MenuPriceDTO menuPriceDTO = menuPriceJpaRepository.findMenuPriceDTO(menuNo);
+        TOrder orderSeqOrder = orderJpaRepository.findFirstByOrderNoOrderByOrderSeqDesc(newOrderNo);
+        String orderSeq = orderSeqOrder == null? null : orderSeqOrder.getOrderSeq();
 
         TOrder order = null;
         if(quantity == null) {
 
-            String newOrderSeq = ComUtils.getNextSeq(orderSeq);
+            TTable table = null;;
+            Optional<TTable> optionalTable = tableJpaRepository.findById(tableNo);
+            if(optionalTable.isPresent()) {
+                table = optionalTable.get();
+            }
 
-            TOrderId orderId = new TOrderId();
-            orderId.setOrderNo(newOrderNo);
-            orderId.setOrderSeq(newOrderSeq);
+            TMenu menu = null;
+            Optional<TMenu> optionalMenu = menuJpaRepository.findById(menuNo);
+            if(optionalMenu.isPresent()) {
+                menu = optionalMenu.get();
+            }
 
-            TTableId tableId = new TTableId();
-            tableId.setTableNo(tableNo);
-            tableId.setStoreNo(storeNo);
+            TOrderStatus orderStatus = null;
+            Optional<TOrderStatus> optionalOrderStatus = orderStatusJpaRepository.findById("OS001");
+            if(optionalOrderStatus.isPresent()) {
+                orderStatus = optionalOrderStatus.get();
+            }
 
-            TTable table = tableRepository.findTable(tableId);
-            TMenu menu = menuRepository.findMenu(menuNo);
-            TOrderStatus orderStatus = orderRepository.findOrderStatus("OS001");
+            order = new TOrder(
+                    newOrderNo,
+                    ComUtils.getNextSeq(orderSeq),
+                    table,
+                    menu,
+                    orderStatus,
+                    menuPriceDTO.getSalePrice(),
+                    1,
+                    0,
+                    menuPriceDTO.getSalePrice(),
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    LocalDateTime.now(),
+                    null
+            );
 
-            order = new TOrder();
-            order.setOrderId(orderId);
-            order.setMenu(menu);
-            order.setTable(table);
-            order.setOrderStatus(orderStatus);
-            order.setSalePrice(menuDTO.getSalePrice());
-            order.setQuantity(1);
-            order.setDiscountPrice(0);
-            order.setTotalSalePrice(menuDTO.getSalePrice() * order.getQuantity());
-            order.setFullPriceYn("0");
-            order.setFullPerYn("0");
-            order.setSelPriceYn("0");
-            order.setSelPerYn("0");
-            order.setServiceYn("0");
-            order.setOrderDate(LocalDateTime.now());
-            order.setCancelDate(null);
-            order.setInsertId(userId);
-            order.setInsertDate(LocalDateTime.now());
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
+            orderJpaRepository.save(order);
 
-            orderRepository.saveOrder(order);
+        } else {
 
-        } else if(orderRepository.findOrderByOrderNoAndMenuNo(orderNo, menuNo).isPresent()){
-
-            order = orderRepository.findOrderByOrderNoAndMenuNo(orderNo, menuNo).get();
+            order = orderJpaRepository.findOneByOrderNoAndMenu(orderNo, new TMenu(menuNo));
             order.setQuantity(quantity + 1);
-            order.setTotalSalePrice(menuDTO.getSalePrice() * order.getQuantity());
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
+            order.setTotalSalePrice(menuPriceDTO.getSalePrice() * order.getQuantity());
 
         }
 
         TIngredient ingredient = null;
-        TIngredientHis ingredientHis = null;
-        //TODO: JPA 적용 필요
-        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientListByMenuNo(menuNo, storeNo);
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV2(menuNo);
         for(MenuIngredientListDTO menuIngredientDTO : menuIngredientList) {
-            TIngredientId ingredientId = new TIngredientId();
-            ingredientId.setIngredientNo(menuIngredientDTO.getIngredientNo());
-            ingredientId.setStoreNo(storeNo);
-
-            ingredient = ingredientRepository.findIngredient(ingredientId);
+            Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredientDTO.getIngredientNo());
+            if(optionalIngredient.isPresent()) {
+                ingredient = optionalIngredient.get();
+            }
             ingredient.setQuantity(menuIngredientDTO.getStockQuantity() - menuIngredientDTO.getNeedQuantity());
-            ingredient.setModifyId(userId);
-            ingredient.setModifyDate(LocalDateTime.now());
 
-            String ingredientSeq = null;
-            if(ingredientRepository.findIngredientSeq(menuIngredientDTO.getIngredientNo(), storeNo).isPresent()) {
-                ingredientSeq = ingredientRepository.findIngredientSeq(menuIngredientDTO.getIngredientNo(), storeNo).get();
+            TIngredientHis ingredientHis = ingredientHisJpaRepository.findFirstByIngredientNoOrderByIngredientSeqDesc(menuIngredientDTO.getIngredientNo());
+
+            TInDeReason inDeReason = null;
+            Optional<TInDeReason> optionalInDeReason = inDeReasonJpaRepository.findById("ID001");
+            if(optionalInDeReason.isPresent()) {
+                inDeReason = optionalInDeReason.get();
             }
 
-            TIngredientHisId ingredientHisId = new TIngredientHisId();
-            ingredientHisId.setIngredientNo(menuIngredientDTO.getIngredientNo());
-            ingredientHisId.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-            ingredientHisId.setStoreNo(storeNo);
-
-            TInDeReason inDeReason = ingredientRepository.findInDeReason("ID001");
-
-            ingredientHis = new TIngredientHis();
-            ingredientHis.setIngredientHisId(ingredientHisId);
-            ingredientHis.setInDeQuantity(-(menuIngredientDTO.getNeedQuantity()));
-            ingredientHis.setInDeReason(inDeReason);
-            ingredientHis.setCommonData(new CommonData(userId, LocalDateTime.now(), userId, LocalDateTime.now()));
-
-            ingredientRepository.saveIngredientHis(ingredientHis);
+            ingredientHisJpaRepository.save(new TIngredientHis(menuIngredientDTO.getIngredientNo(), ComUtils.getNextSeq(ingredientHis == null? "" : ingredientHis.getIngredientSeq()), -(menuIngredientDTO.getNeedQuantity()), inDeReason));
 
         }
 
@@ -274,12 +229,9 @@ public class OrderService {
 
     }
 
-    public List<OrderListDTO> selectOrderList(String storeNo, String tableNo) {
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("storeNo", storeNo);
-        paramMap.put("tableNo", tableNo);
+    public List<OrderListDTO> selectOrderList(String tableNo) {
 
-        List<TOrder> orders = orderRepository.findOrderList(storeNo, tableNo);
+        List<TOrder> orders = orderJpaRepository.findAllByOrderStatusAndTable(new TOrderStatus("OS001"), new TTable(tableNo));
         List<OrderListDTO> orderList = orders.stream()
                 .map(o -> new OrderListDTO(o))
                 .collect(Collectors.toList());
@@ -305,166 +257,133 @@ public class OrderService {
         return orderList;
     }
 
-    public int completeOrder(TUser loginMember, String tableNo) {
+    public int completeOrder(String tableNo) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
+        List<TOrder> orders = orderJpaRepository.findAllByOrderStatusAndTable(new TOrderStatus("OS001"), new TTable(tableNo));
 
-        List<TOrder> orders = orderRepository.findOrderV3(storeNo, tableNo);
-        TOrderStatus orderStatus = orderRepository.findOrderStatus("OS003");
+        TOrderStatus orderStatus = null;
+        Optional<TOrderStatus> optionalOrderStatus = orderStatusJpaRepository.findById("OS003");
+        if(optionalOrderStatus.isPresent()) {
+            orderStatus = optionalOrderStatus.get();
+        }
         for(TOrder order : orders) {
             order.setOrderStatus(orderStatus);
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
+
         }
 
         return 1;
     }
 
-    public int cancelSelection(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int cancelSelection(OrderSaveDTO orderSaveDTO) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
         String orderNo = orderSaveDTO.getOrderNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
         String tableNo = orderSaveDTO.getTableNo();
-
         TIngredient ingredient = null;
-        TIngredientHis ingredientHis = null;
 
-        List<MenuIngredientListDTO> menuIngredientDTOList = ingredientRepository.findMenuIngredientList(storeNo, orderNo, menuNo);
-
+        List<MenuIngredientListDTO> menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV4(orderNo, menuNo, "OS001");
         for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
 
-            TIngredientId ingredientId = new TIngredientId();
-            ingredientId.setIngredientNo(menuIngredient.getIngredientNo());
-            ingredientId.setStoreNo(storeNo);
-
-            ingredient = ingredientRepository.findIngredient(ingredientId);
+            Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredient.getIngredientNo());
+            if(optionalIngredient.isPresent()) {
+                ingredient = optionalIngredient.get();
+            }
             ingredient.setQuantity(menuIngredient.getIngredientQuantity() + menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
-            ingredient.setModifyId(userId);
-            ingredient.setModifyDate(LocalDateTime.now());
 
-            String ingredientSeq = null;
-            if(ingredientRepository.findIngredientSeq(menuIngredient.getIngredientNo(), storeNo).isPresent()) {
-                ingredientSeq = ingredientRepository.findIngredientSeq(menuIngredient.getIngredientNo(), storeNo).get();
+            TIngredientHis ingredientHis = ingredientHisJpaRepository.findFirstByIngredientNoOrderByIngredientSeqDesc(menuIngredient.getIngredientNo());
+
+            TInDeReason inDeReason = null;
+            Optional<TInDeReason> optionalInDeReason = inDeReasonJpaRepository.findById("ID002");
+            if(optionalInDeReason.isPresent()) {
+                inDeReason = optionalInDeReason.get();
             }
 
-            TIngredientHisId ingredientHisId = new TIngredientHisId();
-            ingredientHisId.setIngredientNo(menuIngredient.getIngredientNo());
-            ingredientHisId.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-            ingredientHisId.setStoreNo(storeNo);
-
-            TInDeReason inDeReason = ingredientRepository.findInDeReason("ID002");
-
-            ingredientHis = new TIngredientHis();
-            ingredientHis.setIngredientHisId(ingredientHisId);
-            ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
-            ingredientHis.setInDeReason(inDeReason);
-            ingredientHis.setCommonData(new CommonData(userId, LocalDateTime.now(), userId, LocalDateTime.now()));
-
-            ingredientRepository.saveIngredientHis(ingredientHis);
+            ingredientHisJpaRepository.save(
+                    new TIngredientHis(
+                            menuIngredient.getIngredientNo(),
+                            ComUtils.getNextSeq(ingredientHis == null? "" : ingredientHis.getIngredientSeq()),
+                            menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity(),
+                            inDeReason));
         }
 
-        TOrder order = new TOrder();
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
+        TOrderStatus orderStatus = null;
+        Optional<TOrderStatus> optionalOrderStatus = orderStatusJpaRepository.findById("OS002");
+        if(optionalOrderStatus.isPresent()) {
+            orderStatus = optionalOrderStatus.get();
         }
-        order.setOrderStatus(orderRepository.findOrderStatus("OS002"));
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        order.setOrderStatus(orderStatus);
         order.setCancelDate(LocalDateTime.now());
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
         return 1;
     }
 
-    public int cancelWhole(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int cancelWhole(OrderSaveDTO orderSaveDTO) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
         String orderNo = orderSaveDTO.getOrderNo();
         String tableNo = orderSaveDTO.getTableNo();
 
         TIngredient ingredient = null;
-        TIngredientHis ingredientHis = null;
         List<MenuIngredientListDTO> menuIngredientDTOList = null;
-        List<String> menuNoList = orderRepository.findMenuNoList(storeNo, orderNo);
-
-        for(String menuNo : menuNoList) {
-            menuIngredientDTOList = ingredientRepository.findMenuIngredientList(storeNo, orderNo, menuNo);
+        List<String> menuNos = orderJpaRepository.findAllByOrderNoAndOrderStatus(orderNo, new TOrderStatus("OS001"))
+                .stream().map(TOrder::getMenu).toList()
+                .stream().map(TMenu::getMenuNo).toList();
+        for(String menuNo : menuNos) {
+            menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV4(orderNo, menuNo, "OS001");
             for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
 
-                TIngredientId ingredientId = new TIngredientId();
-                ingredientId.setIngredientNo(menuIngredient.getIngredientNo());
-                ingredientId.setStoreNo(storeNo);
-
-                ingredient = ingredientRepository.findIngredient(ingredientId);
+                Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredient.getIngredientNo());
+                if(optionalIngredient.isPresent()) {
+                    ingredient = optionalIngredient.get();
+                } else {
+                    return 0;
+                }
                 ingredient.setQuantity(menuIngredient.getIngredientQuantity() + menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
-                ingredient.setModifyId(userId);
-                ingredient.setModifyDate(LocalDateTime.now());
 
-                String ingredientSeq = null;
-                if(ingredientRepository.findIngredientSeq(menuIngredient.getIngredientNo(), storeNo).isPresent()) {
-                    ingredientSeq = ingredientRepository.findIngredientSeq(menuIngredient.getIngredientNo(), storeNo).get();
+                TIngredientHis ingredientHis = ingredientHisJpaRepository.findFirstByIngredientNoOrderByIngredientSeqDesc(menuIngredient.getIngredientNo());
+
+                TInDeReason inDeReason = null;
+                Optional<TInDeReason> optionalInDeReason = inDeReasonJpaRepository.findById("ID002");
+                if(optionalInDeReason.isPresent()) {
+                    inDeReason = optionalInDeReason.get();
                 }
 
-                TIngredientHisId ingredientHisId = new TIngredientHisId();
-                ingredientHisId.setIngredientNo(menuIngredient.getIngredientNo());
-                ingredientHisId.setIngredientSeq(ComUtils.getNextSeq(ingredientSeq));
-                ingredientHisId.setStoreNo(storeNo);
-
-                TInDeReason inDeReason = ingredientRepository.findInDeReason("ID002");
-
-                ingredientHis = new TIngredientHis();
-                ingredientHis.setIngredientHisId(ingredientHisId);
-                ingredientHis.setInDeQuantity(menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity());
-                ingredientHis.setInDeReason(inDeReason);
-                ingredientHis.setCommonData(new CommonData(userId, LocalDateTime.now(), userId, LocalDateTime.now()));
-
-                ingredientRepository.saveIngredientHis(ingredientHis);
-
+                ingredientHisJpaRepository.save(
+                        new TIngredientHis(
+                                menuIngredient.getIngredientNo(),
+                                ComUtils.getNextSeq(ingredientHis == null? "" : ingredientHis.getIngredientSeq()),
+                                menuIngredient.getNeedQuantity() * menuIngredient.getMenuQuantity(),
+                                inDeReason));
             }
 
         }
 
-        List<TOrder> orders = orderRepository.findOrderV1(storeNo, orderNo, tableNo);
-        TOrderStatus orderStatus = orderRepository.findOrderStatus("OS002");
+        List<TOrder> orders =  orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
+
+        TOrderStatus orderStatus = null;
+        Optional<TOrderStatus> optionalOrderStatus = orderStatusJpaRepository.findById("OS002");
+        if(optionalOrderStatus.isPresent()) {
+            orderStatus = optionalOrderStatus.get();
+        }
+
         for (TOrder order : orders) {
             order.setOrderStatus(orderStatus);
             order.setCancelDate(LocalDateTime.now());
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
         }
-
-//        TOrder order = new TOrder();
-//        if(orderRepository.findOrderV1(storeNo, orderNo, tableNo).isPresent()) {
-//            order = orderRepository.findOrderV1(storeNo, orderNo, tableNo).get();
-//        }
-//        order.setOrderStatus(orderRepository.findOrderStatus("OS002"));
-//        order.setCancelDate(LocalDateTime.now());
-//        order.setModifyId(userId);
-//        order.setModifyDate(LocalDateTime.now());
 
         return 1;
 
     }
 
-    public int changeQuantity(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int changeQuantity(OrderSaveDTO orderSaveDTO) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
         String orderNo = orderSaveDTO.getOrderNo();
         String tableNo = orderSaveDTO.getTableNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
         String quantity = orderSaveDTO.getQuantity();
 
-        TOrder order = new TOrder();
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        }
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
         order.setQuantity(Integer.parseInt(quantity.replaceAll(",", "")));
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
         if("1".equals(order.getServiceYn())) {
             order.setDiscountPrice(order.getSalePrice() * order.getQuantity());
@@ -473,44 +392,18 @@ public class OrderService {
             order.setTotalSalePrice(order.getSalePrice() * order.getQuantity());
         }
 
-
-//        Order order = new Order();
-//        order.setMenuNo(menuNo);
-//        order.setTableNo(tableNo);
-//        order.setOrderNo(orderNo);
-//        order.setQuantity(Integer.parseInt(orderSaveDTO.getQuantity().replaceAll(",", "")));
-//        order.setStoreNo(storeNo);
-//        order.setModifyId(userId);
-//
-//        Order orderInfo = orderMapper.selectOrderInfo(order);
-//        if("1".equals(orderInfo.getServiceYn())) {
-//            order.setDiscountPrice(orderInfo.getSalePrice() * order.getQuantity());
-//            order.setTotalSalePrice(0);
-//        } else {
-//            order.setTotalSalePrice(orderInfo.getSalePrice() * order.getQuantity());
-//        }
-//
-//        return orderMapper.updateQuantity(order);
         return 1;
     }
 
-    public int changeSalePrice(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int changeSalePrice(OrderSaveDTO orderSaveDTO) {
 
-        String storeNo = loginMember.getStore().getStoreNo();
         String tableNo = orderSaveDTO.getTableNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
         String orderNo = orderSaveDTO.getOrderNo();
         String salePrice = orderSaveDTO.getSalePrice();
 
-        TOrder order = new TOrder();
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        }
-
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
         order.setSalePrice(Integer.parseInt(salePrice.replaceAll(",", "")));
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
         if("1".equals(order.getServiceYn())) {
             order.setDiscountPrice(order.getSalePrice() * order.getQuantity());
@@ -522,27 +415,17 @@ public class OrderService {
         return 1;
     }
 
-    public int service(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int service(OrderSaveDTO orderSaveDTO) {
 
         String menuNo = orderSaveDTO.getMenuNo();
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
 
-        TOrder order = null;
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        } else {
-            return 0;
-        }
-
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
         order.setFullPerYn("0");
         order.setFullPriceYn("0");
         order.setSelPerYn("0");
         order.setSelPriceYn("0");
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
         if("0".equals(order.getServiceYn())) {
             order.setTotalSalePrice(0);
@@ -557,12 +440,10 @@ public class OrderService {
         return 1;
     }
 
-    public int discountFullPer(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountFullPer(OrderSaveDTO orderSaveDTO) {
 
         String orderNo = orderSaveDTO.getOrderNo();
         String tableNo = orderSaveDTO.getTableNo();
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
 
         int percent = Integer.parseInt(orderSaveDTO.getPercent().replaceAll(",", ""));
 
@@ -572,8 +453,7 @@ public class OrderService {
             return 1;
         }
 
-        List<TOrder> orders = orderRepository.findOrderV1(storeNo, orderNo, tableNo);
-
+        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
             order.setDiscountPrice(order.getSalePrice() * order.getQuantity() * percent / 100);
             order.setTotalSalePrice(order.getSalePrice() * order.getQuantity() - order.getDiscountPrice());
@@ -582,35 +462,22 @@ public class OrderService {
             order.setSelPriceYn("0");
             order.setSelPerYn("0");
             order.setServiceYn("0");
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
 
-//            orderInfo.setOrderNo(order.getOrderNo());
-//            orderInfo.setStoreNo(order.getStoreNo());
-//            orderInfo.setTableNo(order.getTableNo());
-//            orderInfo.setFullPerYn("1");
-//            orderInfo.setDiscountPrice(orderInfo.getSalePrice() * orderInfo.getQuantity() * percent / 100);
-//            orderInfo.setTotalSalePrice(orderInfo.getSalePrice() * orderInfo.getQuantity() - orderInfo.getDiscountPrice());
-//            orderInfo.setModifyId(loginMember.getUserId());
-//            count += orderMapper.updateDiscountFullPer(orderInfo);
         }
 
         return 1;
     }
 
-    public int discountFullPrice(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountFullPrice(OrderSaveDTO orderSaveDTO) {
 
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
 
         int discountSalePrice = Integer.parseInt(orderSaveDTO.getDiscountPrice().replaceAll(",", ""));
 
         if(discountSalePrice == 0) return 1;
 
-        List<TOrder> orders = orderRepository.findOrderV1(storeNo, orderNo, tableNo);
-
+        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
 
             if(discountSalePrice > order.getSalePrice() * order.getQuantity()) {
@@ -623,23 +490,18 @@ public class OrderService {
             order.setSelPriceYn("0");
             order.setSelPerYn("");
             order.setServiceYn("0");
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
 
         }
 
         return 1;
     }
 
-    public int discountFullCancel(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountFullCancel(OrderSaveDTO orderSaveDTO) {
 
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
 
-        List<TOrder> orders = orderRepository.findOrderV1(storeNo, orderNo, tableNo);
-
+        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
             if("1".equals(order.getFullPerYn()) || "1".equals(order.getFullPriceYn())) {
 
@@ -650,8 +512,6 @@ public class OrderService {
                 order.setSelPerYn("0");
                 order.setSelPriceYn("0");
                 order.setServiceYn("0");
-                order.setModifyId(userId);
-                order.setModifyDate(LocalDateTime.now());
 
             }
         }
@@ -659,13 +519,11 @@ public class OrderService {
         return 1;
     }
 
-    public int discountSelPer(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountSelPer(OrderSaveDTO orderSaveDTO) {
 
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
 
         int percent = Integer.parseInt(orderSaveDTO.getPercent().replaceAll(",", ""));
 
@@ -675,13 +533,7 @@ public class OrderService {
             return 1;
         }
 
-        TOrder order = null;
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        } else {
-            return 0;
-        }
-
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
         order.setDiscountPrice(order.getSalePrice() * order.getQuantity() * percent / 100);
         order.setTotalSalePrice(order.getSalePrice() * order.getQuantity() - order.getDiscountPrice());
         order.setFullPriceYn("0");
@@ -689,30 +541,21 @@ public class OrderService {
         order.setSelPriceYn("0");
         order.setSelPerYn("1");
         order.setServiceYn("0");
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
        return 1;
     }
 
-    public int discountSelPrice(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountSelPrice(OrderSaveDTO orderSaveDTO) {
 
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
-        String storeNo = loginMember.getStore().getStoreNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
 
         int discountSalePrice = Integer.parseInt(orderSaveDTO.getDiscountPrice().replaceAll(",", ""));
 
         if(discountSalePrice == 0) return 1;
 
-        TOrder order = null;
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        } else {
-            return 0;
-        }
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
 
         if(discountSalePrice > order.getSalePrice() * order.getQuantity()) {
             discountSalePrice = order.getSalePrice() * order.getQuantity();
@@ -724,25 +567,16 @@ public class OrderService {
         order.setSelPriceYn("1");
         order.setSelPerYn("0");
         order.setServiceYn("0");
-        order.setModifyId(userId);
-        order.setModifyDate(LocalDateTime.now());
 
         return 1;
     }
 
-    public int discountSelCancel(TUser loginMember, OrderSaveDTO orderSaveDTO) {
+    public int discountSelCancel(OrderSaveDTO orderSaveDTO) {
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
-        String storeNo = loginMember.getStore().getStoreNo();
         String menuNo = orderSaveDTO.getMenuNo();
-        String userId = loginMember.getUserId();
 
-        TOrder order = null;
-        if(orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).isPresent()) {
-            order = orderRepository.findOrderV2(storeNo, orderNo, tableNo, menuNo).get();
-        } else {
-            return 0;
-        }
+        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
 
         if("1".equals(order.getSelPerYn()) || "1".equals(order.getSelPriceYn())) {
 
@@ -753,17 +587,14 @@ public class OrderService {
             order.setSelPriceYn("0");
             order.setSelPerYn("0");
             order.setServiceYn("0");
-            order.setModifyId(userId);
-            order.setModifyDate(LocalDateTime.now());
 
         }
         return 1;
     }
 
-    public boolean checkStock(String storeNo, String menuNo) {
+    public boolean checkStock(String menuNo) {
 
-        // TODO: JPA 변경 필요
-        List<MenuIngredientListDTO> menuIngredientList = menuMapper.selectMenuIngredientList(storeNo);
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
 
         boolean isEnoughStock = true;
         for(MenuIngredientListDTO menuIngredient : menuIngredientList) {

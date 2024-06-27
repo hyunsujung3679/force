@@ -1,24 +1,26 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
-import com.hsj.force.domain.entity.embedded.TOpenCloseId;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
+import org.springframework.data.domain.Persistable;
 
 @Entity
 @Table(name = "TOPENCLOSE")
 @Getter
 @Setter
-public class TOpenClose {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TOpenClose extends BaseEntity implements Persistable<String> {
 
-    @EmbeddedId
-    private TOpenCloseId openCloseId;
+    @Id
+    @Column(name = "OPEN_CLOSE_NO")
+    private String openCloseNo;
 
     private String openCloseSeq;
     private int openMoney;
@@ -32,8 +34,21 @@ public class TOpenClose {
     private int fifty;
     private int ten;
     private Integer closeMoney;
-    private String insertId;
-    private LocalDateTime insertDate;
-    private String modifyId;
-    private LocalDateTime modifyDate;
+
+    public TOpenClose(String openCloseNo, String openCloseSeq, int openMoney, Integer closeMoney) {
+        this.openCloseNo = openCloseNo;
+        this.openCloseSeq = openCloseSeq;
+        this.openMoney = openMoney;
+        this.closeMoney = closeMoney;
+    }
+
+    @Override
+    public String getId() {
+        return openCloseNo;
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

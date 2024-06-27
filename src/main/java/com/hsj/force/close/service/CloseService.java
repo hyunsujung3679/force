@@ -1,12 +1,9 @@
 package com.hsj.force.close.service;
 
+import com.hsj.force.close.repository.CloseJpaRepository;
 import com.hsj.force.close.repository.CloseMapper;
-import com.hsj.force.close.repository.CloseRepository;
-import com.hsj.force.domain.User;
 import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
 import com.hsj.force.domain.entity.TOpenClose;
-import com.hsj.force.domain.entity.TUser;
-import com.hsj.force.domain.entity.embedded.TOpenCloseId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,18 +15,18 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class CloseService {
 
-    private final CloseRepository closeRepository;
+    private final CloseJpaRepository closeJpaRepository;
 
     private final CloseMapper closeMapper;
 
-    public OpenCloseUpdateDTO selectCloseInfo(TUser loginMember) {
+    public OpenCloseUpdateDTO selectCloseInfo() {
 
         OpenCloseUpdateDTO close = new OpenCloseUpdateDTO();
 
-        OpenCloseUpdateDTO sumInfo = closeMapper.selectSumInfo(loginMember.getStore().getStoreNo());
-        OpenCloseUpdateDTO cancelInfo = closeMapper.selectCancelInfo(loginMember.getStore().getStoreNo());
-        Integer discountPrice = closeMapper.selectDiscountPrice(loginMember.getStore().getStoreNo());
-        OpenCloseUpdateDTO realOrderInfo = closeMapper.selectRealOrderInfo(loginMember.getStore().getStoreNo());
+        OpenCloseUpdateDTO sumInfo = closeMapper.selectSumInfo();
+        OpenCloseUpdateDTO cancelInfo = closeMapper.selectCancelInfo();
+        Integer discountPrice = closeMapper.selectDiscountPrice();
+        OpenCloseUpdateDTO realOrderInfo = closeMapper.selectRealOrderInfo();
 
         close.setSumSalePrice(sumInfo.getSumSalePrice() == null ? 0 : sumInfo.getSumSalePrice());
         close.setSumOrderCnt(sumInfo.getSumOrderCnt());
@@ -43,10 +40,7 @@ public class CloseService {
         return close;
     }
 
-    public int updateOpenClose(TUser loginMember, OpenCloseUpdateDTO closeDTO) {
-
-        String storeNo = loginMember.getStore().getStoreNo();
-        String userId = loginMember.getUserId();
+    public int updateOpenClose(OpenCloseUpdateDTO closeDTO) {
 
         int oneHunThous = closeDTO.getOneHunThous() * 100000;
         int fiftyThous = closeDTO.getFiftyThous() * 50000;
@@ -59,10 +53,8 @@ public class CloseService {
         int ten = closeDTO.getTen() * 10;
         int closeMoney = oneHunThous + fiftyThous + tenThous + fiveThous + oneThous + fiveHun + oneHun + fifty + ten;
 
-        TOpenClose close = new TOpenClose();
-        if(closeRepository.findOpenCloseV1(storeNo).isPresent()) {
-            close = closeRepository.findOpenCloseV1(storeNo).get();
-        }
+        TOpenClose close = closeJpaRepository.findOneByCloseMoneyIsNull();
+
         close.setOneHunThous(oneHunThous);
         close.setFiftyThous(fiftyThous);
         close.setTenThous(tenThous);
@@ -73,8 +65,6 @@ public class CloseService {
         close.setFifty(fifty);
         close.setTen(ten);
         close.setCloseMoney(closeMoney);
-        close.setModifyId(userId);
-        close.setModifyDate(LocalDateTime.now());
 
         return 1;
     }

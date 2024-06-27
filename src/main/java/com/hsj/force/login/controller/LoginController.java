@@ -22,9 +22,7 @@ import java.util.Locale;
 public class LoginController {
 
     public final MessageSource messageSource;
-
     public final LoginService loginService;
-
     public final OpenService openService;
     @GetMapping(value = {"/", "/login"})
     public String loginForm(@ModelAttribute UserDTO userDTO) {
@@ -41,7 +39,7 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        TUser loginMember = loginService.findUser(userDTO);
+        TUser loginMember = loginService.selectUser(userDTO);
         if(loginMember == null) {
             bindingResult.reject("loginFail", messageSource.getMessage("message.id.password.wrong", null, Locale.KOREA));
             return "login/loginForm";

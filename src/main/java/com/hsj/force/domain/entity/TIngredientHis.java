@@ -1,21 +1,31 @@
 package com.hsj.force.domain.entity;
 
-import com.hsj.force.domain.entity.embedded.CommonData;
+import com.hsj.force.domain.entity.embedded.BaseEntity;
 import com.hsj.force.domain.entity.embedded.TIngredientHisId;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.domain.Persistable;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "TINGREDIENTHIS")
+@IdClass(TIngredientHisId.class)
 @Getter
 @Setter
-public class TIngredientHis {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class TIngredientHis extends BaseEntity implements Persistable<TIngredientHisId> {
 
-    @EmbeddedId
-    private TIngredientHisId ingredientHisId;
+    @Id
+    @Column(name = "INGREDIENT_NO")
+    private String ingredientNo;
+
+    @Id
+    @Column(name = "INGREDIENT_SEQ")
+    private String ingredientSeq;
 
     private Double inDeQuantity;
 
@@ -23,8 +33,12 @@ public class TIngredientHis {
     @JoinColumn(name = "IN_DE_REASON_NO")
     private TInDeReason inDeReason;
 
-    @Embedded
-    private CommonData commonData;
+    public TIngredientHis(String ingredientNo, String ingredientSeq, Double inDeQuantity, TInDeReason inDeReason) {
+        this.ingredientNo = ingredientNo;
+        this.ingredientSeq = ingredientSeq;
+        this.inDeQuantity = inDeQuantity;
+        this.inDeReason = inDeReason;
+    }
 
     //==연관관계 메서드==//
     public void setInDeReason(TInDeReason inDeReason) {
@@ -32,4 +46,13 @@ public class TIngredientHis {
         inDeReason.getIngredientHiss().add(this);
     }
 
+    @Override
+    public TIngredientHisId getId() {
+        return new TIngredientHisId(ingredientNo, ingredientSeq);
+    }
+
+    @Override
+    public boolean isNew() {
+        return this.getInsertDate() == null;
+    }
 }

@@ -37,7 +37,7 @@ public class TableController {
         model.addAttribute("tableTotalPriceList", map.get("tableTotalPriceList"));
         model.addAttribute("tableOfOrderMap", map.get("tableOfOrderMap"));
 
-        return "table/" + "S001" + "/tableForm";
+        return "table/tableForm";
     }
 
     @GetMapping("/exist-order/list")

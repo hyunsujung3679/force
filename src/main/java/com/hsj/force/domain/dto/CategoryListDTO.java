@@ -13,6 +13,9 @@ public class CategoryListDTO {
     private String useYn;
     private int priority;
 
+    public CategoryListDTO() {
+    }
+
     public CategoryListDTO(TCategory category) {
         categoryNo = category.getCategoryNo();
         categoryName = category.getCategoryName();

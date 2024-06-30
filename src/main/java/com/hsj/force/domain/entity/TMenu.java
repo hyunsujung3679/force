@@ -48,8 +48,8 @@ public class TMenu extends BaseEntity {
     public TMenu(String menuNo, String menuName, TSaleStatus saleStatus, TCategory category, String imageSaveName, String imageOriginName, String imagePath, String imageExt) {
         this.menuNo = menuNo;
         this.menuName = menuName;
-        this.saleStatus = saleStatus;
-        this.category = category;
+        if(saleStatus != null) setSaleStatus(saleStatus);
+        if(category != null ) setCategory(category);
         this.imageSaveName = imageSaveName;
         this.imageOriginName = imageOriginName;
         this.imagePath = imagePath;

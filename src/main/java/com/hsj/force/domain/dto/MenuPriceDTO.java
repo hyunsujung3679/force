@@ -1,5 +1,6 @@
 package com.hsj.force.domain.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
@@ -16,6 +17,7 @@ public class MenuPriceDTO {
     public MenuPriceDTO() {
     }
 
+    @QueryProjection
     public MenuPriceDTO(String menuNo, String menuSeq, String menuName, String saleStatusNo, String categoryNo, Integer salePrice, String imageSaveName) {
         this.menuNo = menuNo;
         this.menuSeq = menuSeq;

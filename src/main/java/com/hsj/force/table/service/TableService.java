@@ -10,7 +10,6 @@ import com.hsj.force.domain.entity.TTable;
 import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.order.repository.OrderJpaRepository;
 import com.hsj.force.table.repository.TableJpaRepository;
-import com.hsj.force.table.repository.TableMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -27,8 +26,6 @@ public class TableService {
 
     private final TableJpaRepository tableJpaRepository;
     private final OrderJpaRepository orderJpaRepository;
-
-    private final TableMapper tableMapper;
 
     private final MessageSource messageSource;
 
@@ -85,11 +82,11 @@ public class TableService {
     }
 
     public List<TableListDTO> selectTableExistOrderList() {
-        return orderJpaRepository.findAllV2("OS001");
+        return tableJpaRepository.findTableListDTOV1("OS001");
     }
 
     public List<TableListDTO> selectTableNotExistOrderList() {
-        return tableMapper.selectTableNotExistOrderList();
+        return tableJpaRepository.findTableListDTOV2("OS001");
     }
 
     public int moveTable(TableDTO tableDTO) {

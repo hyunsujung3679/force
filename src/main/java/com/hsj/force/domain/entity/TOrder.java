@@ -56,9 +56,9 @@ public class TOrder extends BaseEntity implements Persistable<TOrderId> {
     public TOrder(String orderNo, String orderSeq, TTable table, TMenu menu, TOrderStatus orderStatus, int salePrice, int quantity, int discountPrice, int totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, LocalDateTime orderDate, LocalDateTime cancelDate) {
         this.orderNo = orderNo;
         this.orderSeq = orderSeq;
-        this.table = table;
-        this.menu = menu;
-        this.orderStatus = orderStatus;
+        if(table != null ) setTable(table);
+        if(menu != null ) setMenu(menu);
+        if(orderStatus != null) setOrderStatus(orderStatus);
         this.salePrice = salePrice;
         this.quantity = quantity;
         this.discountPrice = discountPrice;

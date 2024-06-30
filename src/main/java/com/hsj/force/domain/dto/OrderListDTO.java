@@ -1,6 +1,7 @@
 package com.hsj.force.domain.dto;
 
 import com.hsj.force.domain.entity.TOrder;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
@@ -24,26 +25,7 @@ public class OrderListDTO {
     private String tableNo;
     private String orderStatusNo;
 
-    public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String no, String etc, String tableNo, String orderStatusNo) {
-        this.orderNo = orderNo;
-        this.orderSeq = orderSeq;
-        this.menuNo = menuNo;
-        this.menuName = menuName;
-        this.salePrice = salePrice;
-        this.quantity = quantity;
-        this.discountPrice = discountPrice;
-        this.totalSalePrice = totalSalePrice;
-        this.fullPriceYn = fullPriceYn;
-        this.fullPerYn = fullPerYn;
-        this.selPriceYn = selPriceYn;
-        this.selPerYn = selPerYn;
-        this.serviceYn = serviceYn;
-        this.no = no;
-        this.etc = etc;
-        this.tableNo = tableNo;
-        this.orderStatusNo = orderStatusNo;
-    }
-
+    @QueryProjection
     public OrderListDTO(String orderNo, String orderSeq, String menuNo, String menuName, Integer salePrice, Integer quantity, Integer discountPrice, Integer totalSalePrice, String fullPriceYn, String fullPerYn, String selPriceYn, String selPerYn, String serviceYn, String tableNo, String orderStatusNo) {
         this.orderNo = orderNo;
         this.orderSeq = orderSeq;
@@ -58,8 +40,6 @@ public class OrderListDTO {
         this.selPriceYn = selPriceYn;
         this.selPerYn = selPerYn;
         this.serviceYn = serviceYn;
-        this.no = no;
-        this.etc = etc;
         this.tableNo = tableNo;
         this.orderStatusNo = orderStatusNo;
     }

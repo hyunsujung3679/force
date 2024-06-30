@@ -6,7 +6,6 @@ import com.hsj.force.domain.entity.TOpenClose;
 import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.login.repository.LoginJpaRepository;
 import com.hsj.force.open.repository.OpenJpaRepository;
-import com.hsj.force.open.repository.OpenMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +19,6 @@ public class OpenService {
 
     public final OpenJpaRepository openJpaRepository;
     public final LoginJpaRepository loginJpaRepository;
-    public final OpenMapper openMapper;
 
     public boolean selectIsOpen() {
         return openJpaRepository.countByCloseMoneyIsNull() > 0;
@@ -37,7 +35,8 @@ public class OpenService {
         openCloseInsertDTO.setCloseTime(open.getModifyDate());
 
         int procedure = 1;
-        String procedureStr = openMapper.selectOpenCloseSeq();
+        TOpenClose openCloseSeq = openJpaRepository.findOneV1();
+        String procedureStr = openCloseSeq != null? openCloseSeq.getOpenCloseSeq() : null;
         if(procedureStr == null) {
             openCloseInsertDTO.setProcedure(procedure);
         } else {
@@ -50,9 +49,10 @@ public class OpenService {
     public void insertOpen(int openMoney) {
 
         TOpenClose open = openJpaRepository.findFirstByOrderByOpenCloseNoDesc();
-
         String nextOpenCloseNo = ComUtils.getNextNo(open.getOpenCloseNo(), OPEN_CLOSE_NO_PREFIX);
-        String nextOpenSeq = ComUtils.getNextSeq(openMapper.selectOpenCloseSeq());
+
+        TOpenClose openCloseSeq = openJpaRepository.findOneV1();
+        String nextOpenSeq = ComUtils.getNextSeq(openCloseSeq != null? openCloseSeq.getOpenCloseSeq() : null);
 
         openJpaRepository.save(new TOpenClose(nextOpenCloseNo, nextOpenSeq, openMoney, null));
     }

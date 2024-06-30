@@ -5,7 +5,6 @@ import com.hsj.force.common.ComUtils;
 import com.hsj.force.common.Constants;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.domain.entity.*;
-import com.hsj.force.domain.entity.embedded.TIngredientHisId;
 import com.hsj.force.ingredient.repository.InDeReasonJpaRepository;
 import com.hsj.force.ingredient.repository.IngredientHisJpaRepository;
 import com.hsj.force.ingredient.repository.IngredientJpaRepository;
@@ -58,8 +57,8 @@ public class OrderService {
                 .map(o -> new OrderListDTO(o))
                 .collect(Collectors.toList());
 
-        List<MenuListDTO> menuList = menuMapper.selectMenuList();
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
+        List<MenuListDTO> menuList = menuMapper.selectMenuListV1();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(null);
 
         int totalQuantity = 0;
         int totalDiscountPrice = 0;
@@ -148,7 +147,7 @@ public class OrderService {
             }
         }
 
-        TOrder quantityOrder = orderJpaRepository.findOneV1(tableNo, menuNo, "OS001");
+        TOrder quantityOrder = orderJpaRepository.findOneCustom(null, tableNo, menuNo, "OS001");
         Integer quantity = quantityOrder == null? null : quantityOrder.getQuantity();
         MenuPriceDTO menuPriceDTO = menuPriceJpaRepository.findMenuPriceDTO(menuNo);
         TOrder orderSeqOrder = orderJpaRepository.findFirstByOrderNoOrderByOrderSeqDesc(newOrderNo);
@@ -197,15 +196,13 @@ public class OrderService {
             orderJpaRepository.save(order);
 
         } else {
-
-            order = orderJpaRepository.findOneByOrderNoAndMenu(orderNo, new TMenu(menuNo));
+            order = orderJpaRepository.findOneCustom(orderNo, null, menuNo, "OS001");
             order.setQuantity(quantity + 1);
             order.setTotalSalePrice(menuPriceDTO.getSalePrice() * order.getQuantity());
-
         }
 
         TIngredient ingredient = null;
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV2(menuNo);
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(menuNo);
         for(MenuIngredientListDTO menuIngredientDTO : menuIngredientList) {
             Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredientDTO.getIngredientNo());
             if(optionalIngredient.isPresent()) {
@@ -281,7 +278,7 @@ public class OrderService {
         String tableNo = orderSaveDTO.getTableNo();
         TIngredient ingredient = null;
 
-        List<MenuIngredientListDTO> menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV4(orderNo, menuNo, "OS001");
+        List<MenuIngredientListDTO> menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV2(menuNo, orderNo, "OS001");
         for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
 
             Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredient.getIngredientNo());
@@ -311,7 +308,7 @@ public class OrderService {
         if(optionalOrderStatus.isPresent()) {
             orderStatus = optionalOrderStatus.get();
         }
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
         order.setOrderStatus(orderStatus);
         order.setCancelDate(LocalDateTime.now());
 
@@ -329,7 +326,7 @@ public class OrderService {
                 .stream().map(TOrder::getMenu).toList()
                 .stream().map(TMenu::getMenuNo).toList();
         for(String menuNo : menuNos) {
-            menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV4(orderNo, menuNo, "OS001");
+            menuIngredientDTOList = menuIngredientJpaRepository.findMenuIngredientListDTOV2(menuNo, orderNo, "OS001");
             for(MenuIngredientListDTO menuIngredient : menuIngredientDTOList) {
 
                 Optional<TIngredient> optionalIngredient = ingredientJpaRepository.findById(menuIngredient.getIngredientNo());
@@ -358,7 +355,7 @@ public class OrderService {
 
         }
 
-        List<TOrder> orders =  orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
+        List<TOrder> orders =  orderJpaRepository.findAllCustomV1(orderNo, tableNo, "OS001");
 
         TOrderStatus orderStatus = null;
         Optional<TOrderStatus> optionalOrderStatus = orderStatusJpaRepository.findById("OS002");
@@ -382,7 +379,7 @@ public class OrderService {
         String menuNo = orderSaveDTO.getMenuNo();
         String quantity = orderSaveDTO.getQuantity();
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
         order.setQuantity(Integer.parseInt(quantity.replaceAll(",", "")));
 
         if("1".equals(order.getServiceYn())) {
@@ -402,7 +399,7 @@ public class OrderService {
         String orderNo = orderSaveDTO.getOrderNo();
         String salePrice = orderSaveDTO.getSalePrice();
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
         order.setSalePrice(Integer.parseInt(salePrice.replaceAll(",", "")));
 
         if("1".equals(order.getServiceYn())) {
@@ -421,7 +418,7 @@ public class OrderService {
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
         order.setFullPerYn("0");
         order.setFullPriceYn("0");
         order.setSelPerYn("0");
@@ -453,7 +450,7 @@ public class OrderService {
             return 1;
         }
 
-        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
+        List<TOrder> orders = orderJpaRepository.findAllCustomV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
             order.setDiscountPrice(order.getSalePrice() * order.getQuantity() * percent / 100);
             order.setTotalSalePrice(order.getSalePrice() * order.getQuantity() - order.getDiscountPrice());
@@ -477,7 +474,7 @@ public class OrderService {
 
         if(discountSalePrice == 0) return 1;
 
-        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
+        List<TOrder> orders = orderJpaRepository.findAllCustomV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
 
             if(discountSalePrice > order.getSalePrice() * order.getQuantity()) {
@@ -501,7 +498,7 @@ public class OrderService {
         String tableNo = orderSaveDTO.getTableNo();
         String orderNo = orderSaveDTO.getOrderNo();
 
-        List<TOrder> orders = orderJpaRepository.findAllV1(orderNo, tableNo, "OS001");
+        List<TOrder> orders = orderJpaRepository.findAllCustomV1(orderNo, tableNo, "OS001");
         for(TOrder order : orders) {
             if("1".equals(order.getFullPerYn()) || "1".equals(order.getFullPriceYn())) {
 
@@ -533,7 +530,7 @@ public class OrderService {
             return 1;
         }
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
         order.setDiscountPrice(order.getSalePrice() * order.getQuantity() * percent / 100);
         order.setTotalSalePrice(order.getSalePrice() * order.getQuantity() - order.getDiscountPrice());
         order.setFullPriceYn("0");
@@ -555,7 +552,7 @@ public class OrderService {
 
         if(discountSalePrice == 0) return 1;
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
 
         if(discountSalePrice > order.getSalePrice() * order.getQuantity()) {
             discountSalePrice = order.getSalePrice() * order.getQuantity();
@@ -576,7 +573,7 @@ public class OrderService {
         String orderNo = orderSaveDTO.getOrderNo();
         String menuNo = orderSaveDTO.getMenuNo();
 
-        TOrder order = orderJpaRepository.findOneV2(orderNo, tableNo, menuNo, "OS001");
+        TOrder order = orderJpaRepository.findOneCustom(orderNo, tableNo, menuNo, "OS001");
 
         if("1".equals(order.getSelPerYn()) || "1".equals(order.getSelPriceYn())) {
 
@@ -594,7 +591,7 @@ public class OrderService {
 
     public boolean checkStock(String menuNo) {
 
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(null);
 
         boolean isEnoughStock = true;
         for(MenuIngredientListDTO menuIngredient : menuIngredientList) {

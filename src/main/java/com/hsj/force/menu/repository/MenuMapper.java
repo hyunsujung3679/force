@@ -9,10 +9,10 @@ import java.util.Map;
 @Mapper
 public interface MenuMapper {
 
-    List<MenuListDTO> selectMenuList();
+    List<MenuListDTO> selectMenuListV1();
 
     List<MenuListDTO> selectMenuListV2(Map<String, Object> paramMap);
 
-    List<MenuListDTO> selectMenuListByMenuForm();
+    List<MenuListDTO> selectMenuListV3();
 
 }

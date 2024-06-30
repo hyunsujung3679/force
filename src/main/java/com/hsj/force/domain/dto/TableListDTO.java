@@ -1,7 +1,7 @@
 package com.hsj.force.domain.dto;
 
-import com.hsj.force.domain.entity.TOrder;
 import com.hsj.force.domain.entity.TTable;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 @Data
@@ -13,6 +13,7 @@ public class TableListDTO {
 
     public TableListDTO() {}
 
+    @QueryProjection
     public TableListDTO(String tableNo, String tableName) {
         this.tableNo = tableNo;
         this.tableName = tableName;
@@ -21,11 +22,6 @@ public class TableListDTO {
     public TableListDTO(TTable table) {
         tableNo = table.getTableNo();
         tableName = table.getTableName();
-    }
-
-    public TableListDTO(TOrder order) {
-        tableNo = order.getTable().getTableNo();
-        tableName = order.getTable().getTableName();
     }
 
 }

@@ -6,7 +6,6 @@ import com.hsj.force.common.Constants;
 import com.hsj.force.common.service.CommonService;
 import com.hsj.force.domain.dto.*;
 import com.hsj.force.domain.entity.*;
-import com.hsj.force.ingredient.repository.IngredientJpaRepository;
 import com.hsj.force.menu.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -27,7 +26,6 @@ public class MenuService {
     private final SaleStatusJpaRepository saleStatusJpaRepository;
     private final CategoryJpaRepository categoryJpaRepository;
     private final MenuPriceJpaRepository menuPriceJpaRepository;
-    private final IngredientJpaRepository ingredientJpaRepository;
 
     private final CommonService commonService;
     private final MenuMapper menuMapper;
@@ -40,7 +38,7 @@ public class MenuService {
         paramMap.put("categoryNo", categoryNo);
 
         List<MenuListDTO> menuList = menuMapper.selectMenuListV2(paramMap);
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(null);
 
         boolean isEnoughStock;
         for(MenuListDTO menu : menuList) {
@@ -68,8 +66,8 @@ public class MenuService {
         commonLayoutForm.setCurrentDate(LocalDateTime.now());
         commonLayoutForm.setBusinessDate(LocalDateTime.now());
 
-        List<MenuListDTO> menuList = menuMapper.selectMenuListByMenuForm();
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV3();
+        List<MenuListDTO> menuList = menuMapper.selectMenuListV3();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(null);
 
         for(int i = 0; i < menuList.size(); i++) {
             MenuListDTO menu = menuList.get(i);
@@ -325,7 +323,7 @@ public class MenuService {
         paramMap.put("categoryNo",  categoryJpaRepository.findFirstByUseYnOrderByPriority("1").getCategoryNo());
 
         List<MenuListDTO> menuList = menuMapper.selectMenuListV2(paramMap);
-        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1();
+        List<MenuIngredientListDTO> menuIngredientList = menuIngredientJpaRepository.findMenuIngredientListDTOV1(null);
 
         boolean isEnoughStock;
         for(MenuListDTO menu : menuList) {

@@ -1,5 +1,6 @@
 package com.hsj.force.domain.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -8,12 +9,12 @@ import java.time.LocalDateTime;
 public class OpenCloseUpdateDTO {
 
     private Integer sumSalePrice;
-    private int sumOrderCnt;
+    private Long sumOrderCnt;
     private Integer sumCancelPrice;
-    private int sumCancelCnt;
+    private Long sumCancelCnt;
     private Integer discountPrice;
-    private int realOrderCnt;
     private Integer totalSalePrice;
+    private Long realOrderCnt;
     private LocalDateTime currentDate;
 
     private Integer oneHunThous;
@@ -29,4 +30,17 @@ public class OpenCloseUpdateDTO {
 
     private String modifyId;
 
+    public OpenCloseUpdateDTO() {
+    }
+
+    @QueryProjection
+    public OpenCloseUpdateDTO(Integer sumSalePrice, Long sumOrderCnt, Integer sumCancelPrice, Long sumCancelCnt, Integer discountPrice, Integer totalSalePrice, Long realOrderCnt) {
+        this.sumSalePrice = sumSalePrice;
+        this.sumOrderCnt = sumOrderCnt;
+        this.sumCancelPrice = sumCancelPrice;
+        this.sumCancelCnt = sumCancelCnt;
+        this.discountPrice = discountPrice;
+        this.totalSalePrice = totalSalePrice;
+        this.realOrderCnt = realOrderCnt;
+    }
 }

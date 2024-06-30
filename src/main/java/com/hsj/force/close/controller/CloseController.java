@@ -2,9 +2,7 @@ package com.hsj.force.close.controller;
 
 import com.hsj.force.close.service.CloseService;
 import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
-import com.hsj.force.domain.entity.TUser;
 import com.hsj.force.open.service.OpenService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

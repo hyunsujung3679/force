@@ -1,7 +1,6 @@
 package com.hsj.force.close.service;
 
 import com.hsj.force.close.repository.CloseJpaRepository;
-import com.hsj.force.close.repository.CloseMapper;
 import com.hsj.force.domain.dto.OpenCloseUpdateDTO;
 import com.hsj.force.domain.entity.TOpenClose;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +16,14 @@ public class CloseService {
 
     private final CloseJpaRepository closeJpaRepository;
 
-    private final CloseMapper closeMapper;
-
     public OpenCloseUpdateDTO selectCloseInfo() {
 
         OpenCloseUpdateDTO close = new OpenCloseUpdateDTO();
 
-        OpenCloseUpdateDTO sumInfo = closeMapper.selectSumInfo();
-        OpenCloseUpdateDTO cancelInfo = closeMapper.selectCancelInfo();
-        Integer discountPrice = closeMapper.selectDiscountPrice();
-        OpenCloseUpdateDTO realOrderInfo = closeMapper.selectRealOrderInfo();
+        OpenCloseUpdateDTO sumInfo = closeJpaRepository.findSumInfo();
+        OpenCloseUpdateDTO cancelInfo = closeJpaRepository.findCancelInfo("OS002");
+        Integer discountPrice =  closeJpaRepository.findDiscountPrice("OS003").getDiscountPrice();
+        OpenCloseUpdateDTO realOrderInfo = closeJpaRepository.findRealOrderInfo("OS003");
 
         close.setSumSalePrice(sumInfo.getSumSalePrice() == null ? 0 : sumInfo.getSumSalePrice());
         close.setSumOrderCnt(sumInfo.getSumOrderCnt());

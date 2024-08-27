@@ -4,10 +4,10 @@
   <li>인원 : 1명</li>
   <li>Notion : https://www.notion.so/0dd78a202c614cff908e510e86c20b7f</li>
 </ul>
-
+<br/>
 <h2>:dart:프로젝트 목적</h2>
 혁신적인 POS 시스템 개발이라는 도전적인 주제를 통해, 인강을 통해 학습한 Spring과 JPA 기술을 실제 적용해보는 개인 학습 및 역량 개발 목적의 프로젝트입니다.
-
+<br/>
 <h2>:rocket:주요 기능</h2>
 <strong>오픈 / 마감 관리</strong>
 <ul>
@@ -33,9 +33,9 @@
   <li>상품 관리</li>
   <li>재고 관리</li>
 </ul>
-
+<br/>
 <h2>:movie_camera:시연영상</h2>
-
+<br/>
 <h2>:computer:개발환경</h2>
 <ul>
   <li>Java, Spring, Spring Boot, JPA, MyBatis</li>

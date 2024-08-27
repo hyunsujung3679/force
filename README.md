@@ -2,6 +2,7 @@
 <ul>
   <li>기간 : 2023.12.30 ~ 2024.03.30</li>
   <li>인원 : 1명</li>
+  <li>Notion : https://www.notion.so/0dd78a202c614cff908e510e86c20b7f</li>
 </ul>
 
 <h2>:dart:프로젝트 목적</h2>
